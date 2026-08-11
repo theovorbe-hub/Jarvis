@@ -1,0 +1,187 @@
+// JARVIS data model.
+// Dev uses SQLite (zero-config, file-based). Swap provider to "postgresql"
+// and set DATABASE_URL to a Postgres connection string for production —
+// the schema itself is written to be portable across both.
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String
+  passwordHash String
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Voice / assistant preferences
+  voiceEnabled   Boolean @default(true)
+  voiceName      String  @default("default")
+  voiceVolume    Float   @default(1)
+  alwaysListening Boolean @default(false)
+  wakeWordEnabled Boolean @default(true)
+
+  // Dashboard / weather location (defaults to Paris when unset)
+  city      String? @default("Paris")
+  latitude  Float?  @default(48.8566)
+  longitude Float?  @default(2.3522)
+
+  conversations Conversation[]
+  memories      Memory[]
+  tasks         Task[]
+  reminders     Reminder[]
+  automations   Automation[]
+  files         FileAsset[]
+  connections   Connection[]
+  permissions   Permission[]
+  activityLogs  ActivityLog[]
+}
+
+model Conversation {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title     String   @default("Nouvelle conversation")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  messages Message[]
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  role           String // "user" | "assistant" | "system"
+  content        String // plain text content
+  audioUrl       String? // optional generated/attached audio reference
+  imageUrl       String? // optional attached image reference
+  fileId         String? // optional attached file reference
+  toolCalls      String? // JSON-encoded list of tool invocations performed for this message
+  sources        String? // JSON-encoded list of web sources used
+  createdAt      DateTime     @default(now())
+}
+
+model Memory {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  key       String // short label, e.g. "Projet principal"
+  value     String // the remembered content
+  category  String   @default("general") // preference | project | person | habit | goal | general
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+}
+
+model Task {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  title       String
+  description String?
+  status      String    @default("pending") // pending | in_progress | done
+  priority    String    @default("normal") // low | normal | high
+  dueAt       DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model Reminder {
+  id        String    @id @default(cuid())
+  userId    String
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  text      String
+  remindAt  DateTime
+  done      Boolean   @default(false)
+  createdAt DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model Automation {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  description String?
+  trigger     String // "cron" | "event"
+  schedule    String? // cron expression when trigger = "cron"
+  event       String? // event name when trigger = "event", e.g. "file_uploaded"
+  actionType  String // "briefing" | "priorities" | "reminder" | "analyze_file"
+  actionInput String? // JSON-encoded params for the action
+  enabled     Boolean   @default(true)
+  lastRunAt   DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([userId])
+}
+
+model FileAsset {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  filename    String
+  mimeType    String
+  sizeBytes   Int
+  kind        String // "pdf" | "docx" | "xlsx" | "image" | "text"
+  storagePath String // path on local disk under /uploads
+  extractedText String? // parsed text content, when applicable
+  summary     String? // AI-generated summary
+  analyzedAt  DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Connection {
+  id          String    @id @default(cuid())
+  userId      String
+  user        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider    String // "calendar" | "email" | "cloud_storage" | "music" | "smart_home" | "messaging" | "custom_api"
+  label       String
+  status      String    @default("disconnected") // disconnected | connected | error
+  scopes      String? // JSON-encoded list of granted scopes
+  connectedAt DateTime?
+  createdAt   DateTime  @default(now())
+
+  @@index([userId])
+}
+
+model Permission {
+  id          String   @id @default(cuid())
+  userId      String
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  capability  String // "microphone" | "web_search" | "file_access" | "memory_write" | "calendar" | "email" | "automation_execution" | "always_listening"
+  label       String
+  granted     Boolean  @default(false)
+  sensitive   Boolean  @default(false) // requires per-action confirmation even when granted
+  grantedAt   DateTime?
+  revokedAt   DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@unique([userId, capability])
+}
+
+model ActivityLog {
+  id        String   @id @default(cuid())
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  action    String // short label, e.g. "Recherche web effectuée"
+  category  String // "research" | "memory" | "document" | "vision" | "task" | "reminder" | "automation" | "auth" | "permission"
+  detail    String? // free-text detail
+  metadata  String? // JSON-encoded structured detail
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}

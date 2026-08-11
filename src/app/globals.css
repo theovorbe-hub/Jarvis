@@ -1,0 +1,62 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: radial-gradient(circle at 50% 0%, #0d1720 0%, #05070a 55%, #030405 100%);
+  color: #e6f3fb;
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: rgba(79, 216, 255, 0.35);
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(79, 216, 255, 0.25);
+  border-radius: 8px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(79, 216, 255, 0.45);
+}
+
+.glass {
+  background: rgba(13, 19, 27, 0.55);
+  border: 1px solid rgba(126, 200, 255, 0.14);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+}
+
+.glass-strong {
+  background: rgba(10, 14, 20, 0.72);
+  border: 1px solid rgba(126, 200, 255, 0.2);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
+}
+
+.text-glow {
+  text-shadow: 0 0 20px rgba(79, 216, 255, 0.55);
+}
+
+.grid-scan {
+  background-image: linear-gradient(rgba(79, 216, 255, 0.05) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(79, 216, 255, 0.05) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
