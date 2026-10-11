@@ -1,0 +1,6 @@
+# Fabrication des vidéos (tools/make-hero-video.py)
+numpy
+Pillow
+opencv-python-headless
+# Seulement pour recalculer les cartes de profondeur
+onnxruntime

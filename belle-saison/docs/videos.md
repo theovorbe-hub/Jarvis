@@ -8,49 +8,68 @@ lentes, silencieuses et sans texte incrusté : le site porte déjà les mots.
 
 Section « Ouverture vidéo », en tête de l’accueil. Les vidéos sont produites avec
 `tools/make-hero-video.py`, sans IA générative : une caméra virtuelle se déplace très
-lentement dans de vraies photos, et les plans s’enchaînent en fondu. Motifs, lumière et
-mobilier restent exactement ceux des photos.
+lentement dans de vraies photos. Motifs, couleurs et mobilier restent ceux des photos.
+
+### Le rendu « film »
+
+- **Profondeur.** Une carte de profondeur par photo (`media/profondeur/`, calculée avec le
+  modèle Depth Anything V2 Small) fait glisser les premiers plans plus vite que le fond et
+  grossir ce qui est proche quand la caméra avance : la pièce prend du relief.
+- **Mise au point.** Profondeur de champ réduite, avec deux bascules de point : du bouquet
+  au mur de toile (plan 2), puis sur le motif du papier peint (plan 3).
+- **Image pellicule.** Noirs veloutés tirant vers le vert forêt, hautes lumières ambrées,
+  diffusion douce des lumières, halo chaud autour des fenêtres et des bougies, vignettage,
+  grain fin, 24 images par seconde.
+- **Caméra portée.** Un flottement à peine perceptible, comme sur un stabilisateur.
+
+Les réglages sont en tête du script (`LOOK`, `MONTAGE`, `KEYS_DESKTOP`, `KEYS_MOBILE`).
 
 ### Montage en 4 plans (ordinateur, en ligne)
 
-À partir de `media/salon-ouverture-source.jpg` et des trois photos de
-`media/bandes-salon-detail-chambre.png`, 20 s en boucle :
+À partir de `media/salon-ouverture-source.jpg` et des trois photos `media/montage-*.png`
+(découpées dans `media/bandes-salon-detail-chambre.png`), 20 s en boucle :
 
 | Plan | Temps | Image | Mouvement |
 |---|---|---|---|
-| 1 | 0 à 5,6 s | le salon, vue d’ensemble | travelling avant vers la porte-fenêtre |
-| 2 | 4,8 à 10,6 s | le salon au mur tapissé de toile | glissement latéral vers la cheminée |
-| 3 | 9,8 à 15,6 s | le papier peint feuillage | gros plan, glissement très lent sur le motif |
-| 4 | 14,8 à 20 s | la chambre | léger recul, puis fondu vers la première image |
+| 1 | 0 à 5,75 s | le salon, vue d’ensemble | travelling avant vers la porte-fenêtre |
+| 2 | 4,75 à 10,5 s | le salon au mur tapissé de toile | glissement latéral, le point passe du bouquet au mur |
+| 3 | 9,5 à 15,25 s | le papier peint feuillage | gros plan, le motif devient net |
+| 4 | 14,25 à 20 s | la chambre | recul lent, puis fondu vers la première image |
 
-```bash
-python3 tools/make-hero-video.py --montage media/salon-ouverture-source.jpg media/bandes-salon-detail-chambre.png sortie/
-```
+Les trois photos des plans 2 à 4 n’existent qu’en petite taille (1672 px de large, 265 à
+356 px de haut) : agrandies pour la vidéo, elles sont plus douces que le premier plan (le
+grain et la profondeur de champ l’atténuent). Avec les photos d’origine en pleine
+résolution, le montage sera net d’un bout à l’autre : remplacer les fichiers
+`media/montage-*.png`, recalculer leur profondeur, puis relancer le montage.
 
-Les cadrages et durées se règlent dans `MONTAGE_SHOTS`. Les trois photos des plans 2 à 4
-n’existent qu’en petite taille (1672 px de large, 265 à 356 px de haut) : agrandies pour la
-vidéo, elles sont plus douces que le premier plan. Avec les photos d’origine en pleine
-résolution, le montage sera net d’un bout à l’autre.
-
-### Boucle sur une seule photo (ordinateur et mobile)
+### Boucle sur une seule photo (mobile, en ligne)
 
 Un plan-séquence sur la photo du salon : travelling avant, glissement vers le mur tapissé,
 rapproché sur le motif et le cadre doré, puis retour au plan large. C’est la version mobile
-en ligne : les photos du montage, très panoramiques, ne remplissent pas un écran vertical.
+en ligne, car les photos du montage, très panoramiques, ne remplissent pas un écran
+vertical. Une version ordinateur de cette boucle est aussi fournie.
 
 ```bash
-python3 tools/make-hero-video.py media/salon-ouverture-source.jpg sortie/
+# depuis belle-saison/, avec numpy, Pillow, opencv-python-headless et ffmpeg
+python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans
+python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
+# recalculer les cartes de profondeur (onnxruntime et le modèle
+# depth_anything_v2_vits.onnx de github.com/fabio-sim/Depth-Anything-ONNX)
+python3 tools/make-hero-video.py profondeur depth_anything_v2_vits.onnx media/montage-2-salon-toile.png
 ```
 
 | Fichier (Contenu > Fichiers) | Format | Poids |
 |---|---|---|
-| `belle-saison-ouverture-montage-1920x1080.mp4` | ordinateur, 16:9, montage 4 plans (en ligne) | 6,2 Mo |
-| `belle-saison-ouverture-1920x1080.mp4` | ordinateur, 16:9, une seule photo | 6,8 Mo |
-| `belle-saison-ouverture-mobile-720x1280.mp4` | mobile, 9:16 (en ligne) | 2,7 Mo |
-| `belle-saison-ouverture-couverture.jpg` | image de couverture | 0,4 Mo |
+| `belle-saison-ouverture-film-1920x1080.mp4` | ordinateur, 16:9, montage 4 plans (en ligne) | 7,1 Mo |
+| `belle-saison-ouverture-film-mobile-720x1280.mp4` | mobile, 9:16 (en ligne) | 5,0 Mo |
+| `belle-saison-ouverture-film-boucle-1920x1080.mp4` | ordinateur, 16:9, salon seul | 6,9 Mo |
+| `belle-saison-ouverture-film-couverture.jpg` | couverture ordinateur (première image du film) | 0,4 Mo |
+| `belle-saison-ouverture-film-couverture-mobile.jpg` | couverture mobile | 0,2 Mo |
 
-Pour revenir à la boucle sur une seule photo : éditeur du thème > Ouverture vidéo >
-Vidéo (ordinateur) > `belle-saison-ouverture-1920x1080.mp4`.
+Les premières versions, sans le rendu film (`belle-saison-ouverture-montage-1920x1080.mp4`,
+`belle-saison-ouverture-1920x1080.mp4`, `belle-saison-ouverture-mobile-720x1280.mp4`),
+restent dans Contenu > Fichiers. Pour changer de vidéo : éditeur du thème > Ouverture vidéo
+> Vidéo (ordinateur) ou Vidéo (mobile), et l’image de couverture correspondante.
 
 **Limite assumée :** la scène elle-même ne bouge pas (rideaux, lumière). Pour obtenir ces
 mouvements, utilisez un générateur vidéo en mode « image vers vidéo » avec les consignes

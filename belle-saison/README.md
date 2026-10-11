@@ -22,7 +22,8 @@ Le thème en ligne reste Horizon tant que « Belle Saison » n’est pas publié
 ```
 belle-saison/
 ├── theme/        Le thème Shopify (dossiers standard d'un thème Online Store 2.0)
-├── tools/        Validation, aperçu local et tests
+├── tools/        Validation, aperçu local, tests et fabrication des vidéos
+├── media/        Photos des vidéos et leurs cartes de profondeur
 └── docs/         Maquette de référence
 ```
 
@@ -83,18 +84,17 @@ immédiatement, puis la vidéo (version ordinateur ou verticale selon l’écran
 adaptée) apparaît en fondu, muette et en boucle. Elle n’est pas chargée pour les visiteurs
 qui réduisent les animations ou économisent leurs données, et l’image reste en place si la
 lecture échoue. Sur ordinateur, c’est un montage en 4 plans (salon, mur tapissé, gros plan
-sur le motif, chambre) ; sur mobile, une boucle sur la photo du salon. Pour refaire les vidéos :
+sur le motif, chambre) ; sur mobile, une boucle sur la photo du salon. Les deux ont un rendu
+« film » : relief grâce à une carte de profondeur, bascules de point, étalonnage pellicule,
+halo des lumières et grain. Pour refaire les vidéos (numpy, Pillow, opencv-python-headless
+et ffmpeg) :
 
 ```bash
-# boucle sur une photo (ordinateur et mobile)
-python3 tools/make-hero-video.py media/salon-ouverture-source.jpg sortie/
-# montage 4 plans (ordinateur)
-python3 tools/make-hero-video.py --montage media/salon-ouverture-source.jpg media/bandes-salon-detail-chambre.png sortie/
+python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans
+python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
 ```
 
-Les cadrages se règlent dans `KEYS_DESKTOP`, `KEYS_MOBILE` et `MONTAGE_SHOTS` en haut du
-script ; il affiche la vitesse de la caméra pour garder un mouvement très lent. Le détail
-des plans et des fichiers est dans [`docs/videos.md`](docs/videos.md).
+Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
 
 La section « Ouverture » (diaporama d’images), « Notre histoire » et la section « Vidéo plein écran » acceptent aussi une vidéo
 d’ambiance hébergée sur Shopify (Contenu > Fichiers). Elle se lance sans son et en boucle
