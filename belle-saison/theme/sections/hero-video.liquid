@@ -1,0 +1,212 @@
+{%- comment -%}
+  Ouverture vidéo plein écran.
+  L'image de couverture s'affiche immédiatement (bonne vitesse de chargement) ;
+  theme.js charge ensuite la vidéo adaptée à l'écran, en fondu, muette et en boucle.
+  Aucune vidéo n'est chargée si le visiteur réduit les animations ou économise ses
+  données, et l'image reste en place si la lecture échoue.
+{%- endcomment -%}
+{%- liquid
+  if section.index == 1
+    assign heading_tag = 'h1'
+    assign loading = 'eager'
+    assign fetch_priority = 'high'
+  else
+    assign heading_tag = 'h2'
+    assign loading = 'lazy'
+    assign fetch_priority = 'auto'
+  endif
+  assign poster = section.settings.poster | default: section.settings.video.preview_image
+  assign poster_mobile = section.settings.poster_mobile | default: section.settings.video_mobile.preview_image | default: poster
+  assign first_done = false
+-%}
+<section class="video-hero video-hero--{{ section.settings.height }} video-hero--{{ section.settings.text_position }}">
+  <div class="video-hero__media bg-video is-paused" data-bg-video data-lazy-video>
+    {%- if poster != blank -%}
+      <picture>
+        {%- if poster_mobile != poster -%}
+          <source
+            media="(max-width: 749px)"
+            srcset="{{ poster_mobile | image_url: width: 750 }} 750w, {{ poster_mobile | image_url: width: 1100 }} 1100w"
+            sizes="100vw"
+          >
+        {%- endif -%}
+        {{
+          poster
+          | image_url: width: 2400
+          | image_tag:
+            widths: '750, 1100, 1500, 1920, 2400',
+            sizes: '100vw',
+            loading: loading,
+            fetchpriority: fetch_priority,
+            class: 'bg-video__media video-hero__poster'
+        }}
+      </picture>
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'bg-video__media video-hero__poster placeholder-svg' }}
+    {%- endif -%}
+
+    <script type="application/json" data-video-sources>
+      {
+        "desktop": [
+          {%- for source in section.settings.video.sources -%}
+            {%- if source.format == 'mp4' -%}
+              {%- unless first_done %}{% assign first_done = true %}{% else %},{% endunless -%}
+              { "url": {{ source.url | json }}, "width": {{ source.width | json }}, "height": {{ source.height | json }} }
+            {%- endif -%}
+          {%- endfor -%}
+        ],
+        {%- assign first_done = false -%}
+        "mobile": [
+          {%- for source in section.settings.video_mobile.sources -%}
+            {%- if source.format == 'mp4' -%}
+              {%- unless first_done %}{% assign first_done = true %}{% else %},{% endunless -%}
+              { "url": {{ source.url | json }}, "width": {{ source.width | json }}, "height": {{ source.height | json }} }
+            {%- endif -%}
+          {%- endfor -%}
+        ]
+      }
+    </script>
+
+    <button type="button" class="media-toggle" data-video-toggle>
+      <span class="media-toggle__pause">
+        {%- render 'icon', name: 'pause' -%}
+        <span class="visually-hidden">{{ 'sections.video.pause' | t }}</span>
+      </span>
+      <span class="media-toggle__play">
+        {%- render 'icon', name: 'play' -%}
+        <span class="visually-hidden">{{ 'sections.video.play' | t }}</span>
+      </span>
+    </button>
+    <div class="video-hero__scrim" style="--scrim-opacity: {{ section.settings.scrim | divided_by: 100.0 }};"></div>
+  </div>
+
+  <div class="video-hero__content page-width">
+    <div class="video-hero__text">
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <{{ heading_tag }} class="h-display video-hero__heading">{{ section.settings.heading }}</{{ heading_tag }}>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="video-hero__subtext">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a class="button" href="{{ section.settings.button_link | default: routes.collections_url }}">
+          {{- section.settings.button_label | escape -}}
+          {% render 'icon', name: 'arrow-right' %}
+        </a>
+      {%- endif -%}
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Ouverture vidéo",
+  "class": "section-video-hero",
+  "settings": [
+    {
+      "type": "header",
+      "content": "Vidéo"
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Vidéo (ordinateur)",
+      "info": "Format paysage 16:9, 1920 x 1080, sans son, 15 à 20 secondes en boucle."
+    },
+    {
+      "type": "video",
+      "id": "video_mobile",
+      "label": "Vidéo (mobile)",
+      "info": "Facultatif. Format vertical 9:16. Sinon, la vidéo ordinateur est recadrée."
+    },
+    {
+      "type": "image_picker",
+      "id": "poster",
+      "label": "Image de couverture",
+      "info": "Affichée pendant le chargement, si la vidéo ne peut pas être lue, et pour les visiteurs qui réduisent les animations."
+    },
+    {
+      "type": "image_picker",
+      "id": "poster_mobile",
+      "label": "Image de couverture (mobile)",
+      "info": "Facultatif. Format portrait."
+    },
+    {
+      "type": "header",
+      "content": "Mise en page"
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Hauteur",
+      "options": [
+        { "value": "full", "label": "Plein écran" },
+        { "value": "large", "label": "Grande" }
+      ],
+      "default": "full"
+    },
+    {
+      "type": "select",
+      "id": "text_position",
+      "label": "Position du texte",
+      "options": [
+        { "value": "left", "label": "À gauche, centré verticalement" },
+        { "value": "bottom", "label": "En bas à gauche" }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "range",
+      "id": "scrim",
+      "label": "Voile sous le texte",
+      "info": "Garantit la lisibilité du texte sur la vidéo.",
+      "min": 0,
+      "max": 90,
+      "step": 5,
+      "unit": "%",
+      "default": 60
+    },
+    {
+      "type": "header",
+      "content": "Texte"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Belle Saison"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "L’art des maisons de caractère."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Des papiers peints d’exception, imaginés pour révéler le charme, l’élégance et le caractère de chaque intérieur.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Bouton",
+      "default": "Découvrir nos collections"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien du bouton"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Ouverture vidéo"
+    }
+  ]
+}
+{% endschema %}

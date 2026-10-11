@@ -119,9 +119,9 @@
   const initBackgroundVideos = (root = document) => {
     root.querySelectorAll('[data-bg-video]').forEach((container) => {
       if (container.dataset.ready) return;
-      container.dataset.ready = 'true';
       const video = container.querySelector('video');
       if (!video) return;
+      container.dataset.ready = 'true';
       video.addEventListener('play', () => setVideoPaused(container, false));
       video.addEventListener('pause', () => setVideoPaused(container, true));
       container.querySelector('[data-video-toggle]')?.addEventListener('click', () => {
@@ -152,6 +152,74 @@
       }
       videoObserver.observe(container);
     });
+  };
+
+  /* ------------------------------------------------------------------
+     Ouverture vidéo : la vidéo est créée après le chargement de la page,
+     dans la taille adaptée à l'écran, sauf si le visiteur réduit les
+     animations ou économise ses données. L'image de couverture reste en
+     place tant que la vidéo ne joue pas, et si elle échoue.
+     ------------------------------------------------------------------ */
+  const saveData = () => {
+    const connection = navigator.connection || {};
+    return connection.saveData === true || /(^|-)2g$/.test(connection.effectiveType || '');
+  };
+
+  const pickSource = (container) => {
+    const json = container.querySelector('[data-video-sources]');
+    if (!json) return null;
+    let sources;
+    try {
+      sources = JSON.parse(json.textContent);
+    } catch (error) {
+      return null;
+    }
+    const portrait = window.matchMedia('(max-width: 749px) and (orientation: portrait)').matches;
+    const list = (portrait && sources.mobile.length ? sources.mobile : sources.desktop).filter((s) => s.url && s.width);
+    if (!list.length) return null;
+    const box = container.getBoundingClientRect();
+    const ratio = Math.min(window.devicePixelRatio || 1, 2);
+    list.sort((a, b) => a.width - b.width);
+    // Plus petite version assez nette pour couvrir la zone (object-fit: cover), sinon la plus grande.
+    const boxRatio = box.width / Math.max(box.height, 1);
+    const fits = list.find((s) =>
+      s.width / s.height > boxRatio ? s.height >= box.height * ratio * 0.9 : s.width >= box.width * ratio * 0.9
+    );
+    return fits || list[list.length - 1];
+  };
+
+  const hydrateLazyVideos = (root = document) => {
+    if (reduceMotion || saveData()) return;
+    root.querySelectorAll('[data-lazy-video]:not([data-hydrated])').forEach((container) => {
+      container.dataset.hydrated = 'true';
+      const source = pickSource(container);
+      if (!source) return;
+      const video = document.createElement('video');
+      video.className = 'bg-video__media video-hero__video';
+      video.muted = true;
+      video.defaultMuted = true;
+      video.loop = true;
+      video.playsInline = true;
+      video.preload = 'auto';
+      video.setAttribute('muted', '');
+      video.setAttribute('playsinline', '');
+      video.setAttribute('aria-hidden', 'true');
+      video.tabIndex = -1;
+      video.src = source.url.startsWith('//') ? `https:${source.url}` : source.url;
+      video.addEventListener('playing', () => container.classList.add('is-playing'), { once: true });
+      video.addEventListener('error', () => {
+        container.classList.remove('is-playing');
+        video.remove();
+      });
+      container.querySelector('.media-toggle').before(video);
+      initBackgroundVideos(container.parentElement);
+    });
+  };
+
+  const scheduleLazyVideos = (root = document) => {
+    const run = () => hydrateLazyVideos(root);
+    if (document.readyState === 'complete') run();
+    else window.addEventListener('load', run, { once: true });
   };
 
   /* ------------------------------------------------------------------
@@ -635,6 +703,7 @@
   const init = (root = document) => {
     initReveal(root);
     initBackgroundVideos(root);
+    scheduleLazyVideos(root);
     root.querySelectorAll('[data-slideshow]').forEach(initSlideshow);
     root.querySelectorAll('[data-product]').forEach(initProduct);
     root.querySelectorAll('[data-recommendations]').forEach(initRecommendations);

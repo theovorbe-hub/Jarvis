@@ -4,11 +4,59 @@ Le luxe d’un papier peint se voit surtout dans **la lumière qui glisse sur la
 **le geste** et **l’échelle d’une pièce entière**. Les vidéos du site doivent donc être
 lentes, silencieuses et sans texte incrusté : le site porte déjà les mots.
 
+## Vidéo d’ouverture (déjà en ligne dans le thème)
+
+Section « Ouverture vidéo », en tête de l’accueil. Produite à partir de la photo
+`media/salon-ouverture-source.jpg` avec `tools/make-hero-video.py` : un plan-séquence de
+20 s en boucle, sans IA générative. La caméra virtuelle effectue un travelling avant, un
+glissement vers le mur tapissé, un rapproché sur le motif et le cadre doré, puis revient au
+plan large ; la dernière image rejoint la première.
+
+| Fichier (Contenu > Fichiers) | Format | Poids |
+|---|---|---|
+| `belle-saison-ouverture-1920x1080.mp4` | ordinateur, 16:9 | 6,8 Mo |
+| `belle-saison-ouverture-mobile-720x1280.mp4` | mobile, 9:16 | 2,7 Mo |
+| `belle-saison-ouverture-couverture.jpg` | image de couverture | 0,4 Mo |
+
+**Limite assumée :** la scène elle-même ne bouge pas (rideaux, lumière). Pour obtenir ces
+mouvements, utilisez un générateur vidéo en mode « image vers vidéo » avec les consignes
+ci-dessous, puis remplacez la vidéo dans l’éditeur (section « Ouverture vidéo »).
+
+### Consignes « image vers vidéo » pour l’ouverture
+
+Donner `media/salon-ouverture-source.jpg` comme image de départ, 16:9, 1080p, 24 ou 25 i/s,
+puis générer 4 plans de 5 s à monter bout à bout (fondus de 0,5 s) :
+
+1. **0-5 s, travelling avant**
+   > Extremely slow, stabilized dolly-in into this living room. Natural sunlight streams
+   > through the French windows, linen curtains sway very gently in a light breeze, warm
+   > golden light. Keep every object, the furniture and the wallpaper pattern exactly as in
+   > the image. Photorealistic interior film, no people, no text.
+2. **5-10 s, glissement latéral**
+   > Very slow lateral camera slide to the right along the wallpapered wall, revealing the
+   > gilded frame, the lamp, the cushions and the fireplace. Soft dust particles in the sunbeams.
+   > The wallpaper pattern stays perfectly identical and static. Stabilized, calm, luxurious.
+3. **10-15 s, rapproché**
+   > Slow push-in on the sage foliage wallpaper and the gilded frame, shallow depth of field,
+   > warm raking light revealing the matte paper texture. Camera almost still. Do not alter
+   > or animate the wallpaper pattern.
+4. **15-20 s, retour au plan large**
+   > Slow, smooth pull-back to the wide view of the living room, ending on exactly the same
+   > framing as the first image so the video can loop seamlessly. Gentle curtain movement only.
+
+À ajouter à chaque consigne (champ « negative prompt » s’il existe) :
+
+> no morphing, no warping walls, no moving furniture, no pattern changes, no flicker,
+> no text, no logo, no people, no fast camera moves, no zoom bursts.
+
+Contrôler image par image que le motif du papier peint ne se déforme pas : c’est le défaut
+le plus fréquent des générateurs, et il trahirait le produit.
+
 ## Où vont les vidéos sur le site
 
 | Emplacement | Réglage dans l’éditeur Shopify | Format | Durée |
 |---|---|---|---|
-| Ouverture (plein écran) | Ouverture > Image > Vidéo d’ambiance | 16:9 paysage | 10 à 15 s en boucle |
+| Ouverture vidéo (plein écran) | Ouverture vidéo > Vidéo (ordinateur) et Vidéo (mobile) | 16:9 et 9:16 | 15 à 20 s en boucle |
 | Notre histoire | Notre histoire > Vidéo d’ambiance | 16:9 ou 3:2 | 8 à 12 s en boucle |
 | Film « Découvrir notre savoir-faire » | Notre histoire > Film complet (YouTube ou Vimeo) | 16:9 | 45 à 90 s, avec son |
 | Vidéo plein écran | Vidéo plein écran > Vidéo | 16:9 paysage | 12 à 20 s en boucle |

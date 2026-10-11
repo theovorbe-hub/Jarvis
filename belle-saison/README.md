@@ -78,7 +78,20 @@ comme un échantillon : elle disparaît du choix du papier et devient le bouton
 
 ## Vidéos
 
-L’ouverture, « Notre histoire » et la section « Vidéo plein écran » acceptent une vidéo
+La section **« Ouverture vidéo »** ouvre l’accueil : l’image de couverture s’affiche
+immédiatement, puis la vidéo (version ordinateur ou verticale selon l’écran, dans la taille
+adaptée) apparaît en fondu, muette et en boucle. Elle n’est pas chargée pour les visiteurs
+qui réduisent les animations ou économisent leurs données, et l’image reste en place si la
+lecture échoue. Pour refaire la vidéo à partir d’une autre photo :
+
+```bash
+python3 tools/make-hero-video.py media/salon-ouverture-source.jpg sortie/
+```
+
+Les cadrages se règlent dans `KEYS_DESKTOP` et `KEYS_MOBILE` en haut du script ; il affiche
+la vitesse de la caméra pour garder un mouvement très lent.
+
+La section « Ouverture » (diaporama d’images), « Notre histoire » et la section « Vidéo plein écran » acceptent aussi une vidéo
 d’ambiance hébergée sur Shopify (Contenu > Fichiers). Elle se lance sans son et en boucle
 quand elle est visible, avec un bouton pause, et reste à l’arrêt pour les visiteurs qui
 réduisent les animations. La section « Vidéo plein écran » n’apparaît sur la boutique

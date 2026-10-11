@@ -46,6 +46,16 @@ if shutil.which("ffmpeg"):
         ],
         check=True,
     )
+    shutil.copyfile(OUT / "demo.mp4", OUT / "demo-mobile.mp4")
     print(f"Vidéo de démonstration écrite dans {OUT / 'demo.mp4'}")
+    # Le Chromium de test ne lit pas le H.264 : copies WebM (VP8) pour les tests de lecture.
+    # Les MP4 restent utilisés pour tester le repli quand la lecture échoue.
+    for mp4 in OUT.glob("*.mp4"):
+        subprocess.run(
+            ["ffmpeg", "-y", "-loglevel", "error", "-i", str(mp4), "-c:v", "libvpx", "-b:v", "2M",
+             "-deadline", "realtime", "-cpu-used", "8", "-an", str(mp4.with_suffix(".webm"))],
+            check=True,
+        )
+    print("Copies WebM créées pour les tests de lecture.")
 else:
     print("ffmpeg absent : pas de vidéo de démonstration.")

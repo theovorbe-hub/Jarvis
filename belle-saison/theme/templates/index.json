@@ -1,27 +1,19 @@
 {
   "sections": {
-    "hero": {
-      "type": "hero",
-      "blocks": {
-        "slide-1": {
-          "type": "slide",
-          "settings": {
-            "scrim": 55,
-            "eyebrow": "Des intérieurs qui ont une âme",
-            "heading": "L’art des maisons de caractère.",
-            "text": "<p>Des papiers peints d’exception, imaginés pour révéler le charme, l’élégance et la personnalité de chaque intérieur.</p>",
-            "button_label": "Découvrir nos collections",
-            "button_link": "shopify://collections"
-          }
-        }
-      },
-      "block_order": [
-        "slide-1"
-      ],
+    "hero_video": {
+      "type": "hero-video",
       "settings": {
-        "autoplay": false,
-        "autoplay_speed": 7,
-        "video_label": "Voir notre univers en vidéo"
+        "height": "full",
+        "text_position": "left",
+        "scrim": 60,
+        "eyebrow": "Belle Saison",
+        "heading": "L’art des maisons de caractère.",
+        "text": "<p>Des papiers peints d’exception, imaginés pour révéler le charme, l’élégance et le caractère de chaque intérieur.</p>",
+        "button_label": "Découvrir nos collections",
+        "button_link": "shopify://collections",
+        "video": "shopify://files/videos/belle-saison-ouverture-1920x1080.mp4",
+        "video_mobile": "shopify://files/videos/belle-saison-ouverture-mobile-720x1280.mp4",
+        "poster": "shopify://shop_images/belle-saison-ouverture-couverture.jpg"
       }
     },
     "engagements": {
@@ -211,7 +203,7 @@
     }
   },
   "order": [
-    "hero",
+    "hero_video",
     "engagements",
     "collections",
     "story",

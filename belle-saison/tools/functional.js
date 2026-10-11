@@ -37,6 +37,36 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   await page.fill('[data-calc-height]', '2.5');
   assert.match(clean(await page.innerText('[data-calc-result]')), /^3 rouleaux 8 lés de 2,92 m, soit 3 lés par rouleau\.$/);
 
+  // Ouverture vidéo : image de couverture d'abord, vidéo chargée ensuite, en boucle et sans son.
+  await page.goto(`file://${path.join(outDir, 'index.html')}`);
+  await page.waitForSelector('.video-hero video', { timeout: 5000 });
+  await page.waitForFunction(() => document.querySelector('.video-hero__media').classList.contains('is-playing'), null, { timeout: 8000 });
+  const hero = await page.$eval('.video-hero video', (v) => ({ muted: v.muted, loop: v.loop, paused: v.paused, src: v.currentSrc }));
+  assert.ok(hero.muted && hero.loop && !hero.paused, 'la vidéo d’ouverture doit jouer en boucle sans son');
+  assert.match(hero.src, /(ouverture|demo)\.(mp4|webm)$/);
+  assert.ok(await page.$('.video-hero__poster'), 'l’image de couverture doit rester en place');
+
+  const phone = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
+  await phone.goto(`file://${path.join(outDir, 'index.html')}`);
+  await phone.waitForSelector('.video-hero video', { timeout: 5000 });
+  assert.match(await phone.$eval('.video-hero video', (v) => v.getAttribute('src')), /mobile\.(mp4|webm)$/, 'version verticale sur mobile');
+  await phone.close();
+
+  // Repli : une vidéo illisible est retirée, l'image de couverture reste et le bouton pause disparaît.
+  const fallback = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await fallback.goto(`file://${path.join(outDir, 'index-repli.html')}`);
+  await fallback.waitForTimeout(2500);
+  assert.equal(await fallback.$('.video-hero video'), null, 'la vidéo illisible doit être retirée');
+  assert.ok(await fallback.$eval('.video-hero__poster', (img) => img.getBoundingClientRect().width > 0), 'l’image reste visible');
+  assert.equal(await fallback.$eval('.video-hero .media-toggle', (b) => getComputedStyle(b).display), 'none');
+  await fallback.close();
+
+  const calmHero = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+  await calmHero.goto(`file://${path.join(outDir, 'index.html')}`);
+  await calmHero.waitForTimeout(1500);
+  assert.equal(await calmHero.$('.video-hero video'), null, 'aucune vidéo chargée en mouvement réduit');
+  await calmHero.close();
+
   // Vidéos d'ambiance : lecture quand visibles, bouton pause, rien en mouvement réduit.
   await page.goto(`file://${path.join(outDir, 'index.html')}`);
   await page.locator('.story [data-bg-video]').scrollIntoViewIfNeeded();
@@ -55,7 +85,7 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
 
   assert.deepEqual(errors, []);
   await browser.close();
-  console.log('Configurateur, calculateur et vidéos : tous les tests passent.');
+  console.log('Configurateur, calculateur, ouverture vidéo et vidéos : tous les tests passent.');
 })().catch((error) => {
   console.error(error.message);
   process.exit(1);

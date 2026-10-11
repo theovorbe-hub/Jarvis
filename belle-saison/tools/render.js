@@ -176,11 +176,20 @@ const resolveSetting = (def, value) => {
   if (def.type === 'collection') return value ? collections.find((c) => c.handle === value) || collection : null;
   if (def.type === 'image_picker') return value ? img(value, 1600, 1200) : null;
   if (def.type === 'video_url') return value ? { type: 'youtube', id: 'dQw4w9WgXcQ' } : null;
-  if (def.type === 'video') return value ? { src: `img/${value}.mp4`, poster: 'img/hero.jpg' } : null;
+  if (def.type === 'video') {
+    if (!value) return null;
+    const mobile = value.includes('mobile');
+    const [width, height] = mobile ? [720, 1280] : [1920, 1080];
+    // Le Chromium de test ne lit que le WebM : on l'utilise s'il existe, sauf pour la page de repli.
+    const webm = !forceMp4 && fs.existsSync(path.join(outDir, 'img', `${value}.webm`));
+    const url = `img/${value}.${webm ? 'webm' : 'mp4'}`;
+    return { src: url, poster: 'img/hero.jpg', preview_image: img('hero'), sources: [{ format: 'mp4', url, width, height }] };
+  }
   if (def.type === 'page') return value ? { url: '/pages/x', content: '' } : null;
   return value ?? null;
 };
 let sectionIndex = 0;
+let forceMp4 = false;
 const renderSection = async (id, data, scope) => {
   const src = read(`sections/${data.type}.liquid`);
   const schema = schemaOf(src);
@@ -211,6 +220,7 @@ const renderGroup = async (name, scope, overrides = {}) => {
 
 const pages = {
   index: { template: 'index', page_type: 'index', title: 'Belle Saison' },
+  'index-repli': { template: 'index', page_type: 'index', title: 'Belle Saison', forceMp4: true },
   product: { template: 'product', page_type: 'product', title: products[0].title, product: products[0] },
   'product-rouleau': { template: 'product', page_type: 'product', title: products[3].title, product: products[3] },
   collection: { template: 'collection', page_type: 'collection', title: collection.title, collection },
@@ -220,15 +230,14 @@ const pages = {
 
 // Réglages de démonstration pour l'accueil (images issues de la maquette)
 const indexOverrides = (t) => {
-  t.sections.hero.blocks['slide-1'].settings.image = 'hero';
-  t.sections.hero.settings.video_url = 'youtube';
-  const b2 = JSON.parse(JSON.stringify(t.sections.hero.blocks['slide-1']));
-  t.sections.hero.blocks['slide-2'] = b2; t.sections.hero.blocks['slide-3'] = b2;
-  t.sections.hero.block_order.push('slide-2', 'slide-3');
+  // Ouverture vidéo : vraie vidéo si elle a été produite (make-hero-video.py), sinon la démo.
+  const real = fs.existsSync(path.join(outDir, 'img', 'ouverture.mp4'));
+  t.sections.hero_video.settings.video = real ? 'ouverture' : 'demo';
+  t.sections.hero_video.settings.video_mobile = real ? 'ouverture-mobile' : 'demo-mobile';
+  t.sections.hero_video.settings.poster = real ? 'ouverture-couverture' : 'hero';
   t.sections.collections.block_order.forEach((id, i) => { t.sections.collections.blocks[id].settings.collection = `c${i}`; });
   t.sections.story.settings.image = 'story';
   t.sections.story.settings.background_video = 'demo';
-  t.sections.hero.blocks['slide-2'].settings.video = 'demo';
   t.sections.video.settings.video = 'demo';
   t.sections.story.settings.video_url = 'youtube';
   t.sections.featured.settings.collection = 'c1';
@@ -241,6 +250,7 @@ const indexOverrides = (t) => {
   for (const f of fs.readdirSync(path.join(themeDir, 'assets'))) fs.copyFileSync(path.join(themeDir, 'assets', f), path.join(outDir, 'assets', f));
   for (const [name, p] of Object.entries(pages)) {
     sectionIndex = 0;
+    forceMp4 = Boolean(p.forceMp4);
     const scope = {
       settings, linklists, collections, shop: { name: 'BELLE SAISON', customer_accounts_enabled: true, policies: [{ title: 'Mentions légales', url: '#' }, { title: 'CGV', url: '#' }], enabled_payment_types: ['visa', 'master', 'apple_pay'] },
       routes: { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', search_url: '/search', collections_url: '/collections', all_products_collection_url: '/collections/all', account_url: '/account', product_recommendations_url: '/recommendations/products' },
@@ -252,7 +262,7 @@ const indexOverrides = (t) => {
     engine.options.globals = scope;
     const header = await renderGroup('header-group', scope);
     let tpl = JSON.parse(read(`templates/${p.template}.json`));
-    if (name === 'index') tpl = indexOverrides(tpl);
+    if (p.template === 'index') tpl = indexOverrides(tpl);
     let body = '';
     for (const id of tpl.order) body += await renderSection(id, tpl.sections[id], scope);
     const footer = await renderGroup('footer-group', scope);
