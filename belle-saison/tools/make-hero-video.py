@@ -9,7 +9,11 @@ La trajectoire est une courbe fermée (Catmull-Rom périodique) : la dernière i
 rejoint la première, vitesse comprise, pour une boucle sans raccord visible.
 
 Usage :
-  python3 make-hero-video.py photo.jpg sortie/        # versions ordinateur et mobile
+  python3 make-hero-video.py photo.jpg sortie/                      # boucle sur une photo (ordinateur + mobile)
+  python3 make-hero-video.py --montage photo.jpg bandes.png sortie/ # montage 4 plans (ordinateur)
+« bandes.png » est une image composée de plusieurs photos panoramiques empilées, séparées
+par un filet clair (format fourni par le générateur d'images) ; elles sont découpées
+automatiquement.
 Nécessite Pillow et ffmpeg.
 """
 import math
@@ -17,7 +21,7 @@ import subprocess
 import sys
 from pathlib import Path
 
-from PIL import Image
+from PIL import Image, ImageFilter
 
 FPS = 25
 DURATION = 20  # secondes
@@ -103,7 +107,105 @@ def render(src, keys, size, out_path, crf):
         raise SystemExit(f"ffmpeg a échoué pour {out_path}")
 
 
+# ---------------------------------------------------------------------------
+# Montage en plusieurs plans (brief « vidéo cinématographique », 4 séquences)
+# ---------------------------------------------------------------------------
+CROSSFADE = 20  # images (0,8 s)
+
+# (source, cadre de départ, cadre d'arrivée, durée en images, netteté ajoutée en %)
+# Les cadres sont (centre x, centre y, largeur) dans la photo source.
+MONTAGE_SHOTS = [
+    ("photo", (836, 470, 1600), (820, 455, 1460), 140, 30),  # 1. travelling avant dans le salon
+    ("bande1", (1000, 179, 636), (1170, 176, 612), 145, 60), # 2. glissement le long du papier peint toile
+    ("bande2", (1150, 132, 471), (1030, 130, 455), 145, 55), # 3. gros plan texture et feuillages
+    ("bande3", (900, 160, 500), (880, 154, 547), 130, 60),   # 4. recul dans la chambre
+]
+
+
+def split_strips(image, threshold=230):
+    """Découpe une image composée de bandes séparées par des filets clairs."""
+    rows = [sum(image.crop((0, y, image.width, y + 1)).resize((1, 1), Image.BOX).getpixel((0, 0))) / 3 for y in range(image.height)]
+    separators = [y for y, value in enumerate(rows) if value > threshold]
+    strips, start = [], 0
+    for y in separators + [image.height]:
+        if y - start > 40:
+            strips.append(image.crop((0, start + 2, image.width, y - 2)))
+        start = y + 1
+    return strips
+
+
+def smooth(t):
+    return t * t * (3 - 2 * t)
+
+
+def frame_of(src, a, b, u, size, sharpen):
+    out_w, out_h = size
+    aspect = out_w / out_h
+    e = smooth(u)
+    cx, cy = a[0] + (b[0] - a[0]) * e, a[1] + (b[1] - a[1]) * e
+    w = math.exp(math.log(a[2]) + (math.log(b[2]) - math.log(a[2])) * e)
+    w = min(w, src.width, src.height * aspect)
+    h = w / aspect
+    x0 = min(max(cx - w / 2, 0), src.width - w)
+    y0 = min(max(cy - h / 2, 0), src.height - h)
+    frame = src.resize(size, Image.LANCZOS, box=(x0, y0, x0 + w, y0 + h))
+    if sharpen:
+        frame = frame.filter(ImageFilter.UnsharpMask(radius=2, percent=sharpen, threshold=2))
+    return frame
+
+
+def render_montage(sources, size, out_path, crf):
+    out_w, out_h = size
+    total = FPS * DURATION
+    starts, t = [], 0
+    for shot in MONTAGE_SHOTS:
+        starts.append(t)
+        t += shot[3] - CROSSFADE
+    cmd = [
+        "ffmpeg", "-y", "-loglevel", "error",
+        "-f", "rawvideo", "-pix_fmt", "rgb24", "-s", f"{out_w}x{out_h}", "-r", str(FPS), "-i", "-",
+        "-c:v", "libx264", "-preset", "slow", "-crf", str(crf), "-profile:v", "high",
+        "-pix_fmt", "yuv420p", "-g", str(FPS * 2), "-movflags", "+faststart", "-an", str(out_path),
+    ]
+    proc = subprocess.Popen(cmd, stdin=subprocess.PIPE)
+    first = MONTAGE_SHOTS[0]
+    loop_frame = frame_of(sources[first[0]], first[1], first[2], 0, size, first[4])
+    for f in range(total):
+        layers = []
+        for (name, a, b, length, sharpen), start in zip(MONTAGE_SHOTS, starts):
+            if start <= f < start + length:
+                weight = 1.0
+                if f >= start + length - CROSSFADE and name != MONTAGE_SHOTS[-1][0]:
+                    weight = (start + length - f) / CROSSFADE
+                layers.append((frame_of(sources[name], a, b, (f - start) / (length - 1), size, sharpen), weight))
+        frame = layers[0][0]
+        if len(layers) > 1:
+            frame = Image.blend(layers[1][0], layers[0][0], smooth(layers[0][1]))
+        # Fondu final vers la toute première image : la boucle repart sans raccord visible.
+        if f >= total - CROSSFADE:
+            frame = Image.blend(frame, loop_frame, smooth((f - (total - CROSSFADE) + 1) / CROSSFADE))
+        proc.stdin.write(frame.tobytes())
+    proc.stdin.close()
+    if proc.wait() != 0:
+        raise SystemExit(f"ffmpeg a échoué pour {out_path}")
+    end = starts[-1] + MONTAGE_SHOTS[-1][3]
+    if end != total:
+        raise SystemExit(f"Durée du montage incohérente : {end} images au lieu de {total}.")
+
+
 def main():
+    if len(sys.argv) == 5 and sys.argv[1] == "--montage":
+        photo = Image.open(sys.argv[2]).convert("RGB")
+        strips = split_strips(Image.open(sys.argv[3]).convert("RGB"))
+        if len(strips) < 3:
+            raise SystemExit(f"{len(strips)} bande(s) trouvée(s) dans {sys.argv[3]}, 3 attendues.")
+        sources = {"photo": photo, "bande1": strips[0], "bande2": strips[1], "bande3": strips[2]}
+        print("Bandes découpées :", ", ".join(f"{im.width}x{im.height}" for im in strips))
+        out = Path(sys.argv[4])
+        out.mkdir(parents=True, exist_ok=True)
+        render_montage(sources, (1920, 1080), out / "belle-saison-ouverture-montage-1920x1080.mp4", crf=23)
+        print(f"Montage écrit dans {out}")
+        return
     if len(sys.argv) != 3:
         raise SystemExit(__doc__)
     src = Image.open(sys.argv[1]).convert("RGB")

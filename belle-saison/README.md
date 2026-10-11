@@ -82,14 +82,19 @@ La section **« Ouverture vidéo »** ouvre l’accueil : l’image de couvertur
 immédiatement, puis la vidéo (version ordinateur ou verticale selon l’écran, dans la taille
 adaptée) apparaît en fondu, muette et en boucle. Elle n’est pas chargée pour les visiteurs
 qui réduisent les animations ou économisent leurs données, et l’image reste en place si la
-lecture échoue. Pour refaire la vidéo à partir d’une autre photo :
+lecture échoue. Sur ordinateur, c’est un montage en 4 plans (salon, mur tapissé, gros plan
+sur le motif, chambre) ; sur mobile, une boucle sur la photo du salon. Pour refaire les vidéos :
 
 ```bash
+# boucle sur une photo (ordinateur et mobile)
 python3 tools/make-hero-video.py media/salon-ouverture-source.jpg sortie/
+# montage 4 plans (ordinateur)
+python3 tools/make-hero-video.py --montage media/salon-ouverture-source.jpg media/bandes-salon-detail-chambre.png sortie/
 ```
 
-Les cadrages se règlent dans `KEYS_DESKTOP` et `KEYS_MOBILE` en haut du script ; il affiche
-la vitesse de la caméra pour garder un mouvement très lent.
+Les cadrages se règlent dans `KEYS_DESKTOP`, `KEYS_MOBILE` et `MONTAGE_SHOTS` en haut du
+script ; il affiche la vitesse de la caméra pour garder un mouvement très lent. Le détail
+des plans et des fichiers est dans [`docs/videos.md`](docs/videos.md).
 
 La section « Ouverture » (diaporama d’images), « Notre histoire » et la section « Vidéo plein écran » acceptent aussi une vidéo
 d’ambiance hébergée sur Shopify (Contenu > Fichiers). Elle se lance sans son et en boucle
