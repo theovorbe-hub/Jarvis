@@ -1,0 +1,62 @@
+<section class="newsletter">
+  <div class="newsletter__inner page-width" data-reveal>
+    <div class="newsletter__text">
+      <h2 class="h-2">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}
+        <div class="newsletter__body">{{ section.settings.text }}</div>
+      {%- endif -%}
+    </div>
+    {%- form 'customer', class: 'newsletter__form', id: 'NewsletterForm' -%}
+      <input type="hidden" name="contact[tags]" value="newsletter">
+      <div class="field">
+        <label class="field__label" for="NewsletterEmail-{{ section.id }}">{{ 'newsletter.label' | t }}</label>
+        <div class="field__row">
+          <input
+            id="NewsletterEmail-{{ section.id }}"
+            class="field__input"
+            type="email"
+            name="contact[email]"
+            autocomplete="email"
+            required
+            {% if form.errors %}
+              aria-invalid="true" aria-describedby="NewsletterError-{{ section.id }}"
+            {% endif %}
+          >
+          <button type="submit" class="button">{{ 'newsletter.button' | t }}</button>
+        </div>
+        {%- if form.errors -%}
+          <p class="field__error" id="NewsletterError-{{ section.id }}">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
+        {%- endif -%}
+        {%- if form.posted_successfully? -%}
+          <p class="field__success" role="status">{{ 'newsletter.success' | t }}</p>
+        {%- endif -%}
+      </div>
+    {%- endform -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Lettre d'information",
+  "class": "section-newsletter",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Les nouvelles collections, en avant-première."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Une lettre par saison : nouveaux motifs, intérieurs photographiés et conseils de pose.</p>"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Lettre d'information"
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,66 @@
+{%- paginate collection.products by section.settings.products_per_page -%}
+  <section class="collection page-width">
+    <header class="collection__header">
+      <h1 class="h-display collection__title">{{ collection.title | escape }}</h1>
+      {%- if collection.description != blank -%}
+        <div class="collection__description rte">{{ collection.description }}</div>
+      {%- endif -%}
+    </header>
+
+    {%- assign current_sort = collection.sort_by | default: collection.default_sort_by -%}
+    {%- render 'facets',
+      results: collection,
+      url: collection.url,
+      sort_by: current_sort,
+      results_count: collection.products_count
+    -%}
+
+    {%- if collection.products.size == 0 -%}
+      <div class="empty-state">
+        <p class="h-3">{{ 'collections.general.empty' | t }}</p>
+        <a class="button button--secondary" href="{{ routes.collections_url }}">{{ 'collections.general.see_all' | t }}</a>
+      </div>
+    {%- else -%}
+      <ul class="product-grid product-grid--{{ section.settings.columns }}" role="list">
+        {%- for product in collection.products -%}
+          <li>{%- render 'product-card', product: product -%}</li>
+        {%- endfor -%}
+      </ul>
+      {%- render 'pagination', paginate: paginate -%}
+    {%- endif -%}
+  </section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Collection",
+  "class": "section-main-collection",
+  "settings": [
+    {
+      "type": "range",
+      "id": "products_per_page",
+      "label": "Produits par page",
+      "min": 6,
+      "max": 48,
+      "step": 3,
+      "default": 24
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Colonnes sur ordinateur",
+      "options": [
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "3"
+    }
+  ]
+}
+{% endschema %}

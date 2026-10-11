@@ -1,0 +1,38 @@
+<li>
+  {%- if link.links != blank -%}
+    <details class="menu-drawer__group">
+      <summary class="menu-drawer__link">
+        {{- link.title | escape -}}
+        {% render 'icon', name: 'caret-down' %}
+      </summary>
+      <ul class="menu-drawer__sublist" role="list">
+        <li>
+          <a class="menu-drawer__sublink" href="{{ link.url }}">{{ 'sections.header.view_all' | t: title: link.title }}</a>
+        </li>
+        {%- for child in link.links -%}
+          <li>
+            <a
+              class="menu-drawer__sublink"
+              href="{{ child.url }}"
+              {% if child.current %}
+                aria-current="page"
+              {% endif %}
+            >
+              {{- child.title | escape -}}
+            </a>
+          </li>
+        {%- endfor -%}
+      </ul>
+    </details>
+  {%- else -%}
+    <a
+      class="menu-drawer__link"
+      href="{{ link.url }}"
+      {% if link.current %}
+        aria-current="page"
+      {% endif %}
+    >
+      {{- link.title | escape -}}
+    </a>
+  {%- endif -%}
+</li>

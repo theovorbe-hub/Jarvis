@@ -1,0 +1,39 @@
+<ul class="header__menu" role="list">
+  {%- for link in menu.links -%}
+    <li class="header__menu-item">
+      {%- if link.links != blank -%}
+        <details class="header__dropdown" data-dropdown>
+          <summary class="header__link">
+            {{- link.title | escape -}}
+            {% render 'icon', name: 'caret-down' %}
+          </summary>
+          <ul class="header__submenu" role="list">
+            {%- for child in link.links -%}
+              <li>
+                <a
+                  class="header__sublink"
+                  href="{{ child.url }}"
+                  {% if child.current %}
+                    aria-current="page"
+                  {% endif %}
+                >
+                  {{- child.title | escape -}}
+                </a>
+              </li>
+            {%- endfor -%}
+          </ul>
+        </details>
+      {%- else -%}
+        <a
+          class="header__link"
+          href="{{ link.url }}"
+          {% if link.current %}
+            aria-current="page"
+          {% endif %}
+        >
+          {{- link.title | escape -}}
+        </a>
+      {%- endif -%}
+    </li>
+  {%- endfor -%}
+</ul>

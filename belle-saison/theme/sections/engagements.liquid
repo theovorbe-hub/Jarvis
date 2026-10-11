@@ -1,0 +1,125 @@
+<section class="engagements">
+  <ul class="engagements__list page-width" role="list">
+    {%- for block in section.blocks -%}
+      <li class="engagements__item" {{ block.shopify_attributes }} data-reveal>
+        {%- if block.settings.icon != 'none' -%}
+          <span class="engagements__icon">{%- render 'icon', name: block.settings.icon -%}</span>
+        {%- endif -%}
+        <h3 class="engagements__title">{{ block.settings.title | escape }}</h3>
+        {%- if block.settings.text != blank -%}
+          <p class="engagements__text">{{ block.settings.text | escape }}</p>
+        {%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Engagements",
+  "class": "section-engagements",
+  "max_blocks": 5,
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Engagement",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            {
+              "value": "none",
+              "label": "Aucune"
+            },
+            {
+              "value": "diamond",
+              "label": "Diamant"
+            },
+            {
+              "value": "pencil",
+              "label": "Crayon"
+            },
+            {
+              "value": "leaf",
+              "label": "Feuille"
+            },
+            {
+              "value": "frame",
+              "label": "Cadre"
+            },
+            {
+              "value": "gift",
+              "label": "Cadeau"
+            },
+            {
+              "value": "truck",
+              "label": "Livraison"
+            },
+            {
+              "value": "printer",
+              "label": "Impression"
+            },
+            {
+              "value": "ruler",
+              "label": "Règle"
+            },
+            {
+              "value": "paint",
+              "label": "Rouleau de pose"
+            },
+            {
+              "value": "shield",
+              "label": "Garantie"
+            },
+            {
+              "value": "recycle",
+              "label": "Recyclage"
+            }
+          ],
+          "default": "diamond"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre",
+          "default": "Haut de gamme"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte",
+          "default": "Des papiers peints d’exception pour des intérieurs uniques."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Engagements",
+      "blocks": [
+        {
+          "type": "item"
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "pencil",
+            "title": "Sur-mesure inclus",
+            "text": "Votre visuel adapté à votre mur, sans surcoût."
+          }
+        },
+        {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "title": "Écologie",
+            "text": "Des matériaux respectueux de votre intérieur et de la planète."
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

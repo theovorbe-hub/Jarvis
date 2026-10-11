@@ -1,0 +1,112 @@
+<section class="section inspiration">
+  <div class="page-width">
+    {%- render 'section-head',
+      eyebrow: section.settings.eyebrow,
+      heading: section.settings.heading,
+      link_label: section.settings.link_label,
+      link_url: section.settings.link_url
+    -%}
+  </div>
+
+  <ul class="inspiration__grid" role="list" style="--items: {{ section.blocks.size | at_most: 5 }};">
+    {%- for block in section.blocks -%}
+      {%- capture placeholder_name -%}lifestyle-{{ forloop.index | modulo: 2 | plus: 1 }}{%- endcapture -%}
+      <li class="inspiration__item" {{ block.shopify_attributes }} data-reveal style="--delay: {{ forloop.index0 }};">
+        {%- if block.settings.link != blank -%}<a href="{{ block.settings.link }}" class="inspiration__link">{%- endif -%}
+        {%- if block.settings.image != blank -%}
+          {{
+            block.settings.image
+            | image_url: width: 900
+            | image_tag: widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 20vw, 72vw', loading: 'lazy', class: 'inspiration__image'
+          }}
+        {%- else -%}
+          {{ placeholder_name | placeholder_svg_tag: 'inspiration__image placeholder-svg' }}
+        {%- endif -%}
+        {%- if block.settings.caption != blank -%}
+          <span class="inspiration__caption">{{ block.settings.caption | escape }}</span>
+        {%- endif -%}
+        {%- if block.settings.link != blank -%}</a>{%- endif -%}
+      </li>
+    {%- endfor -%}
+  </ul>
+</section>
+
+{% schema %}
+{
+  "name": "Inspiration",
+  "class": "section-inspiration",
+  "max_blocks": 10,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Des intérieurs qui inspirent."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Texte du lien",
+      "default": "Voir toutes les inspirations"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Lien"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "image",
+      "name": "Image",
+      "settings": [
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image",
+          "info": "Format portrait conseillé."
+        },
+        {
+          "type": "text",
+          "id": "caption",
+          "label": "Légende",
+          "info": "Facultatif. Par exemple le nom du motif."
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Lien",
+          "info": "Facultatif. Par exemple vers le produit."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Inspiration",
+      "blocks": [
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        },
+        {
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -1,0 +1,58 @@
+{%- comment -%}
+  Jetons de design générés depuis les réglages du thème.
+{%- endcomment -%}
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_body_font
+  assign accent_font = settings.type_accent_font
+  assign body_font_bold = body_font | font_modify: 'weight', 'bolder'
+  assign body_font_italic = body_font | font_modify: 'style', 'italic'
+  assign heading_font_italic = heading_font | font_modify: 'style', 'italic'
+-%}
+<style>
+  {{ heading_font | font_face: font_display: 'swap' }}
+  {{ heading_font_italic | font_face: font_display: 'swap' }}
+  {{ body_font | font_face: font_display: 'swap' }}
+  {{ body_font_bold | font_face: font_display: 'swap' }}
+  {{ body_font_italic | font_face: font_display: 'swap' }}
+  {{ accent_font | font_face: font_display: 'swap' }}
+
+  :root {
+    --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --font-heading-style: {{ heading_font.style }};
+    --font-heading-weight: {{ heading_font.weight }};
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body-style: {{ body_font.style }};
+    --font-body-weight: {{ body_font.weight }};
+    --font-body-weight-bold: {{ body_font_bold.weight | default: 700 }};
+    --font-accent-family: {{ accent_font.family }}, {{ accent_font.fallback_families }};
+    --font-accent-weight: {{ accent_font.weight }};
+    --heading-scale: {{ settings.heading_scale | divided_by: 100.0 }};
+
+    --color-bg: {{ settings.color_background }};
+    --color-surface: {{ settings.color_surface }};
+    --color-text: {{ settings.color_text }};
+    --color-muted: {{ settings.color_muted }};
+    --color-border: {{ settings.color_border }};
+    --color-accent: {{ settings.color_accent }};
+    --color-on-accent: {{ settings.color_on_accent }};
+
+    --logo-width: {{ settings.logo_width }}px;
+    color-scheme: light;
+  }
+
+  {%- if settings.dark_mode_enabled %}
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --color-bg: {{ settings.color_background_dark }};
+        --color-surface: {{ settings.color_surface_dark }};
+        --color-text: {{ settings.color_text_dark }};
+        --color-muted: {{ settings.color_muted_dark }};
+        --color-border: {{ settings.color_border_dark }};
+        --color-accent: {{ settings.color_accent_dark }};
+        --color-on-accent: {{ settings.color_on_accent_dark }};
+        color-scheme: dark;
+      }
+    }
+  {%- endif %}
+</style>

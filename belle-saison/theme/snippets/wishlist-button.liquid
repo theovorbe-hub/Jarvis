@@ -1,0 +1,11 @@
+<button
+  type="button"
+  class="wishlist-button{% if class %} {{ class }}{% endif %}"
+  data-wishlist-toggle
+  data-handle="{{ product.handle }}"
+  aria-pressed="false"
+>
+  <span class="wishlist-button__off">{% render 'icon', name: 'heart' %}</span>
+  <span class="wishlist-button__on">{% render 'icon', name: 'heart-fill' %}</span>
+  <span class="visually-hidden">{{ 'products.product.wishlist_add' | t: title: product.title }}</span>
+</button>

@@ -1,0 +1,24 @@
+{%- comment -%}
+  Bouton qui ouvre une vidéo YouTube ou Vimeo dans une fenêtre.
+  Paramètres : video_url (objet video_url), label, id, variant ('inline' par défaut ou 'overlay')
+{%- endcomment -%}
+{%- liquid
+  if video_url.type == 'youtube'
+    assign embed_url = 'https://www.youtube-nocookie.com/embed/' | append: video_url.id | append: '?autoplay=1&rel=0'
+  else
+    assign embed_url = 'https://player.vimeo.com/video/' | append: video_url.id | append: '?autoplay=1'
+  endif
+-%}
+<button type="button" class="video-trigger video-trigger--{{ variant | default: 'inline' }}" data-video-open="VideoDialog-{{ id }}">
+  <span class="video-trigger__icon">{% render 'icon', name: 'play' %}</span>
+  <span class="video-trigger__label">{{ label | escape }}</span>
+</button>
+<dialog class="video-dialog" id="VideoDialog-{{ id }}" data-embed-url="{{ embed_url }}" aria-label="{{ label | escape }}">
+  <div class="video-dialog__inner">
+    <button type="button" class="video-dialog__close" data-video-close>
+      {% render 'icon', name: 'close' %}
+      <span class="visually-hidden">{{ 'general.close' | t }}</span>
+    </button>
+    <div class="video-dialog__frame" data-video-frame></div>
+  </div>
+</dialog>

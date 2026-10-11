@@ -1,0 +1,62 @@
+{%- comment -%}
+  Caractéristiques du papier peint, lues dans les métachamps papier_peint.*
+  Paramètres : product, sale_mode, block
+{%- endcomment -%}
+{%- liquid
+  assign pp = product.metafields.papier_peint
+  assign has_specs = false
+  if pp.matiere != blank or pp.largeur_le != blank or pp.longueur_rouleau != blank or pp.raccord != blank or pp.pose != blank or pp.entretien != blank
+    assign has_specs = true
+  endif
+-%}
+{%- if has_specs -%}
+  <details class="accordion" {{ block.shopify_attributes }} open>
+    <summary class="accordion__summary">
+      <span>{{ 'products.specs.title' | t }}</span>
+      {% render 'icon', name: 'plus' %}
+    </summary>
+    <div class="accordion__content">
+      <dl class="specs">
+        {%- if pp.matiere != blank -%}
+          <div class="specs__item">
+            <dt>{{ 'products.specs.material' | t }}</dt>
+            <dd>{{ pp.matiere.value | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if sale_mode == 'rouleau' and pp.largeur_le != blank -%}
+          <div class="specs__item">
+            <dt>{{ 'products.specs.strip_width' | t }}</dt>
+            <dd>{{ pp.largeur_le.value }} cm</dd>
+          </div>
+        {%- endif -%}
+        {%- if sale_mode == 'rouleau' and pp.longueur_rouleau != blank -%}
+          <div class="specs__item">
+            <dt>{{ 'products.specs.roll_length' | t }}</dt>
+            <dd>{{ pp.longueur_rouleau.value }} m</dd>
+          </div>
+        {%- endif -%}
+        {%- if pp.raccord != blank and pp.raccord.value > 0 -%}
+          <div class="specs__item">
+            <dt>{{ 'products.specs.repeat' | t }}</dt>
+            <dd>
+              {{- pp.raccord.value }} cm
+              {%- if pp.type_raccord != blank %}, {{ pp.type_raccord.value | escape }}{% endif -%}
+            </dd>
+          </div>
+        {%- endif -%}
+        {%- if pp.pose != blank -%}
+          <div class="specs__item">
+            <dt>{{ 'products.specs.installation' | t }}</dt>
+            <dd>{{ pp.pose.value | escape }}</dd>
+          </div>
+        {%- endif -%}
+        {%- if pp.entretien != blank -%}
+          <div class="specs__item">
+            <dt>{{ 'products.specs.care' | t }}</dt>
+            <dd>{{ pp.entretien.value | escape }}</dd>
+          </div>
+        {%- endif -%}
+      </dl>
+    </div>
+  </details>
+{%- endif -%}

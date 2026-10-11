@@ -1,0 +1,660 @@
+{%- liquid
+  capture pricing
+    render 'product-pricing', product: product
+  endcapture
+  assign pricing_parts = pricing | strip | split: '|'
+  assign sale_mode = pricing_parts[0]
+  assign sample_label = settings.sample_option_label | downcase | strip
+
+  assign sample_variant = nil
+  assign main_variants_count = 0
+  assign first_main_variant = nil
+  for v in product.variants
+    assign vt = v.title | downcase
+    if sample_label != blank and vt contains sample_label
+      if sample_variant == nil
+        assign sample_variant = v
+      endif
+    else
+      assign main_variants_count = main_variants_count | plus: 1
+      if first_main_variant == nil
+        assign first_main_variant = v
+      endif
+      if first_main_variant.available == false and v.available
+        assign first_main_variant = v
+      endif
+    endif
+  endfor
+
+  assign current_variant = product.selected_or_first_available_variant
+  if sample_variant and current_variant.id == sample_variant.id and first_main_variant
+    assign current_variant = first_main_variant
+  endif
+  if first_main_variant == nil
+    assign first_main_variant = current_variant
+  endif
+
+  assign pp = product.metafields.papier_peint
+  assign strip_width = pp.largeur_le.value | default: settings.default_strip_width
+  assign roll_length = pp.longueur_rouleau.value | default: settings.default_roll_length
+  assign pattern_repeat = pp.raccord.value | default: 0
+-%}
+
+<section
+  class="product page-width"
+  data-product
+  data-sale-mode="{{ sale_mode }}"
+  data-section-id="{{ section.id }}"
+  data-product-url="{{ product.url }}"
+>
+  <script type="application/json" data-product-json>
+    {
+      "variants": [
+        {%- for v in product.variants -%}
+          {%- assign vt = v.title | downcase -%}
+          {
+            "id": {{ v.id }},
+            "title": {{ v.title | json }},
+            "price": {{ v.price }},
+            "compare_at_price": {{ v.compare_at_price | default: 0 }},
+            "available": {{ v.available }},
+            "sample": {% if sample_label != blank and vt contains sample_label %}true{% else %}false{% endif %},
+            "media_id": {{ v.featured_media.id | default: 'null' }}
+          }{% unless forloop.last %},{% endunless %}
+        {%- endfor -%}
+      ]
+    }
+  </script>
+
+  <div class="product__gallery">
+    {%- if product.media.size > 0 -%}
+      <ul class="product__media-list" role="list" data-media-list>
+        {%- for media in product.media -%}
+          {%- liquid
+            if forloop.first
+              assign media_loading = 'eager'
+              assign media_sizes = '(min-width: 990px) 58vw, 100vw'
+            else
+              assign media_loading = 'lazy'
+              assign media_sizes = '(min-width: 990px) 29vw, 100vw'
+            endif
+            assign media_alt = media.alt | default: product.title
+          -%}
+          <li class="product__media-item" data-media-id="{{ media.id }}">
+            {%- case media.media_type -%}
+              {%- when 'image' -%}
+                {{
+                  media
+                  | image_url: width: 2000
+                  | image_tag: widths: '500, 750, 1000, 1400, 2000', sizes: media_sizes, loading: media_loading, class: 'product__media', alt: media_alt
+                }}
+              {%- when 'video' -%}
+                {{ media | video_tag: controls: true, class: 'product__media', image_size: '1600x' }}
+              {%- when 'external_video' -%}
+                <div class="product__media product__media--embed">{{ media | external_video_tag }}</div>
+              {%- else -%}
+                {{ media | media_tag: class: 'product__media' }}
+            {%- endcase -%}
+          </li>
+        {%- endfor -%}
+      </ul>
+    {%- else -%}
+      <div class="product__media-item">
+        {{ 'product-1' | placeholder_svg_tag: 'product__media placeholder-svg' }}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="product__info">
+    <div class="product__info-inner">
+      {%- form 'product', product, id: 'ProductForm', class: 'product__form', data-product-form: '', novalidate: 'novalidate' -%}
+        <input type="hidden" name="id" value="{{ current_variant.id }}" data-variant-id>
+
+        {%- for block in section.blocks -%}
+          {%- case block.type -%}
+            {%- when 'title' -%}
+              <div class="product__title-row" {{ block.shopify_attributes }}>
+                <h1 class="h-1 product__title">{{ product.title | escape }}</h1>
+                {%- if settings.wishlist_enabled -%}
+                  {%- render 'wishlist-button', product: product, class: 'wishlist-button--inline' -%}
+                {%- endif -%}
+              </div>
+
+            {%- when 'price' -%}
+              <div class="product__price" {{ block.shopify_attributes }}>
+                <p class="price">
+                  <span class="price__current" data-price>{{ current_variant.price | money }}</span>
+                  <span class="price__unit" data-price-unit>
+                    {%- if sale_mode == 'm2' -%}
+                      {{ 'products.product.unit_m2' | t }}
+                    {%- else -%}
+                      {{ 'products.product.unit_roll' | t }}
+                    {%- endif -%}
+                  </span>
+                  <s class="price__compare" data-compare-price {% unless current_variant.compare_at_price > current_variant.price %}hidden{% endunless %}>
+                    {{- current_variant.compare_at_price | money -}}
+                  </s>
+                </p>
+                {%- if sale_mode == 'rouleau' and settings.show_price_per_m2 and strip_width != blank and roll_length != blank -%}
+                  <p
+                    class="price__per-m2"
+                    data-price-per-m2
+                    data-strip-width="{{ strip_width }}"
+                    data-roll-length="{{ roll_length }}"
+                  ></p>
+                {%- endif -%}
+                {%- if cart.taxes_included -%}
+                  <p class="price__note">{{ 'products.product.taxes_included' | t }}</p>
+                {%- endif -%}
+              </div>
+
+            {%- when 'variant_picker' -%}
+              {%- if main_variants_count > 1 -%}
+                <fieldset class="variant-picker" {{ block.shopify_attributes }}>
+                  <legend class="label">{{ block.settings.label | default: product.options.first | escape }}</legend>
+                  <div class="variant-picker__list">
+                    {%- for v in product.variants -%}
+                      {%- assign vt = v.title | downcase -%}
+                      {%- if sample_label != blank and vt contains sample_label -%}{%- continue -%}{%- endif -%}
+                      <label class="variant-option{% unless v.available %} is-unavailable{% endunless %}">
+                        <input
+                          type="radio"
+                          name="variant-choice"
+                          value="{{ v.id }}"
+                          data-variant-radio
+                          {% if v.id == current_variant.id %}
+                            checked
+                          {% endif %}
+                          {% unless v.available %}
+                            disabled
+                          {% endunless %}
+                        >
+                        <span class="variant-option__title">{{ v.title | escape }}</span>
+                        <span class="variant-option__price">
+                          {{- v.price | money -}}
+                          {%- if sale_mode == 'm2' %} {{ 'products.product.unit_m2' | t }}{% endif -%}
+                        </span>
+                      </label>
+                    {%- endfor -%}
+                  </div>
+                </fieldset>
+              {%- endif -%}
+
+            {%- when 'dimensions' -%}
+              {%- if sale_mode == 'm2' -%}
+                <div
+                  class="configurator"
+                  data-configurator
+                  data-min-width="{{ settings.min_width_cm }}"
+                  data-max-width="{{ settings.max_width_cm }}"
+                  data-min-height="{{ settings.min_height_cm }}"
+                  data-max-height="{{ settings.max_height_cm }}"
+                  {{ block.shopify_attributes }}
+                >
+                  <p class="label">{{ block.settings.heading | escape }}</p>
+                  {%- if block.settings.help != blank -%}
+                    <p class="configurator__help">{{ block.settings.help | escape }}</p>
+                  {%- endif -%}
+                  <div class="configurator__fields">
+                    <div class="field">
+                      <label class="field__label" for="WallWidth-{{ section.id }}">{{ 'products.configurator.width' | t }}</label>
+                      <div class="field__unit">
+                        <input
+                          id="WallWidth-{{ section.id }}"
+                          class="field__input"
+                          type="number"
+                          inputmode="decimal"
+                          min="{{ settings.min_width_cm }}"
+                          max="{{ settings.max_width_cm }}"
+                          step="1"
+                          data-wall-width
+                          required
+                        >
+                        <span>cm</span>
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="field__label" for="WallHeight-{{ section.id }}">{{ 'products.configurator.height' | t }}</label>
+                      <div class="field__unit">
+                        <input
+                          id="WallHeight-{{ section.id }}"
+                          class="field__input"
+                          type="number"
+                          inputmode="decimal"
+                          min="{{ settings.min_height_cm }}"
+                          max="{{ settings.max_height_cm }}"
+                          step="1"
+                          data-wall-height
+                          required
+                        >
+                        <span>cm</span>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="field__error" data-configurator-error hidden></p>
+                  <div class="configurator__summary" data-configurator-summary hidden>
+                    <p><span>{{ 'products.configurator.area' | t }}</span> <span data-area></span></p>
+                    <p class="configurator__total"><span>{{ 'products.configurator.total' | t }}</span> <span data-total></span></p>
+                  </div>
+                  <input type="hidden" name="properties[{{ 'products.configurator.property_width' | t }}]" data-property-width disabled>
+                  <input type="hidden" name="properties[{{ 'products.configurator.property_height' | t }}]" data-property-height disabled>
+                  <input type="hidden" name="properties[{{ 'products.configurator.property_area' | t }}]" data-property-area disabled>
+                </div>
+              {%- endif -%}
+
+            {%- when 'roll_calculator' -%}
+              {%- if sale_mode == 'rouleau' -%}
+                <details
+                  class="calculator"
+                  data-calculator
+                  data-strip-width="{{ strip_width }}"
+                  data-roll-length="{{ roll_length }}"
+                  data-repeat="{{ pattern_repeat }}"
+                  data-trim="{{ settings.trim_margin }}"
+                  {% if block.settings.open %}
+                    open
+                  {% endif %}
+                  {{ block.shopify_attributes }}
+                >
+                  <summary class="calculator__summary">
+                    {% render 'icon', name: 'ruler' %}
+                    <span>{{ 'products.calculator.title' | t }}</span>
+                    {% render 'icon', name: 'caret-down' %}
+                  </summary>
+                  <div class="calculator__body">
+                    <div class="configurator__fields">
+                      <div class="field">
+                        <label class="field__label" for="CalcWidth-{{ section.id }}">{{ 'products.calculator.width' | t }}</label>
+                        <div class="field__unit">
+                          <input id="CalcWidth-{{ section.id }}" class="field__input" type="number" inputmode="decimal" min="0.1" step="0.01" data-calc-width>
+                          <span>m</span>
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="field__label" for="CalcHeight-{{ section.id }}">{{ 'products.calculator.height' | t }}</label>
+                        <div class="field__unit">
+                          <input id="CalcHeight-{{ section.id }}" class="field__input" type="number" inputmode="decimal" min="0.1" step="0.01" data-calc-height>
+                          <span>m</span>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="calculator__result" data-calc-result aria-live="polite"></div>
+                    <button type="button" class="button button--secondary button--full" data-calc-apply hidden></button>
+                  </div>
+                </details>
+              {%- endif -%}
+
+            {%- when 'buy_buttons' -%}
+              <div class="product__buy{% if sale_mode == 'm2' %} product__buy--single{% endif %}" {{ block.shopify_attributes }}>
+                {%- if sale_mode == 'rouleau' -%}
+                  <div class="quantity" data-quantity>
+                    <label class="visually-hidden" for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
+                    <button type="button" class="quantity__button" data-quantity-minus>
+                      {% render 'icon', name: 'minus' %}
+                      <span class="visually-hidden">{{ 'products.product.quantity_decrease' | t }}</span>
+                    </button>
+                    <input id="Quantity-{{ section.id }}" class="quantity__input" type="number" name="quantity" value="1" min="1" data-quantity-input>
+                    <button type="button" class="quantity__button" data-quantity-plus>
+                      {% render 'icon', name: 'plus' %}
+                      <span class="visually-hidden">{{ 'products.product.quantity_increase' | t }}</span>
+                    </button>
+                  </div>
+                {%- else -%}
+                  <div class="field no-js-only">
+                    <label class="field__label" for="Quantity-{{ section.id }}">{{ 'products.configurator.area_fallback' | t }}</label>
+                    <input id="Quantity-{{ section.id }}" class="field__input" type="number" name="quantity" value="1" min="1" data-quantity-input>
+                  </div>
+                {%- endif -%}
+                <button
+                  type="submit"
+                  name="add"
+                  class="button button--full product__add"
+                  data-add-button
+                  {% unless current_variant.available %}
+                    disabled
+                  {% endunless %}
+                >
+                  {%- if current_variant.available -%}
+                    {{ 'products.product.add_to_cart' | t }}
+                  {%- else -%}
+                    {{ 'products.product.sold_out' | t }}
+                  {%- endif -%}
+                </button>
+                <p class="field__error" data-form-error hidden></p>
+              </div>
+              {{ form | payment_terms }}
+
+            {%- when 'sample' -%}
+              {%- if sample_variant -%}
+                <div class="product__sample" {{ block.shopify_attributes }}>
+                  <a
+                    class="button button--secondary button--full{% unless sample_variant.available %} is-disabled{% endunless %}"
+                    href="{{ routes.cart_add_url }}?id={{ sample_variant.id }}&quantity=1"
+                    data-sample-add="{{ sample_variant.id }}"
+                    {% unless sample_variant.available %}
+                      aria-disabled="true"
+                    {% endunless %}
+                  >
+                    {% render 'icon', name: 'gift' %}
+                    {%- if sample_variant.price == 0 -%}
+                      {{ 'products.product.sample_free' | t }}
+                    {%- else -%}
+                      {%- assign sample_price = sample_variant.price | money -%}
+                      {{ 'products.product.sample_paid' | t: price: sample_price }}
+                    {%- endif -%}
+                  </a>
+                </div>
+              {%- endif -%}
+
+            {%- when 'reassurance' -%}
+              <ul class="product__reassurance" role="list" {{ block.shopify_attributes }}>
+                {%- for i in (1..3) -%}
+                  {%- capture text_key -%}text_{{ i }}{%- endcapture -%}
+                  {%- capture icon_key -%}icon_{{ i }}{%- endcapture -%}
+                  {%- if block.settings[text_key] != blank -%}
+                    <li>
+                      {%- render 'icon', name: block.settings[icon_key] -%}
+                      <span>{{ block.settings[text_key] | escape }}</span>
+                    </li>
+                  {%- endif -%}
+                {%- endfor -%}
+              </ul>
+
+            {%- when 'description' -%}
+              {%- if product.description != blank -%}
+                <div class="product__description rte" {{ block.shopify_attributes }}>
+                  {{ product.description }}
+                </div>
+              {%- endif -%}
+
+            {%- when 'specs' -%}
+              {%- render 'product-specs', product: product, sale_mode: sale_mode, block: block -%}
+
+            {%- when 'collapsible' -%}
+              <details class="accordion" {{ block.shopify_attributes }}>
+                <summary class="accordion__summary">
+                  <span>{{ block.settings.heading | escape }}</span>
+                  {% render 'icon', name: 'plus' %}
+                </summary>
+                <div class="accordion__content rte">
+                  {{ block.settings.content }}
+                  {{ block.settings.page.content }}
+                </div>
+              </details>
+
+            {%- when 'text' -%}
+              <div class="product__text rte" {{ block.shopify_attributes }}>{{ block.settings.text }}</div>
+          {%- endcase -%}
+        {%- endfor -%}
+      {%- endform -%}
+    </div>
+  </div>
+</section>
+
+{%- liquid
+  assign product_image = product.featured_media.preview_image
+-%}
+<script type="application/ld+json">
+  {
+    "@context": "https://schema.org/",
+    "@type": "Product",
+    "name": {{ product.title | json }},
+    "url": {{ request.origin | append: product.url | json }},
+    {%- if product_image -%}
+      "image": [{{ product_image | image_url: width: 1600 | prepend: 'https:' | json }}],
+    {%- endif -%}
+    "description": {{ product.description | strip_html | json }},
+    "brand": { "@type": "Brand", "name": {{ product.vendor | json }} },
+    "offers": [
+      {%- for v in product.variants -%}
+        {
+          "@type": "Offer",
+          "sku": {{ v.sku | json }},
+          "availability": "http://schema.org/{% if v.available %}InStock{% else %}OutOfStock{% endif %}",
+          "price": {{ v.price | divided_by: 100.00 | json }},
+          "priceCurrency": {{ cart.currency.iso_code | json }},
+          "url": {{ request.origin | append: v.url | json }}
+        }{% unless forloop.last %},{% endunless %}
+      {%- endfor -%}
+    ]
+  }
+</script>
+
+{% schema %}
+{
+  "name": "Fiche produit",
+  "class": "section-main-product",
+  "blocks": [
+    {
+      "type": "title",
+      "name": "Titre",
+      "limit": 1
+    },
+    {
+      "type": "price",
+      "name": "Prix",
+      "limit": 1
+    },
+    {
+      "type": "variant_picker",
+      "name": "Choix du papier",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Intitulé",
+          "info": "Laissez vide pour utiliser le nom de l'option du produit.",
+          "default": "Choisissez votre papier"
+        }
+      ]
+    },
+    {
+      "type": "dimensions",
+      "name": "Dimensions (sur mesure)",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Les dimensions de votre mur"
+        },
+        {
+          "type": "text",
+          "id": "help",
+          "label": "Aide",
+          "default": "Mesurez la largeur et la hauteur du mur à couvrir. Nous adaptons le visuel à ces dimensions."
+        }
+      ]
+    },
+    {
+      "type": "roll_calculator",
+      "name": "Calculateur de rouleaux",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "open",
+          "label": "Ouvert par défaut",
+          "default": false
+        }
+      ]
+    },
+    {
+      "type": "buy_buttons",
+      "name": "Bouton d'achat",
+      "limit": 1
+    },
+    {
+      "type": "sample",
+      "name": "Bouton échantillon",
+      "limit": 1
+    },
+    {
+      "type": "reassurance",
+      "name": "Réassurance",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon_1",
+          "label": "Icône 1",
+          "options": [
+            {
+              "value": "gift",
+              "label": "Cadeau"
+            },
+            {
+              "value": "pencil",
+              "label": "Crayon"
+            },
+            {
+              "value": "truck",
+              "label": "Livraison"
+            },
+            {
+              "value": "leaf",
+              "label": "Feuille"
+            },
+            {
+              "value": "shield",
+              "label": "Garantie"
+            },
+            {
+              "value": "printer",
+              "label": "Impression"
+            }
+          ],
+          "default": "gift"
+        },
+        {
+          "type": "text",
+          "id": "text_1",
+          "label": "Texte 1",
+          "default": "Échantillon offert"
+        },
+        {
+          "type": "select",
+          "id": "icon_2",
+          "label": "Icône 2",
+          "options": [
+            {
+              "value": "gift",
+              "label": "Cadeau"
+            },
+            {
+              "value": "pencil",
+              "label": "Crayon"
+            },
+            {
+              "value": "truck",
+              "label": "Livraison"
+            },
+            {
+              "value": "leaf",
+              "label": "Feuille"
+            },
+            {
+              "value": "shield",
+              "label": "Garantie"
+            },
+            {
+              "value": "printer",
+              "label": "Impression"
+            }
+          ],
+          "default": "pencil"
+        },
+        {
+          "type": "text",
+          "id": "text_2",
+          "label": "Texte 2",
+          "default": "Adaptation sur mesure incluse"
+        },
+        {
+          "type": "select",
+          "id": "icon_3",
+          "label": "Icône 3",
+          "options": [
+            {
+              "value": "gift",
+              "label": "Cadeau"
+            },
+            {
+              "value": "pencil",
+              "label": "Crayon"
+            },
+            {
+              "value": "truck",
+              "label": "Livraison"
+            },
+            {
+              "value": "leaf",
+              "label": "Feuille"
+            },
+            {
+              "value": "shield",
+              "label": "Garantie"
+            },
+            {
+              "value": "printer",
+              "label": "Impression"
+            }
+          ],
+          "default": "truck"
+        },
+        {
+          "type": "text",
+          "id": "text_3",
+          "label": "Texte 3",
+          "default": "Livraison sous 5 à 7 jours"
+        }
+      ]
+    },
+    {
+      "type": "description",
+      "name": "Description",
+      "limit": 1
+    },
+    {
+      "type": "specs",
+      "name": "Caractéristiques",
+      "limit": 1
+    },
+    {
+      "type": "collapsible",
+      "name": "Onglet repliable",
+      "settings": [
+        {
+          "type": "text",
+          "id": "heading",
+          "label": "Titre",
+          "default": "Livraison et retours"
+        },
+        {
+          "type": "richtext",
+          "id": "content",
+          "label": "Contenu"
+        },
+        {
+          "type": "page",
+          "id": "page",
+          "label": "Contenu d'une page"
+        }
+      ]
+    },
+    {
+      "type": "text",
+      "name": "Texte",
+      "settings": [
+        {
+          "type": "richtext",
+          "id": "text",
+          "label": "Texte"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

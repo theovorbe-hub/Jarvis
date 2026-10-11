@@ -1,0 +1,34 @@
+{%- liquid
+  assign has_social = false
+  if settings.social_instagram_link != blank or settings.social_pinterest_link != blank or settings.social_facebook_link != blank
+    assign has_social = true
+  endif
+-%}
+{%- if has_social -%}
+  <ul class="social-links" role="list">
+    {%- if settings.social_instagram_link != blank -%}
+      <li>
+        <a href="{{ settings.social_instagram_link }}" target="_blank" rel="noopener">
+          {%- render 'icon', name: 'instagram' -%}
+          <span class="visually-hidden">Instagram</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {%- if settings.social_pinterest_link != blank -%}
+      <li>
+        <a href="{{ settings.social_pinterest_link }}" target="_blank" rel="noopener">
+          {%- render 'icon', name: 'pinterest' -%}
+          <span class="visually-hidden">Pinterest</span>
+        </a>
+      </li>
+    {%- endif -%}
+    {%- if settings.social_facebook_link != blank -%}
+      <li>
+        <a href="{{ settings.social_facebook_link }}" target="_blank" rel="noopener">
+          {%- render 'icon', name: 'facebook' -%}
+          <span class="visually-hidden">Facebook</span>
+        </a>
+      </li>
+    {%- endif -%}
+  </ul>
+{%- endif -%}

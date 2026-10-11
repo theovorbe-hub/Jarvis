@@ -1,0 +1,14 @@
+<section class="empty-state empty-state--page page-width">
+  <p class="eyebrow">404</p>
+  <h1 class="h-display">{{ 'general.404.title' | t }}</h1>
+  <p>{{ 'general.404.text' | t }}</p>
+  <a class="button" href="{{ routes.collections_url }}">{{ 'collections.general.see_all' | t }}</a>
+</section>
+
+{% schema %}
+{
+  "name": "Page introuvable",
+  "class": "section-main-404",
+  "settings": []
+}
+{% endschema %}

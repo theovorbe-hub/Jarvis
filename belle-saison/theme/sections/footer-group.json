@@ -1,0 +1,40 @@
+{
+  "type": "footer",
+  "name": "Pied de page",
+  "sections": {
+    "footer": {
+      "type": "footer",
+      "blocks": {
+        "brand": {
+          "type": "brand",
+          "settings": {
+            "text": "<p>Papiers peints d’exception, en rouleaux et en échantillons.</p>"
+          }
+        },
+        "menu": {
+          "type": "menu",
+          "settings": {
+            "heading": "Boutique",
+            "menu": "menu-gauche"
+          }
+        },
+        "menu-2": {
+          "type": "menu",
+          "settings": {
+            "heading": "Aide",
+            "menu": "footer"
+          }
+        }
+      },
+      "block_order": [
+        "brand",
+        "menu",
+        "menu-2"
+      ],
+      "settings": {}
+    }
+  },
+  "order": [
+    "footer"
+  ]
+}

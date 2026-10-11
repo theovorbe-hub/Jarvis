@@ -1,0 +1,103 @@
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {}
+        },
+        "price": {
+          "type": "price",
+          "settings": {}
+        },
+        "variant_picker": {
+          "type": "variant_picker",
+          "settings": {
+            "label": "Choisissez votre papier"
+          }
+        },
+        "dimensions": {
+          "type": "dimensions",
+          "settings": {
+            "heading": "Les dimensions de votre mur",
+            "help": "Mesurez la largeur et la hauteur du mur à couvrir. Nous adaptons le visuel à ces dimensions."
+          }
+        },
+        "roll_calculator": {
+          "type": "roll_calculator",
+          "settings": {
+            "open": false
+          }
+        },
+        "buy_buttons": {
+          "type": "buy_buttons",
+          "settings": {}
+        },
+        "sample": {
+          "type": "sample",
+          "settings": {}
+        },
+        "reassurance": {
+          "type": "reassurance",
+          "settings": {
+            "icon_1": "gift",
+            "text_1": "Échantillon offert",
+            "icon_2": "pencil",
+            "text_2": "Adaptation sur mesure incluse",
+            "icon_3": "truck",
+            "text_3": "Livraison sous 5 à 7 jours"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {}
+        },
+        "specs": {
+          "type": "specs",
+          "settings": {}
+        },
+        "pose": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Pose et entretien",
+            "content": "<p>Ajoutez ici vos conseils de pose : préparation du mur, encollage, raccord des lés.</p>"
+          }
+        },
+        "livraison": {
+          "type": "collapsible",
+          "settings": {
+            "heading": "Livraison et retours",
+            "content": "<p>Ajoutez ici vos délais et conditions de livraison et de retour.</p>"
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "price",
+        "variant_picker",
+        "dimensions",
+        "roll_calculator",
+        "buy_buttons",
+        "sample",
+        "reassurance",
+        "description",
+        "specs",
+        "pose",
+        "livraison"
+      ],
+      "settings": {}
+    },
+    "recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "heading": "Vous aimerez aussi",
+        "products_to_show": 4
+      }
+    }
+  },
+  "order": [
+    "main",
+    "recommendations"
+  ]
+}

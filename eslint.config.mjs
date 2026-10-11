@@ -22,6 +22,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     // Generated Prisma client — not our code.
     "src/generated/**",
+    // Thème Shopify Belle Saison : projet séparé, vérifié par ses propres outils.
+    "belle-saison/**",
   ]),
 ]);
 

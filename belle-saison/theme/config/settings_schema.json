@@ -1,0 +1,315 @@
+[
+  {
+    "name": "theme_info",
+    "theme_name": "Belle Saison",
+    "theme_version": "1.0.0",
+    "theme_author": "Belle Saison",
+    "theme_documentation_url": "https://help.shopify.com/manual/online-store/themes",
+    "theme_support_url": "https://help.shopify.com/manual/online-store/themes"
+  },
+  {
+    "name": "Logo et identité",
+    "settings": [
+      {
+        "type": "image_picker",
+        "id": "logo",
+        "label": "Logo",
+        "info": "Laissez vide pour afficher le nom de la boutique en lettres capitales."
+      },
+      {
+        "type": "range",
+        "id": "logo_width",
+        "label": "Largeur du logo",
+        "min": 80,
+        "max": 280,
+        "step": 4,
+        "unit": "px",
+        "default": 172
+      },
+      {
+        "type": "text",
+        "id": "logo_tagline",
+        "label": "Signature sous le nom",
+        "default": "Papiers peints d’exception"
+      },
+      {
+        "type": "image_picker",
+        "id": "favicon",
+        "label": "Favicon",
+        "info": "Image carrée, 32 x 32 px minimum."
+      }
+    ]
+  },
+  {
+    "name": "Couleurs",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Mode clair"
+      },
+      {
+        "type": "color",
+        "id": "color_background",
+        "label": "Fond",
+        "default": "#F9F5F0"
+      },
+      {
+        "type": "color",
+        "id": "color_surface",
+        "label": "Fond secondaire",
+        "info": "Utilisé pour les bandeaux et les encadrés.",
+        "default": "#F2ECE3"
+      },
+      {
+        "type": "color",
+        "id": "color_text",
+        "label": "Texte",
+        "default": "#1E211C"
+      },
+      {
+        "type": "color",
+        "id": "color_muted",
+        "label": "Texte secondaire",
+        "default": "#6B655C"
+      },
+      {
+        "type": "color",
+        "id": "color_border",
+        "label": "Bordures",
+        "default": "#E2DBD1"
+      },
+      {
+        "type": "color",
+        "id": "color_accent",
+        "label": "Couleur d'accent",
+        "info": "Boutons et liens actifs. Une seule couleur d'accent sur tout le site.",
+        "default": "#2D3829"
+      },
+      {
+        "type": "color",
+        "id": "color_on_accent",
+        "label": "Texte sur l'accent",
+        "default": "#F9F5F0"
+      },
+      {
+        "type": "header",
+        "content": "Mode sombre"
+      },
+      {
+        "type": "checkbox",
+        "id": "dark_mode_enabled",
+        "label": "Suivre le mode sombre de l'appareil",
+        "default": false,
+        "info": "Désactivé par défaut : l'identité Belle Saison est pensée en clair."
+      },
+      {
+        "type": "color",
+        "id": "color_background_dark",
+        "label": "Fond",
+        "default": "#141713"
+      },
+      {
+        "type": "color",
+        "id": "color_surface_dark",
+        "label": "Fond secondaire",
+        "default": "#1C201B"
+      },
+      {
+        "type": "color",
+        "id": "color_text_dark",
+        "label": "Texte",
+        "default": "#EEE9E1"
+      },
+      {
+        "type": "color",
+        "id": "color_muted_dark",
+        "label": "Texte secondaire",
+        "default": "#ABA59B"
+      },
+      {
+        "type": "color",
+        "id": "color_border_dark",
+        "label": "Bordures",
+        "default": "#30362E"
+      },
+      {
+        "type": "color",
+        "id": "color_accent_dark",
+        "label": "Couleur d'accent",
+        "default": "#C9D3BF"
+      },
+      {
+        "type": "color",
+        "id": "color_on_accent_dark",
+        "label": "Texte sur l'accent",
+        "default": "#141713"
+      }
+    ]
+  },
+  {
+    "name": "Typographie",
+    "settings": [
+      {
+        "type": "font_picker",
+        "id": "type_heading_font",
+        "label": "Titres et logo",
+        "default": "garamond_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_body_font",
+        "label": "Texte courant",
+        "default": "garamond_n4"
+      },
+      {
+        "type": "font_picker",
+        "id": "type_accent_font",
+        "label": "Petites capitales (boutons, surtitres)",
+        "default": "geist_n5"
+      },
+      {
+        "type": "range",
+        "id": "heading_scale",
+        "label": "Taille des titres",
+        "min": 80,
+        "max": 120,
+        "step": 5,
+        "unit": "%",
+        "default": 100
+      }
+    ]
+  },
+  {
+    "name": "Papier peint",
+    "settings": [
+      {
+        "type": "paragraph",
+        "content": "Mode de vente des produits. Chaque produit peut le changer avec le métachamp « Mode de vente » (papier_peint.mode_vente : m2 ou rouleau)."
+      },
+      {
+        "type": "select",
+        "id": "default_sale_mode",
+        "label": "Mode de vente par défaut",
+        "options": [
+          {
+            "value": "m2",
+            "label": "Sur mesure, au m²"
+          },
+          {
+            "value": "rouleau",
+            "label": "Au rouleau"
+          }
+        ],
+        "default": "m2"
+      },
+      {
+        "type": "text",
+        "id": "sample_option_label",
+        "label": "Nom de la variante échantillon",
+        "info": "Une variante dont le nom contient ce mot est traitée comme un échantillon.",
+        "default": "Échantillon"
+      },
+      {
+        "type": "header",
+        "content": "Sur mesure"
+      },
+      {
+        "type": "number",
+        "id": "min_width_cm",
+        "label": "Largeur minimale (cm)",
+        "default": 50
+      },
+      {
+        "type": "number",
+        "id": "max_width_cm",
+        "label": "Largeur maximale (cm)",
+        "default": 1200
+      },
+      {
+        "type": "number",
+        "id": "min_height_cm",
+        "label": "Hauteur minimale (cm)",
+        "default": 50
+      },
+      {
+        "type": "number",
+        "id": "max_height_cm",
+        "label": "Hauteur maximale (cm)",
+        "default": 400
+      },
+      {
+        "type": "header",
+        "content": "Au rouleau"
+      },
+      {
+        "type": "number",
+        "id": "default_strip_width",
+        "label": "Largeur du lé par défaut (cm)",
+        "default": 53
+      },
+      {
+        "type": "text",
+        "id": "default_roll_length",
+        "label": "Longueur du rouleau par défaut (m)",
+        "default": "10.05"
+      },
+      {
+        "type": "range",
+        "id": "trim_margin",
+        "label": "Marge de coupe par lé",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "cm",
+        "default": 10
+      },
+      {
+        "type": "checkbox",
+        "id": "show_price_per_m2",
+        "label": "Afficher le prix au m² des rouleaux",
+        "default": true
+      }
+    ]
+  },
+  {
+    "name": "Favoris",
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "wishlist_enabled",
+        "label": "Activer les favoris",
+        "info": "Les favoris sont enregistrés dans le navigateur du client.",
+        "default": true
+      },
+      {
+        "type": "page",
+        "id": "wishlist_page",
+        "label": "Page des favoris",
+        "info": "Créez une page avec le modèle « page.favoris » puis choisissez-la ici."
+      }
+    ]
+  },
+  {
+    "name": "Réseaux sociaux",
+    "settings": [
+      {
+        "type": "text",
+        "id": "social_instagram_link",
+        "label": "Instagram",
+        "info": "https://instagram.com/..."
+      },
+      {
+        "type": "text",
+        "id": "social_pinterest_link",
+        "label": "Pinterest",
+        "info": "https://pinterest.com/..."
+      },
+      {
+        "type": "text",
+        "id": "social_facebook_link",
+        "label": "Facebook",
+        "info": "https://facebook.com/..."
+      }
+    ]
+  }
+]

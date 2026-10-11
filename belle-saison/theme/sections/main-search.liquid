@@ -1,0 +1,61 @@
+{%- paginate search.results by 24 -%}
+  <section class="search-page page-width">
+    <header class="collection__header">
+      <h1 class="h-display">{{ 'search.title' | t }}</h1>
+      <form action="{{ routes.search_url }}" method="get" role="search" class="search-page__form">
+        <div class="field">
+          <label class="field__label" for="SearchPageInput">{{ 'search.label' | t }}</label>
+          <div class="field__row">
+            <input
+              id="SearchPageInput"
+              class="field__input"
+              type="search"
+              name="q"
+              value="{{ search.terms | escape }}"
+              autocomplete="off"
+            >
+            <input type="hidden" name="options[prefix]" value="last">
+            <button type="submit" class="button">{{ 'search.submit' | t }}</button>
+          </div>
+        </div>
+      </form>
+    </header>
+
+    {%- if search.performed -%}
+      {%- if search.results_count == 0 -%}
+        <div class="empty-state">
+          <p class="h-3">{{ 'search.no_results' | t: terms: search.terms }}</p>
+          <a class="button button--secondary" href="{{ routes.collections_url }}">{{ 'collections.general.see_all' | t }}</a>
+        </div>
+      {%- else -%}
+        {%- assign current_sort = search.sort_by | default: search.default_sort_by -%}
+        {%- render 'facets', results: search, url: routes.search_url, sort_by: current_sort, results_count: search.results_count -%}
+        <ul class="product-grid product-grid--4" role="list">
+          {%- for item in search.results -%}
+            <li>
+              {%- case item.object_type -%}
+                {%- when 'product' -%}
+                  {%- render 'product-card', product: item -%}
+                {%- else -%}
+                  <article class="search-result">
+                    <p class="eyebrow">{{ item.object_type | replace: 'article', 'Journal' | replace: 'page', 'Page' }}</p>
+                    <h2 class="h-3"><a href="{{ item.url }}">{{ item.title | escape }}</a></h2>
+                    <p class="search-result__excerpt">{{ item.content | strip_html | truncatewords: 24 }}</p>
+                  </article>
+              {%- endcase -%}
+            </li>
+          {%- endfor -%}
+        </ul>
+        {%- render 'pagination', paginate: paginate -%}
+      {%- endif -%}
+    {%- endif -%}
+  </section>
+{%- endpaginate -%}
+
+{% schema %}
+{
+  "name": "Recherche",
+  "class": "section-main-search",
+  "settings": []
+}
+{% endschema %}

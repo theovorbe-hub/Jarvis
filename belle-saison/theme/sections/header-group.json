@@ -1,0 +1,61 @@
+{
+  "type": "header",
+  "name": "En-tête",
+  "sections": {
+    "announcement-bar": {
+      "type": "announcement-bar",
+      "blocks": {
+        "usp-1": {
+          "type": "item",
+          "settings": {
+            "icon": "gift",
+            "text": "Échantillon offert",
+            "link": ""
+          }
+        },
+        "usp-2": {
+          "type": "item",
+          "settings": {
+            "icon": "pencil",
+            "text": "Adaptation sur mesure incluse",
+            "link": ""
+          }
+        },
+        "usp-3": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "text": "Impression européenne haut de gamme",
+            "link": ""
+          }
+        },
+        "usp-4": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "text": "Livraison sous 5 à 7 jours",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "usp-1",
+        "usp-2",
+        "usp-3",
+        "usp-4"
+      ],
+      "settings": {}
+    },
+    "header": {
+      "type": "header",
+      "settings": {
+        "menu": "menu-gauche",
+        "menu_secondary": "menu-droite"
+      }
+    }
+  },
+  "order": [
+    "announcement-bar",
+    "header"
+  ]
+}

@@ -1,0 +1,149 @@
+{%- liquid
+  assign menu = linklists[section.settings.menu]
+  assign menu_secondary = linklists[section.settings.menu_secondary]
+-%}
+<header class="header" data-header>
+  <div class="header__inner">
+    <div class="header__start">
+      <details class="menu-drawer" data-menu-drawer>
+        <summary class="header__icon menu-drawer__toggle">
+          <span class="menu-drawer__open">{% render 'icon', name: 'menu' %}</span>
+          <span class="menu-drawer__close">{% render 'icon', name: 'close' %}</span>
+          <span class="visually-hidden">{{ 'sections.header.menu' | t }}</span>
+        </summary>
+        <div class="menu-drawer__panel">
+          <nav aria-label="{{ 'sections.header.menu' | t }}">
+            <ul class="menu-drawer__list" role="list">
+              {%- for link in menu.links -%}
+                {%- render 'menu-drawer-item', link: link -%}
+              {%- endfor -%}
+              {%- for link in menu_secondary.links -%}
+                {%- render 'menu-drawer-item', link: link -%}
+              {%- endfor -%}
+            </ul>
+          </nav>
+          <div class="menu-drawer__footer">
+            {%- if shop.customer_accounts_enabled -%}
+              <a class="menu-drawer__utility" href="{{ routes.account_url }}">
+                {% render 'icon', name: 'account' %}
+                {{ 'sections.header.account' | t }}
+              </a>
+            {%- endif -%}
+            {%- if settings.wishlist_enabled -%}
+              <a class="menu-drawer__utility" href="{{ settings.wishlist_page.url | default: routes.root_url }}">
+                {% render 'icon', name: 'heart' %}
+                {{ 'sections.header.wishlist' | t }}
+              </a>
+            {%- endif -%}
+          </div>
+        </div>
+      </details>
+
+      <nav class="header__nav" aria-label="{{ 'sections.header.menu' | t }}">
+        {%- render 'header-menu', menu: menu -%}
+      </nav>
+    </div>
+
+    <div class="header__brand">
+      <a href="{{ routes.root_url }}" class="header__logo">
+        {%- if settings.logo != blank -%}
+          {%- assign logo_width_2x = settings.logo_width | times: 2 -%}
+          {{
+            settings.logo
+            | image_url: width: logo_width_2x
+            | image_tag: class: 'header__logo-image', alt: shop.name, loading: 'eager'
+          }}
+        {%- else -%}
+          <span class="header__wordmark">{{ shop.name | escape }}</span>
+          {%- if settings.logo_tagline != blank -%}
+            <span class="header__tagline">{{ settings.logo_tagline | escape }}</span>
+          {%- endif -%}
+        {%- endif -%}
+      </a>
+    </div>
+
+    <div class="header__end">
+      {%- if menu_secondary != blank -%}
+        <nav class="header__nav header__nav--secondary" aria-label="{{ 'sections.header.menu_secondary' | t }}">
+          {%- render 'header-menu', menu: menu_secondary -%}
+        </nav>
+      {%- endif -%}
+
+      <div class="header__icons">
+        <details class="header-search" data-search>
+          <summary class="header__icon">
+            {% render 'icon', name: 'search' %}
+            <span class="visually-hidden">{{ 'sections.header.search' | t }}</span>
+          </summary>
+          <div class="header-search__panel">
+            <form action="{{ routes.search_url }}" method="get" role="search" class="header-search__form page-width">
+              <label class="visually-hidden" for="HeaderSearch">{{ 'sections.header.search' | t }}</label>
+              <input
+                id="HeaderSearch"
+                class="header-search__input"
+                type="search"
+                name="q"
+                placeholder="{{ 'sections.header.search_placeholder' | t }}"
+                autocomplete="off"
+              >
+              <input type="hidden" name="options[prefix]" value="last">
+              <button type="submit" class="header__icon">
+                {% render 'icon', name: 'arrow-right' %}
+                <span class="visually-hidden">{{ 'sections.header.search_submit' | t }}</span>
+              </button>
+            </form>
+          </div>
+        </details>
+
+        {%- if shop.customer_accounts_enabled -%}
+          <a class="header__icon header__icon--desktop" href="{{ routes.account_url }}">
+            {% render 'icon', name: 'account' %}
+            <span class="visually-hidden">{{ 'sections.header.account' | t }}</span>
+          </a>
+        {%- endif -%}
+
+        {%- if settings.wishlist_enabled -%}
+          <a class="header__icon header__icon--desktop header__wishlist" href="{{ settings.wishlist_page.url | default: routes.root_url }}">
+            {% render 'icon', name: 'heart' %}
+            <span class="visually-hidden">{{ 'sections.header.wishlist' | t }}</span>
+            <span class="header__count" data-wishlist-count hidden></span>
+          </a>
+        {%- endif -%}
+
+        <a class="header__icon header__cart" href="{{ routes.cart_url }}">
+          {% render 'icon', name: 'cart' %}
+          <span class="visually-hidden">{{ 'sections.header.cart' | t }}</span>
+          <span class="header__count" data-cart-count {% if cart.item_count == 0 %}hidden{% endif %}>
+            {{- cart.item_count -}}
+          </span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+{% schema %}
+{
+  "name": "En-tête",
+  "class": "section-header",
+  "enabled_on": {
+    "groups": [
+      "header"
+    ]
+  },
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "menu",
+      "label": "Menu de gauche",
+      "default": "main-menu"
+    },
+    {
+      "type": "link_list",
+      "id": "menu_secondary",
+      "label": "Menu de droite",
+      "info": "Facultatif. Par exemple : Notre histoire, Nos engagements."
+    }
+  ]
+}
+{% endschema %}

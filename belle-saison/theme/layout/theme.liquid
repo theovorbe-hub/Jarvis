@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="{{ request.locale.iso_code }}" class="no-js">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="{{ settings.color_background }}">
+    <link rel="canonical" href="{{ canonical_url }}">
+    <link rel="preconnect" href="https://cdn.shopify.com" crossorigin>
+
+    {%- if settings.favicon != blank -%}
+      <link rel="icon" type="image/png" href="{{ settings.favicon | image_url: width: 64, height: 64 }}">
+    {%- endif -%}
+
+    <title>
+      {{ page_title }}
+      {%- if current_tags %}{% assign meta_tags = current_tags | join: ', ' %} | {{ 'general.meta.tags' | t: tags: meta_tags }}{% endif -%}
+      {%- if current_page != 1 %} | {{ 'general.meta.page' | t: page: current_page }}{% endif -%}
+      {%- unless page_title contains shop.name %} | {{ shop.name }}{% endunless -%}
+    </title>
+
+    {%- if page_description -%}
+      <meta name="description" content="{{ page_description | escape }}">
+    {%- endif -%}
+
+    {% render 'meta-tags' %}
+
+    <script>
+      document.documentElement.classList.replace('no-js', 'js');
+    </script>
+
+    {%- render 'css-variables' -%}
+
+    {{ 'base.css' | asset_url | stylesheet_tag }}
+    <script src="{{ 'theme.js' | asset_url }}" defer></script>
+
+    {{ content_for_header }}
+  </head>
+
+  <body class="template-{{ template.name | handle }}">
+    <a class="skip-link" href="#MainContent">{{ 'accessibility.skip_to_content' | t }}</a>
+
+    {% sections 'header-group' %}
+
+    <main id="MainContent" class="main" role="main" tabindex="-1">
+      {{ content_for_layout }}
+    </main>
+
+    {% sections 'footer-group' %}
+
+    <div class="toast" data-toast role="status" aria-live="polite" hidden>
+      <p class="toast__message" data-toast-message></p>
+      <a class="toast__link" href="{{ routes.cart_url }}">{{ 'products.product.view_cart' | t }}</a>
+    </div>
+
+    <script>
+      window.theme = {
+        routes: {
+          cartUrl: {{ routes.cart_url | json }},
+          cartAddUrl: {{ routes.cart_add_url | json }},
+          cartChangeUrl: {{ routes.cart_change_url | json }}
+        },
+        currency: {{ cart.currency.iso_code | json }},
+        locale: {{ request.locale.iso_code | json }},
+        strings: {
+          addedToCart: {{ 'products.product.added_to_cart' | t | json }},
+          addError: {{ 'products.product.add_error' | t | json }},
+          soldOut: {{ 'products.product.sold_out' | t | json }},
+          unavailable: {{ 'products.product.unavailable' | t | json }},
+          addToCart: {{ 'products.product.add_to_cart' | t | json }},
+          rollsOne: {{ 'products.calculator.rolls_one' | t | json }},
+          rollsOther: {{ 'products.calculator.rolls_other' | t | json }},
+          calcDetail: {{ 'products.calculator.detail' | t | json }},
+          calcAdd: {{ 'products.calculator.add' | t | json }},
+          calcTooHigh: {{ 'products.calculator.too_high' | t | json }},
+          calcInvalid: {{ 'products.calculator.invalid' | t | json }},
+          perSquareMeter: {{ 'products.product.price_per_m2' | t | json }},
+          dimensionsRequired: {{ 'products.configurator.required' | t | json }},
+          dimensionsRange: {{ 'products.configurator.range' | t | json }}
+        }
+      };
+    </script>
+  </body>
+</html>
