@@ -1,0 +1,29 @@
+{%- comment -%}
+  Vidéo d'ambiance hébergée par Shopify (Contenu > Fichiers) : muette, en boucle,
+  lancée par theme.js quand elle est visible, jamais si le visiteur a demandé à
+  réduire les animations. Le bouton permet de la mettre en pause (WCAG 2.2.2).
+  Paramètres : video (objet video), class
+{%- endcomment -%}
+<div class="bg-video is-paused{% if class %} {{ class }}{% endif %}" data-bg-video>
+  {{
+    video
+    | video_tag:
+      muted: true,
+      loop: true,
+      playsinline: true,
+      controls: false,
+      preload: 'metadata',
+      image_size: '2400x',
+      class: 'bg-video__media'
+  }}
+  <button type="button" class="media-toggle" data-video-toggle>
+    <span class="media-toggle__pause">
+      {%- render 'icon', name: 'pause' -%}
+      <span class="visually-hidden">{{ 'sections.video.pause' | t }}</span>
+    </span>
+    <span class="media-toggle__play">
+      {%- render 'icon', name: 'play' -%}
+      <span class="visually-hidden">{{ 'sections.video.play' | t }}</span>
+    </span>
+  </button>
+</div>

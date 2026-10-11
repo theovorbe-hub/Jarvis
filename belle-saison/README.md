@@ -29,9 +29,9 @@ belle-saison/
 Dans `theme/` :
 
 - `sections/` : en-tête, bandeau d’arguments, ouverture en diaporama, engagements,
-  liste de collections, « Notre histoire », produits mis en avant, inspiration,
-  lettre d’information, pied de page, et les pages (produit, collection, panier,
-  recherche, journal, contact, favoris, mot de passe).
+  liste de collections, « Notre histoire », produits mis en avant, vidéo plein écran,
+  inspiration, lettre d’information, pied de page, et les pages (produit, collection,
+  panier, recherche, journal, contact, favoris, mot de passe).
 - `snippets/` : carte produit, prix, caractéristiques, filtres, icônes
   ([Phosphor](https://phosphoricons.com), licence MIT).
 - `assets/base.css` et `assets/theme.js` : styles et comportements, sans dépendance externe.
@@ -76,6 +76,15 @@ comme un échantillon : elle disparaît du choix du papier et devient le bouton
 | `raccord` | décimal (cm) | Hauteur du raccord, masqué si 0 |
 | `type_raccord` | texte | Raccord droit, sauté ou sans raccord |
 
+## Vidéos
+
+L’ouverture, « Notre histoire » et la section « Vidéo plein écran » acceptent une vidéo
+d’ambiance hébergée sur Shopify (Contenu > Fichiers). Elle se lance sans son et en boucle
+quand elle est visible, avec un bouton pause, et reste à l’arrêt pour les visiteurs qui
+réduisent les animations. La section « Vidéo plein écran » n’apparaît sur la boutique
+qu’une fois une vidéo choisie. Le plan des vidéos à produire, avec les consignes pour un
+générateur vidéo, est dans [`docs/videos.md`](docs/videos.md).
+
 ## Ce qui a été créé dans la boutique
 
 - **Collections automatiques** (selon l’étiquette) : Les essentiels, Les motifs,
@@ -94,9 +103,9 @@ comme un échantillon : elle disparaît du choix du papier et devient le bouton
 cd belle-saison/tools
 npm install
 npm run check            # Shopify Theme Check : doit afficher 0 problème
-npm run preview:images   # une fois : images d'aperçu découpées dans la maquette (Pillow)
+npm run preview:images   # une fois : images d'aperçu (Pillow) et vidéo de démo (ffmpeg)
 npm run preview          # rendu local + captures dans tools/preview-out/
-npm test                 # teste le configurateur sur mesure et le calculateur
+npm test                 # teste le configurateur, le calculateur et les vidéos
 npm run zip              # crée belle-saison/belle-saison-theme.zip
 ```
 

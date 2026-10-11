@@ -199,6 +199,15 @@
         "heading": "Les nouvelles collections, en avant-première.",
         "text": "<p>Une lettre par saison : nouveaux motifs, intérieurs photographiés et conseils de pose.</p>"
       }
+    },
+    "video": {
+      "type": "video-banner",
+      "settings": {
+        "height": "large",
+        "heading": "Des murs qui racontent une histoire.",
+        "link_label": "Voir les paysages",
+        "link_url": "shopify://collections/les-paysages"
+      }
     }
   },
   "order": [
@@ -207,6 +216,7 @@
     "collections",
     "story",
     "featured",
+    "video",
     "inspiration",
     "newsletter"
   ]

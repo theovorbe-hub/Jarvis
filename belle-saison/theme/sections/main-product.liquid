@@ -89,7 +89,7 @@
                   | image_tag: widths: '500, 750, 1000, 1400, 2000', sizes: media_sizes, loading: media_loading, class: 'product__media', alt: media_alt
                 }}
               {%- when 'video' -%}
-                {{ media | video_tag: controls: true, class: 'product__media', image_size: '1600x' }}
+                {{ media | video_tag: controls: true, muted: true, loop: true, playsinline: true, class: 'product__media', image_size: '1600x' }}
               {%- when 'external_video' -%}
                 <div class="product__media product__media--embed">{{ media | external_video_tag }}</div>
               {%- else -%}

@@ -37,9 +37,25 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   await page.fill('[data-calc-height]', '2.5');
   assert.match(clean(await page.innerText('[data-calc-result]')), /^3 rouleaux 8 lés de 2,92 m, soit 3 lés par rouleau\.$/);
 
+  // Vidéos d'ambiance : lecture quand visibles, bouton pause, rien en mouvement réduit.
+  await page.goto(`file://${path.join(outDir, 'index.html')}`);
+  await page.locator('.story [data-bg-video]').scrollIntoViewIfNeeded();
+  await page.waitForTimeout(800);
+  assert.equal(await page.$eval('.story video', (v) => v.paused), false, 'la vidéo devrait jouer');
+  await page.click('.story [data-video-toggle]');
+  assert.equal(await page.$eval('.story video', (v) => v.paused), true, 'le bouton devrait mettre en pause');
+  assert.equal(await page.$eval('.story [data-bg-video]', (el) => el.classList.contains('is-paused')), true);
+
+  const calm = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
+  await calm.goto(`file://${path.join(outDir, 'index.html')}`);
+  await calm.locator('.story [data-bg-video]').scrollIntoViewIfNeeded();
+  await calm.waitForTimeout(800);
+  assert.equal(await calm.$eval('.story video', (v) => v.paused), true, 'pas de lecture auto en mouvement réduit');
+  await calm.close();
+
   assert.deepEqual(errors, []);
   await browser.close();
-  console.log('Configurateur et calculateur : tous les tests passent.');
+  console.log('Configurateur, calculateur et vidéos : tous les tests passent.');
 })().catch((error) => {
   console.error(error.message);
   process.exit(1);

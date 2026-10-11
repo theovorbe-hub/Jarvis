@@ -1,6 +1,8 @@
 <section class="story story--media-{{ section.settings.media_position }}">
   <div class="story__media">
-    {%- if section.settings.image != blank -%}
+    {%- if section.settings.background_video != blank -%}
+      {%- render 'background-video', video: section.settings.background_video -%}
+    {%- elsif section.settings.image != blank -%}
       {{
         section.settings.image
         | image_url: width: 2000
@@ -58,6 +60,12 @@
       "label": "Image"
     },
     {
+      "type": "video",
+      "id": "background_video",
+      "label": "Vidéo d’ambiance",
+      "info": "Facultatif. Vidéo hébergée sur Shopify, sans son, en boucle. Elle remplace l’image."
+    },
+    {
       "type": "select",
       "id": "media_position",
       "label": "Position de l'image",
@@ -76,7 +84,7 @@
     {
       "type": "video_url",
       "id": "video_url",
-      "label": "Vidéo",
+      "label": "Film complet (YouTube ou Vimeo)",
       "accept": [
         "youtube",
         "vimeo"

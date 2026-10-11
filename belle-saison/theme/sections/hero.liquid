@@ -42,7 +42,9 @@
         {{ block.shopify_attributes }}
       >
         <div class="hero__media">
-          {%- if block.settings.image != blank -%}
+          {%- if block.settings.video != blank -%}
+            {%- render 'background-video', video: block.settings.video, class: 'hero__video' -%}
+          {%- elsif block.settings.image != blank -%}
             {%- if block.settings.image_mobile != blank -%}
               <picture>
                 <source
@@ -200,6 +202,12 @@
           "id": "image_mobile",
           "label": "Image mobile",
           "info": "Facultatif. Format portrait."
+        },
+        {
+          "type": "video",
+          "id": "video",
+          "label": "Vidéo d’ambiance",
+          "info": "Facultatif. Vidéo hébergée sur Shopify (Contenu > Fichiers), sans son, 10 à 20 secondes. Elle remplace l’image."
         },
         {
           "type": "range",

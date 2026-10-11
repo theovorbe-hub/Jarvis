@@ -120,7 +120,12 @@ engine.registerFilter('payment_terms', () => '');
 engine.registerFilter('time_tag', (d) => '11 octobre 2026');
 engine.registerFilter('format_code', (c) => c);
 engine.registerFilter('default_errors', () => '');
-engine.registerFilter('video_tag', () => '');
+engine.registerFilter('video_tag', (video, ...args) => {
+  const o = kw(args);
+  if (!video || !video.src) return '';
+  const flags = ['muted', 'loop', 'playsinline', 'controls', 'autoplay'].filter((f) => o[f]).join(' ');
+  return `<video class="${o.class || ''}" ${flags} preload="${o.preload || 'metadata'}" poster="${video.poster}"><source src="${video.src}" type="video/mp4"></video>`;
+});
 engine.registerFilter('external_video_tag', () => '');
 engine.registerFilter('media_tag', () => '');
 engine.registerFilter('handle', (s) => String(s).toLowerCase().replace(/[^a-z0-9]+/g, '-'));
@@ -171,6 +176,7 @@ const resolveSetting = (def, value) => {
   if (def.type === 'collection') return value ? collections.find((c) => c.handle === value) || collection : null;
   if (def.type === 'image_picker') return value ? img(value, 1600, 1200) : null;
   if (def.type === 'video_url') return value ? { type: 'youtube', id: 'dQw4w9WgXcQ' } : null;
+  if (def.type === 'video') return value ? { src: `img/${value}.mp4`, poster: 'img/hero.jpg' } : null;
   if (def.type === 'page') return value ? { url: '/pages/x', content: '' } : null;
   return value ?? null;
 };
@@ -221,6 +227,9 @@ const indexOverrides = (t) => {
   t.sections.hero.block_order.push('slide-2', 'slide-3');
   t.sections.collections.block_order.forEach((id, i) => { t.sections.collections.blocks[id].settings.collection = `c${i}`; });
   t.sections.story.settings.image = 'story';
+  t.sections.story.settings.background_video = 'demo';
+  t.sections.hero.blocks['slide-2'].settings.video = 'demo';
+  t.sections.video.settings.video = 'demo';
   t.sections.story.settings.video_url = 'youtube';
   t.sections.featured.settings.collection = 'c1';
   t.sections.inspiration.block_order.forEach((id, i) => { t.sections.inspiration.blocks[id].settings.image = `ins${i + 1}`; });
@@ -235,7 +244,7 @@ const indexOverrides = (t) => {
     const scope = {
       settings, linklists, collections, shop: { name: 'BELLE SAISON', customer_accounts_enabled: true, policies: [{ title: 'Mentions légales', url: '#' }, { title: 'CGV', url: '#' }], enabled_payment_types: ['visa', 'master', 'apple_pay'] },
       routes: { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', search_url: '/search', collections_url: '/collections', all_products_collection_url: '/collections/all', account_url: '/account', product_recommendations_url: '/recommendations/products' },
-      request: { locale: { iso_code: 'fr' }, page_type: p.page_type, origin: 'https://belle-saison.example' },
+      request: { locale: { iso_code: 'fr' }, page_type: p.page_type, origin: 'https://belle-saison.example', design_mode: false },
       cart: p.cart || { item_count: 2, currency: { iso_code: 'EUR' }, taxes_included: true },
       template: { name: p.template }, page_title: p.title, canonical_url: '#', content_for_header: '', current_page: 1,
       product: p.product, collection: p.collection, recommendations: { performed: true, products_count: 4, products },

@@ -97,6 +97,64 @@
   );
 
   /* ------------------------------------------------------------------
+     Vidéos d'ambiance : lecture muette quand elles sont visibles,
+     jamais automatique si le visiteur réduit les animations.
+     ------------------------------------------------------------------ */
+  const setVideoPaused = (container, paused) => container.classList.toggle('is-paused', paused);
+
+  const playBackgroundVideo = (container) => {
+    const video = container.querySelector('video');
+    if (!video || container.dataset.userPaused === 'true') return;
+    const slide = container.closest('[data-slide]');
+    if (slide && !slide.classList.contains('is-active')) return;
+    video.muted = true;
+    video.playsInline = true;
+    const attempt = video.play();
+    if (attempt) attempt.catch(() => setVideoPaused(container, true));
+  };
+
+  const pauseBackgroundVideo = (container) => container.querySelector('video')?.pause();
+
+  let videoObserver = null;
+  const initBackgroundVideos = (root = document) => {
+    root.querySelectorAll('[data-bg-video]').forEach((container) => {
+      if (container.dataset.ready) return;
+      container.dataset.ready = 'true';
+      const video = container.querySelector('video');
+      if (!video) return;
+      video.addEventListener('play', () => setVideoPaused(container, false));
+      video.addEventListener('pause', () => setVideoPaused(container, true));
+      container.querySelector('[data-video-toggle]')?.addEventListener('click', () => {
+        if (video.paused) {
+          container.dataset.userPaused = 'false';
+          playBackgroundVideo(container);
+        } else {
+          container.dataset.userPaused = 'true';
+          video.pause();
+        }
+      });
+      if (reduceMotion) {
+        container.dataset.userPaused = 'true';
+        return;
+      }
+      if (!('IntersectionObserver' in window)) {
+        playBackgroundVideo(container);
+        return;
+      }
+      if (!videoObserver) {
+        videoObserver = new IntersectionObserver(
+          (entries) =>
+            entries.forEach((entry) =>
+              entry.isIntersecting ? playBackgroundVideo(entry.target) : pauseBackgroundVideo(entry.target)
+            ),
+          { threshold: 0.25 }
+        );
+      }
+      videoObserver.observe(container);
+    });
+  };
+
+  /* ------------------------------------------------------------------
      Diaporama d'ouverture
      ------------------------------------------------------------------ */
   const initSlideshow = (root) => {
@@ -114,6 +172,11 @@
         slide.classList.toggle('is-active', active);
         slide.setAttribute('aria-hidden', active ? 'false' : 'true');
         slide.querySelectorAll('a, button').forEach((el) => (el.tabIndex = active ? 0 : -1));
+        const videoContainer = slide.querySelector('[data-bg-video]');
+        if (videoContainer) {
+          if (active && !reduceMotion) playBackgroundVideo(videoContainer);
+          else pauseBackgroundVideo(videoContainer);
+        }
       });
       dots.forEach((dot, i) => {
         dot.classList.toggle('is-active', i === index);
@@ -571,6 +634,7 @@
      ------------------------------------------------------------------ */
   const init = (root = document) => {
     initReveal(root);
+    initBackgroundVideos(root);
     root.querySelectorAll('[data-slideshow]').forEach(initSlideshow);
     root.querySelectorAll('[data-product]').forEach(initProduct);
     root.querySelectorAll('[data-recommendations]').forEach(initRecommendations);

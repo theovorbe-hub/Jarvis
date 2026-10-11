@@ -1,0 +1,114 @@
+# Plan vidéo Belle Saison
+
+Le luxe d’un papier peint se voit surtout dans **la lumière qui glisse sur la matière**,
+**le geste** et **l’échelle d’une pièce entière**. Les vidéos du site doivent donc être
+lentes, silencieuses et sans texte incrusté : le site porte déjà les mots.
+
+## Où vont les vidéos sur le site
+
+| Emplacement | Réglage dans l’éditeur Shopify | Format | Durée |
+|---|---|---|---|
+| Ouverture (plein écran) | Ouverture > Image > Vidéo d’ambiance | 16:9 paysage | 10 à 15 s en boucle |
+| Notre histoire | Notre histoire > Vidéo d’ambiance | 16:9 ou 3:2 | 8 à 12 s en boucle |
+| Film « Découvrir notre savoir-faire » | Notre histoire > Film complet (YouTube ou Vimeo) | 16:9 | 45 à 90 s, avec son |
+| Vidéo plein écran | Vidéo plein écran > Vidéo | 16:9 paysage | 12 à 20 s en boucle |
+| Fiche produit | Produit > Médias (à côté des photos) | 4:5 portrait | 6 à 10 s |
+| Réseaux sociaux | (hors site) | 9:16 vertical | 8 à 15 s |
+
+La section « Vidéo plein écran » reste invisible tant qu’aucune vidéo n’est choisie.
+Sur le site, toutes les vidéos d’ambiance se lancent **sans son**, en boucle, quand elles
+deviennent visibles. Un bouton permet de les mettre en pause, et elles ne se lancent pas
+pour les visiteurs qui ont demandé à réduire les animations.
+
+## Fichiers à préparer
+
+- **MP4 (H.264)**, sans piste son pour les boucles, 24 ou 25 images par seconde.
+- **1920 x 1080** pour l’ouverture et la vidéo plein écran, **1080 x 1350** pour les fiches produit.
+- **Moins de 8 Mo** par boucle pour un chargement rapide (exporter en « qualité web »).
+- **Boucle sans coupure** : la dernière image doit rejoindre la première (mouvement lent
+  dans un seul sens, ou fondu de 1 s au raccord).
+- **Rien de lisible** dans l’image : pas de texte, pas de logo (ajouter le logo au montage
+  si besoin, pour les réseaux uniquement).
+- Import : Contenu > Fichiers > Importer, puis choisir la vidéo dans l’éditeur du thème.
+
+## Trois façons de produire les vidéos
+
+1. **À partir de vos photos HD (je peux le faire ici).** Envoyez-moi vos photos de pièces
+   tapissées en haute définition : je fabrique des boucles MP4 avec un zoom ou un panoramique
+   très lent, au bon format pour le site.
+2. **Avec un générateur vidéo** (Sora, Veo, Kling, Runway…). Les consignes ci-dessous sont
+   prêtes à coller. Elles sont en anglais, langue que ces outils suivent le mieux.
+   **Important :** un générateur ne reproduit pas fidèlement un motif précis. Pour les fiches
+   produit, partez toujours d’une **vraie photo du produit** (mode « image vers vidéo ») afin
+   que le client voie le papier qu’il achète. Les vidéos 100 % générées sont réservées à
+   l’ambiance (ouverture, vidéo plein écran).
+3. **Un tournage** avec un vidéaste : la liste des plans ci-dessous sert aussi de feuille de
+   route.
+
+## Consignes pour un générateur vidéo
+
+Ajouter à chaque consigne :
+
+> Style: quiet luxury interior film, natural window light, warm cream and deep forest green
+> palette with sage and natural wood tones, shallow depth of field, slow and steady camera,
+> photorealistic, 24 fps, no text, no logos, no people facing the camera, no fast motion.
+
+### 1. Ouverture - « La pièce s’éveille » (16:9, 12 s, boucle)
+
+> Slow dolly-in across a refined French country living room. The far wall is covered with
+> wallpaper of soft sage-green foliage on an ivory ground. Early morning sunlight slowly moves
+> across the wallpaper, revealing its matte texture. Linen curtains drift slightly in the
+> breeze. A gilded frame, a ceramic vase with olive branches and a cream armchair stay in soft
+> focus. The camera ends on the wallpaper texture, seamless loop.
+
+Version « image vers vidéo » : donner votre plus belle photo de pièce comme première image,
+avec « slow push-in, sunlight moving slowly across the wall, curtains drifting ».
+
+### 2. Notre histoire - « Le geste » (16:9, 10 s, boucle)
+
+> Close-up of two hands slowly unrolling a roll of premium wallpaper on an old oak work table.
+> The paper shows a botanical pattern in sage green on ivory. Raking side light reveals the
+> fine embossed texture of the paper. Very slow movement, shallow depth of field, calm and
+> precise gestures, warm workshop atmosphere.
+
+### 3. Film savoir-faire (YouTube ou Vimeo, 60 s)
+
+Plans à enchaîner (5 à 8 s chacun), musique douce et sans paroles :
+
+1. Gros plan sur le dessin d’un motif (crayon, aquarelle).
+2. Impression : le papier défile lentement, lumière rasante.
+3. Contrôle de la couleur : une main pose un échantillon sur une table.
+4. Découpe des lés, règle et cutter.
+5. Pose : la brosse lisse un lé, le raccord du motif s’aligne.
+6. Pièce terminée : lent travelling arrière qui révèle le mur entier.
+
+### 4. Vidéo plein écran - « Les paysages » (16:9, 15 s, boucle)
+
+> Slow lateral pan along a dining room wall covered with a panoramic wallpaper mural of
+> rolling Provence hills, cypress trees and soft mountains in muted sage, ochre and cream
+> tones. Late afternoon golden light, a wooden table with linen napkins in the foreground,
+> slightly out of focus. The camera glides from left to right at a constant slow speed,
+> seamless loop.
+
+### 5. Fiche produit - « La matière » (4:5, 8 s, à partir de la photo du produit)
+
+> Macro shot of this wallpaper (use the provided product photo as the first frame). A soft
+> beam of daylight slowly sweeps across the surface from left to right, revealing the paper
+> texture and the depth of the printed pattern. Camera almost still, very slight push-in.
+
+### 6. Réseaux sociaux - « La révélation » (9:16, 10 s)
+
+> Start on an extreme close-up of a wallpaper detail (foliage pattern, sage on ivory), then a
+> slow continuous pull-back revealing a bright bedroom with the full wall covered, a linen
+> bed, a wooden bedside table and a lamp. Soft morning light, calm and elegant.
+
+Ajouter ensuite au montage (CapCut, Premiere…) : le logo en fin de vidéo et une phrase
+courte, par exemple « Belle Saison - papiers peints d’exception ».
+
+## Liste de contrôle avant import
+
+- La vidéo est lente, sans à-coups, et la boucle ne « saute » pas.
+- Aucun texte, logo ou visage déformé n’apparaît (défauts fréquents des générateurs).
+- Les couleurs restent dans la palette : crème, vert forêt, sauge, bois.
+- Le motif montré sur une fiche produit est bien celui du produit vendu.
+- Le fichier pèse moins de 8 Mo (boucles) et il est en MP4.

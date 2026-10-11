@@ -47,6 +47,10 @@
     },
     "collection_list": {
       "placeholder_title": "Nom de la collection"
+    },
+    "video": {
+      "pause": "Mettre la vidéo en pause",
+      "play": "Lire la vidéo"
     }
   },
   "products": {

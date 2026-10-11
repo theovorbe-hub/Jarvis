@@ -1203,6 +1203,116 @@ figure {
 }
 
 /* --------------------------------------------------------------------------
+   Vidéos d'ambiance (ouverture, histoire, vidéo plein écran)
+   -------------------------------------------------------------------------- */
+.bg-video,
+.bg-video__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.bg-video__media {
+  object-fit: cover;
+}
+
+.media-toggle {
+  position: absolute;
+  top: 1.25rem;
+  right: var(--gutter);
+  z-index: 10;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border: 0;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--color-bg) 82%, transparent);
+  color: var(--color-text);
+  pointer-events: auto;
+}
+
+.media-toggle .icon {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.media-toggle__play,
+.bg-video.is-paused .media-toggle__pause {
+  display: none;
+}
+
+.bg-video.is-paused .media-toggle__play {
+  display: inline-flex;
+}
+
+.hero__content,
+.story__video {
+  pointer-events: none;
+}
+
+.hero__text,
+.story__video > * {
+  pointer-events: auto;
+}
+
+.video-banner {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: clamp(420px, 70svh, 760px);
+  overflow: hidden;
+  background: var(--color-surface);
+  color: #fbf8f3;
+}
+
+.video-banner--medium {
+  min-height: clamp(360px, 55svh, 600px);
+}
+
+.video-banner--full {
+  min-height: calc(100svh - var(--header-height));
+}
+
+.video-banner__media {
+  position: absolute;
+  inset: 0;
+}
+
+.video-banner__placeholder {
+  position: absolute;
+  inset: 0;
+}
+
+.video-banner__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgb(20 23 19 / 0.62) 0%, rgb(20 23 19 / 0.22) 45%, transparent 75%);
+  pointer-events: none;
+}
+
+.video-banner__content {
+  position: relative;
+  z-index: 10;
+  padding-block: clamp(2.5rem, 6vw, 5rem);
+  pointer-events: none;
+}
+
+.video-banner__text {
+  display: grid;
+  justify-items: start;
+  gap: 1.5rem;
+  max-width: 40rem;
+  pointer-events: auto;
+}
+
+.video-banner .h-display {
+  text-shadow: 0 1px 24px rgb(20 23 19 / 0.35);
+}
+
+/* --------------------------------------------------------------------------
    Engagements
    -------------------------------------------------------------------------- */
 .engagements {
