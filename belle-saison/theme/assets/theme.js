@@ -223,6 +223,36 @@
   };
 
   /* ------------------------------------------------------------------
+     Carrousel d'avis : défilement natif (glisser au doigt, molette),
+     flèches pour avancer d'une carte ; flèches masquées si tout tient.
+     ------------------------------------------------------------------ */
+  const initCarousel = (root) => {
+    if (root.dataset.ready) return;
+    const track = root.querySelector('[data-carousel-track]');
+    const prev = root.querySelector('[data-carousel-prev]');
+    const next = root.querySelector('[data-carousel-next]');
+    if (!track || !prev || !next) return;
+    root.dataset.ready = 'true';
+    const nav = prev.parentElement;
+    const step = () => {
+      const card = track.firstElementChild;
+      const gap = parseFloat(getComputedStyle(track).columnGap) || 0;
+      return card ? card.getBoundingClientRect().width + gap : track.clientWidth;
+    };
+    const update = () => {
+      const max = track.scrollWidth - track.clientWidth;
+      nav.hidden = max <= 2;
+      prev.disabled = track.scrollLeft <= 2;
+      next.disabled = track.scrollLeft >= max - 2;
+    };
+    prev.addEventListener('click', () => track.scrollBy({ left: -step() }));
+    next.addEventListener('click', () => track.scrollBy({ left: step() }));
+    track.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+  };
+
+  /* ------------------------------------------------------------------
      Diaporama d'ouverture
      ------------------------------------------------------------------ */
   const initSlideshow = (root) => {
@@ -705,6 +735,7 @@
     initBackgroundVideos(root);
     scheduleLazyVideos(root);
     root.querySelectorAll('[data-slideshow]').forEach(initSlideshow);
+    root.querySelectorAll('[data-carousel]').forEach(initCarousel);
     root.querySelectorAll('[data-product]').forEach(initProduct);
     root.querySelectorAll('[data-recommendations]').forEach(initRecommendations);
     root.querySelectorAll('[data-favorites]').forEach(initFavorites);

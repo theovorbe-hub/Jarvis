@@ -1,0 +1,179 @@
+{%- comment -%}
+  Avis clients : uniquement des avis réels. La section n'apparaît pas sur la boutique tant
+  qu'aucun avis n'est ajouté (un message l'indique seulement dans l'éditeur). Le badge
+  « Avis vérifié » ne s'affiche que pour les avis cochés comme liés à un achat confirmé.
+{%- endcomment -%}
+{%- liquid
+  assign count = section.blocks.size
+  assign total = 0
+  for block in section.blocks
+    assign total = total | plus: block.settings.rating
+  endfor
+  if count > 0
+    assign average = total | times: 1.0 | divided_by: count
+    assign average_rounded = average | times: 10 | round | divided_by: 10.0
+    assign average_percent = average | times: 20 | round
+  endif
+-%}
+{%- if count > 0 -%}
+  <section class="section testimonials" data-carousel>
+    <div class="page-width">
+      <div class="testimonials__head" data-reveal>
+        <div>
+          {%- if section.settings.eyebrow != blank -%}
+            <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+          {%- endif -%}
+          {%- if section.settings.heading != blank -%}
+            <h2 class="h-1">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+        </div>
+        <div class="testimonials__summary">
+          {%- assign average_label = average_rounded | append: '' | replace: '.', ',' -%}
+          <span class="stars" style="--fill: {{ average_percent }}%;" role="img" aria-label="{{ 'sections.testimonials.rating' | t: rating: average_label }}">
+            {%- render 'stars' -%}
+          </span>
+          <p>{{ 'sections.testimonials.summary' | t: rating: average_label, number: count }}</p>
+        </div>
+      </div>
+
+      <ul class="testimonials__track" role="list" tabindex="0" aria-label="{{ section.settings.heading | strip_html | escape }}" data-carousel-track>
+        {%- for block in section.blocks -%}
+          <li class="testimonial" {{ block.shopify_attributes }}>
+            {%- assign fill = block.settings.rating | times: 20 -%}
+            <span class="stars" style="--fill: {{ fill }}%;" role="img" aria-label="{{ 'sections.testimonials.rating' | t: rating: block.settings.rating }}">
+              {%- render 'stars' -%}
+            </span>
+            {%- if block.settings.title != blank -%}
+              <h3 class="testimonial__title">{{ block.settings.title | escape }}</h3>
+            {%- endif -%}
+            <blockquote class="testimonial__text">{{ block.settings.text | escape | newline_to_br }}</blockquote>
+            <footer class="testimonial__footer">
+              <p class="testimonial__author">
+                {{- block.settings.author | escape -}}
+                {%- if block.settings.location != blank %}, {{ block.settings.location | escape }}{% endif -%}
+              </p>
+              {%- if block.settings.product != blank or block.settings.date != blank -%}
+                <p class="testimonial__meta">
+                  {{- block.settings.product | escape -}}
+                  {%- if block.settings.product != blank and block.settings.date != blank %} · {% endif -%}
+                  {{- block.settings.date | escape -}}
+                </p>
+              {%- endif -%}
+              {%- if block.settings.verified -%}
+                <p class="testimonial__verified">
+                  {%- render 'icon', name: 'check' -%}
+                  {{ 'sections.testimonials.verified' | t }}
+                </p>
+              {%- endif -%}
+            </footer>
+          </li>
+        {%- endfor -%}
+      </ul>
+
+      {%- if count > 1 -%}
+        <div class="testimonials__nav">
+          <button type="button" class="icon-button" data-carousel-prev aria-label="{{ 'sections.testimonials.previous' | t }}">
+            {%- render 'icon', name: 'arrow-left' -%}
+          </button>
+          <button type="button" class="icon-button" data-carousel-next aria-label="{{ 'sections.testimonials.next' | t }}">
+            {%- render 'icon', name: 'arrow-right' -%}
+          </button>
+        </div>
+      {%- endif -%}
+    </div>
+  </section>
+{%- elsif request.design_mode -%}
+  <section class="section">
+    <div class="page-width">
+      <p class="testimonials__empty">{{ 'sections.testimonials.empty' | t }}</p>
+    </div>
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "Avis clients",
+  "class": "section-testimonials",
+  "max_blocks": 24,
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "N’ajoutez que des avis réels de clients. Publier de faux avis est une pratique commerciale trompeuse. La section reste invisible sur la boutique tant qu’elle ne contient aucun avis."
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Avis clients"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Ils ont habillé leurs murs."
+    }
+  ],
+  "blocks": [
+    {
+      "type": "review",
+      "name": "Avis",
+      "settings": [
+        {
+          "type": "range",
+          "id": "rating",
+          "label": "Note",
+          "min": 1,
+          "max": 5,
+          "step": 1,
+          "default": 5
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre de l’avis"
+        },
+        {
+          "type": "textarea",
+          "id": "text",
+          "label": "Avis",
+          "info": "Le texte exact du client."
+        },
+        {
+          "type": "text",
+          "id": "author",
+          "label": "Prénom et initiale du client",
+          "info": "Avec son accord. Exemple : Claire D."
+        },
+        {
+          "type": "text",
+          "id": "location",
+          "label": "Ville"
+        },
+        {
+          "type": "text",
+          "id": "product",
+          "label": "Produit acheté"
+        },
+        {
+          "type": "text",
+          "id": "date",
+          "label": "Date",
+          "info": "Exemple : octobre 2026."
+        },
+        {
+          "type": "checkbox",
+          "id": "verified",
+          "label": "Avis vérifié",
+          "info": "À cocher uniquement si l’avis provient d’un achat confirmé dans la boutique.",
+          "default": false
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Avis clients"
+    }
+  ]
+}
+{% endschema %}

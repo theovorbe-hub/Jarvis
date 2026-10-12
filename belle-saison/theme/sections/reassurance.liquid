@@ -1,0 +1,132 @@
+{%- comment -%}
+  Vos questions : les inquiétudes d'un client avant d'acheter un papier peint en ligne,
+  chacune suivie d'une réponse qui s'appuie sur un engagement réel de la boutique.
+  Les réponses restent visibles (pas d'accordéon) : elles rassurent sans clic.
+{%- endcomment -%}
+<section class="section reassurance">
+  <div class="page-width reassurance__grid">
+    <div class="reassurance__intro" data-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if section.settings.heading != blank -%}
+        <h2 class="h-1">{{ section.settings.heading }}</h2>
+      {%- endif -%}
+      {%- if section.settings.text != blank -%}
+        <div class="reassurance__text rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a class="button" href="{{ section.settings.button_link | default: routes.all_products_collection_url }}">
+          {{- section.settings.button_label | escape -}}
+          {% render 'icon', name: 'arrow-right' %}
+        </a>
+      {%- endif -%}
+    </div>
+
+    <ol class="reassurance__list" role="list">
+      {%- for block in section.blocks -%}
+        <li class="reassurance__item" {{ block.shopify_attributes }} data-reveal style="--delay: {{ forloop.index0 | modulo: 4 }};">
+          {%- if block.settings.icon != 'none' -%}
+            <span class="reassurance__icon">{%- render 'icon', name: block.settings.icon -%}</span>
+          {%- endif -%}
+          <div>
+            <h3 class="reassurance__question">{{ block.settings.question | escape }}</h3>
+            {%- if block.settings.answer != blank -%}
+              <p class="reassurance__answer">{{ block.settings.answer | escape }}</p>
+            {%- endif -%}
+          </div>
+        </li>
+      {%- endfor -%}
+    </ol>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "Vos questions",
+  "class": "section-reassurance",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Acheter en confiance"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Ce qui pourrait vous faire hésiter."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Choisir un papier peint en ligne, c’est se projeter sans le toucher. Voici nos réponses aux questions que l’on se pose avant de tapisser.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Bouton",
+      "default": "Choisir mon échantillon offert"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien du bouton"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "item",
+      "name": "Question",
+      "settings": [
+        {
+          "type": "select",
+          "id": "icon",
+          "label": "Icône",
+          "options": [
+            { "value": "none", "label": "Aucune" },
+            { "value": "palette", "label": "Couleurs" },
+            { "value": "ruler", "label": "Règle" },
+            { "value": "paint", "label": "Rouleau de pose" },
+            { "value": "diamond", "label": "Diamant" },
+            { "value": "truck", "label": "Livraison" },
+            { "value": "leaf", "label": "Feuille" },
+            { "value": "gift", "label": "Cadeau" },
+            { "value": "house", "label": "Maison" },
+            { "value": "shield", "label": "Garantie" },
+            { "value": "printer", "label": "Impression" },
+            { "value": "frame", "label": "Cadre" }
+          ],
+          "default": "palette"
+        },
+        {
+          "type": "text",
+          "id": "question",
+          "label": "Question ou inquiétude",
+          "default": "Et si la couleur ne rend pas comme à l’écran ?"
+        },
+        {
+          "type": "textarea",
+          "id": "answer",
+          "label": "Réponse",
+          "info": "Ne promettre que ce que la boutique propose vraiment.",
+          "default": "Votre échantillon A4 est offert : vous choisissez en voyant le vrai papier, dans votre lumière."
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Vos questions",
+      "blocks": [
+        { "type": "item" },
+        { "type": "item", "settings": { "icon": "ruler", "question": "Et si je me trompe dans mes mesures ?", "answer": "Vous indiquez la largeur et la hauteur de votre mur : la surface est calculée pour vous et le papier est imprimé à ces dimensions." } },
+        { "type": "item", "settings": { "icon": "truck", "question": "Combien de temps vais-je attendre ?", "answer": "Votre commande est livrée sous 5 à 7 jours en France et en Europe." } }
+      ]
+    }
+  ]
+}
+{% endschema %}

@@ -61,6 +61,18 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.equal(await fallback.$eval('.video-hero .media-toggle', (b) => getComputedStyle(b).display), 'none');
   await fallback.close();
 
+  // Vos questions et avis clients.
+  await page.goto(`file://${path.join(outDir, 'index.html')}`);
+  assert.equal(await page.$$eval('.reassurance__item', (els) => els.length), 7, 'sept questions attendues');
+  assert.equal(await page.$$eval('.testimonial', (els) => els.length), 4);
+  assert.equal(await page.$$eval('.testimonial__verified', (els) => els.length), 2, 'badge seulement sur les avis cochés');
+  await page.locator('.testimonials').scrollIntoViewIfNeeded();
+  const before = await page.$eval('[data-carousel-track]', (t) => t.scrollLeft);
+  assert.equal(await page.$eval('[data-carousel-prev]', (b) => b.disabled), true);
+  await page.click('[data-carousel-next]');
+  await page.waitForTimeout(700);
+  assert.ok((await page.$eval('[data-carousel-track]', (t) => t.scrollLeft)) > before, 'la flèche fait défiler les avis');
+
   // Liens directs : mêmes vidéos, fournies par URL au lieu du sélecteur de fichiers Shopify.
   const direct = await browser.newPage({ viewport: { width: 1280, height: 900 } });
   await direct.goto(`file://${path.join(outDir, 'index-lien.html')}`);

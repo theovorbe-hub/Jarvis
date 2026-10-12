@@ -203,6 +203,90 @@
         "link_label": "Voir les paysages",
         "link_url": "shopify://collections/les-paysages"
       }
+    },
+    "reassurance": {
+      "type": "reassurance",
+      "blocks": {
+        "q1": {
+          "type": "item",
+          "settings": {
+            "icon": "palette",
+            "question": "Et si la couleur ne rend pas comme à l’écran ?",
+            "answer": "Votre échantillon A4 est offert. Posez-le contre votre mur, regardez-le le matin et le soir, près de vos tissus : vous choisissez en voyant le vrai papier, dans votre lumière."
+          }
+        },
+        "q2": {
+          "type": "item",
+          "settings": {
+            "icon": "ruler",
+            "question": "Et si je me trompe dans mes mesures ?",
+            "answer": "Sur chaque fiche, vous indiquez simplement la largeur et la hauteur de votre mur. La surface est calculée pour vous et votre papier est imprimé à ces dimensions."
+          }
+        },
+        "q3": {
+          "type": "item",
+          "settings": {
+            "icon": "paint",
+            "question": "Je ne suis pas bricoleur, la pose m’inquiète.",
+            "answer": "Chaque fiche précise le mode de pose et l’entretien du papier choisi. Imprimé à la taille de votre mur, il vous évite aussi les calculs de rouleaux et une bonne partie des découpes."
+          }
+        },
+        "q4": {
+          "type": "item",
+          "settings": {
+            "icon": "diamond",
+            "question": "Un papier peint acheté en ligne sera-t-il vraiment haut de gamme ?",
+            "answer": "Nos papiers peints sont imprimés en Europe sur des supports haut de gamme. L’échantillon offert vous permet d’en juger la matière et le rendu avant de commander."
+          }
+        },
+        "q5": {
+          "type": "item",
+          "settings": {
+            "icon": "truck",
+            "question": "Combien de temps vais-je attendre ?",
+            "answer": "Votre commande est livrée sous 5 à 7 jours en France et en Europe : votre projet ne reste pas en suspens."
+          }
+        },
+        "q6": {
+          "type": "item",
+          "settings": {
+            "icon": "leaf",
+            "question": "Est-ce adapté à une chambre d’enfant ?",
+            "answer": "Nous choisissons des matériaux respectueux de votre intérieur et de la planète, et notre collection enfant a été pensée pour des chambres douces et apaisantes."
+          }
+        },
+        "q7": {
+          "type": "item",
+          "settings": {
+            "icon": "gift",
+            "question": "Le sur-mesure, ça doit coûter cher ?",
+            "answer": "Le sur-mesure est inclus : votre visuel est adapté à votre mur sans surcoût, et vous ne payez que la surface dont vous avez besoin."
+          }
+        }
+      },
+      "block_order": [
+        "q1",
+        "q2",
+        "q3",
+        "q4",
+        "q5",
+        "q6",
+        "q7"
+      ],
+      "settings": {
+        "eyebrow": "Acheter en confiance",
+        "heading": "Ce qui pourrait vous faire hésiter.",
+        "text": "<p>Choisir un papier peint en ligne, c’est se projeter sans le toucher. Voici nos réponses aux questions que l’on se pose avant de tapisser.</p>",
+        "button_label": "Choisir mon échantillon offert",
+        "button_link": "shopify://collections/all"
+      }
+    },
+    "testimonials": {
+      "type": "testimonials",
+      "settings": {
+        "eyebrow": "Avis clients",
+        "heading": "Ils ont habillé leurs murs."
+      }
     }
   },
   "order": [
@@ -210,6 +294,8 @@
     "engagements",
     "collections",
     "story",
+    "reassurance",
+    "testimonials",
     "featured",
     "video",
     "inspiration",

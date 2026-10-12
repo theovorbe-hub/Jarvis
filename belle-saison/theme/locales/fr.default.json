@@ -51,6 +51,14 @@
     "video": {
       "pause": "Mettre la vidéo en pause",
       "play": "Lire la vidéo"
+    },
+    "testimonials": {
+      "rating": "Note : {{ rating }} sur 5",
+      "summary": "{{ rating }} sur 5 · {{ number }} avis",
+      "verified": "Avis vérifié",
+      "previous": "Avis précédents",
+      "next": "Avis suivants",
+      "empty": "Avis clients : ajoutez ici les avis réels de vos clients. La section reste invisible sur la boutique tant qu’elle est vide."
     }
   },
   "products": {

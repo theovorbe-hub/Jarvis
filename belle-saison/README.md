@@ -30,13 +30,23 @@ belle-saison/
 Dans `theme/` :
 
 - `sections/` : en-tête, bandeau d’arguments, ouverture en diaporama, engagements,
-  liste de collections, « Notre histoire », produits mis en avant, vidéo plein écran,
+  liste de collections, « Notre histoire », « Vos questions » (inquiétudes et réponses),
+  avis clients, produits mis en avant, vidéo plein écran,
   inspiration, lettre d’information, pied de page, et les pages (produit, collection,
   panier, recherche, journal, contact, favoris, mot de passe).
 - `snippets/` : carte produit, prix, caractéristiques, filtres, icônes
   ([Phosphor](https://phosphoricons.com), licence MIT).
 - `assets/base.css` et `assets/theme.js` : styles et comportements, sans dépendance externe.
 - `locales/fr.default.json` : tous les textes de l’interface.
+
+## Avis clients
+
+La section « Avis clients » de l’accueil n’affiche que des avis ajoutés à la main dans
+l’éditeur (un bloc par avis : note, texte, prénom, ville, produit, date). Elle reste
+invisible tant qu’elle est vide. N’y mettre que des avis réels, avec l’accord du client, et ne
+cocher « Avis vérifié » que pour un achat confirmé : publier de faux avis est une pratique
+commerciale trompeuse. Une application d’avis (Judge.me, par exemple) peut ensuite collecter
+les avis automatiquement après chaque commande.
 
 ## Comment la boutique vend
 

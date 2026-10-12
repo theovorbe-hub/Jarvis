@@ -242,6 +242,17 @@ const indexOverrides = (t) => {
   t.sections.video.settings.video = 'demo';
   t.sections.story.settings.video_url = 'youtube';
   t.sections.featured.settings.collection = 'c1';
+  // Aperçu local uniquement : trois avis fictifs pour voir la mise en page de la section
+  // « Avis clients » (dans la boutique, elle reste vide et invisible tant qu'il n'y a pas
+  // d'avis réels).
+  const avis = [
+    { rating: 5, title: 'Aperçu de mise en page', text: 'Texte d’exemple pour vérifier la mise en page : trois à cinq lignes d’avis client, avec un titre et une signature.', author: 'Exemple A.', location: 'Lyon', product: 'Papier peint', date: 'octobre 2026', verified: true },
+    { rating: 4, title: 'Deuxième carte', text: 'Texte d’exemple plus court.', author: 'Exemple B.', location: 'Nantes', product: '', date: 'septembre 2026', verified: false },
+    { rating: 5, title: '', text: 'Texte d’exemple sans titre, pour voir la carte la plus simple.', author: 'Exemple C.', location: '', product: 'Échantillon A4', date: '', verified: true },
+    { rating: 5, title: 'Quatrième carte', text: 'Une carte de plus pour faire apparaître les flèches.', author: 'Exemple D.', location: 'Paris', product: '', date: '', verified: false },
+  ];
+  t.sections.testimonials.blocks = {};
+  t.sections.testimonials.block_order = avis.map((a, i) => { t.sections.testimonials.blocks[`r${i}`] = { type: 'review', settings: a }; return `r${i}`; });
   t.sections.inspiration.block_order.forEach((id, i) => { t.sections.inspiration.blocks[id].settings.image = `ins${i + 1}`; });
   return t;
 };
