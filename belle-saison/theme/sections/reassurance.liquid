@@ -1,7 +1,8 @@
 {%- comment -%}
-  Vos questions : les inquiétudes d'un client avant d'acheter un papier peint en ligne,
-  chacune suivie d'une réponse qui s'appuie sur un engagement réel de la boutique.
-  Les réponses restent visibles (pas d'accordéon) : elles rassurent sans clic.
+  Questions fréquentes : ce que le client veut savoir avant de commander, chaque réponse
+  s'appuyant sur un engagement réel de la boutique. Questions formulées de façon positive
+  (« Comment choisir… », jamais « Et si… ») : la section répond sans faire naître de doute.
+  Les réponses restent visibles (pas d'accordéon) : elles se lisent sans clic.
 {%- endcomment -%}
 <section class="section reassurance">
   <div class="page-width reassurance__grid">
@@ -43,7 +44,7 @@
 
 {% schema %}
 {
-  "name": "Vos questions",
+  "name": "Questions fréquentes",
   "class": "section-reassurance",
   "max_blocks": 8,
   "settings": [
@@ -51,19 +52,19 @@
       "type": "text",
       "id": "eyebrow",
       "label": "Surtitre",
-      "default": "Acheter en confiance"
+      "default": "Questions fréquentes"
     },
     {
       "type": "inline_richtext",
       "id": "heading",
       "label": "Titre",
-      "default": "Ce qui pourrait vous faire hésiter."
+      "default": "Tout pour choisir votre papier peint."
     },
     {
       "type": "richtext",
       "id": "text",
       "label": "Texte",
-      "default": "<p>Choisir un papier peint en ligne, c’est se projeter sans le toucher. Voici nos réponses aux questions que l’on se pose avant de tapisser.</p>"
+      "default": "<p>Couleur, mesures, pose, livraison : l’essentiel pour commander votre papier peint et le voir prendre place chez vous.</p>"
     },
     {
       "type": "text",
@@ -105,26 +106,27 @@
         {
           "type": "text",
           "id": "question",
-          "label": "Question ou inquiétude",
-          "default": "Et si la couleur ne rend pas comme à l’écran ?"
+          "label": "Question",
+          "info": "Formulez-la de façon positive (« Comment… », « Quel… »), sans évoquer de risque.",
+          "default": "Comment choisir la bonne couleur ?"
         },
         {
           "type": "textarea",
           "id": "answer",
           "label": "Réponse",
           "info": "Ne promettre que ce que la boutique propose vraiment.",
-          "default": "Votre échantillon A4 est offert : vous choisissez en voyant le vrai papier, dans votre lumière."
+          "default": "Commandez votre échantillon A4 offert : vous voyez le vrai papier, dans votre lumière, avant de décider."
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "Vos questions",
+      "name": "Questions fréquentes",
       "blocks": [
         { "type": "item" },
-        { "type": "item", "settings": { "icon": "ruler", "question": "Et si je me trompe dans mes mesures ?", "answer": "Vous indiquez la largeur et la hauteur de votre mur : la surface est calculée pour vous et le papier est imprimé à ces dimensions." } },
-        { "type": "item", "settings": { "icon": "truck", "question": "Combien de temps vais-je attendre ?", "answer": "Votre commande est livrée sous 5 à 7 jours en France et en Europe." } }
+        { "type": "item", "settings": { "icon": "ruler", "question": "Comment indiquer mes mesures ?", "answer": "Vous saisissez la largeur et la hauteur de votre mur : la surface est calculée pour vous et le papier est imprimé à ces dimensions." } },
+        { "type": "item", "settings": { "icon": "truck", "question": "Quel est le délai de livraison ?", "answer": "Votre commande est livrée sous 5 à 7 jours en France et en Europe." } }
       ]
     }
   ]

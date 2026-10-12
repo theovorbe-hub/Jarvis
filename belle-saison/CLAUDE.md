@@ -31,3 +31,8 @@ Shopify (Liquid). Les consignes Next.js d'`AGENTS.md` ne s'y appliquent pas.
 - Chaque description de produit de la boutique se rédige avec la compétence
   `description-de-produit` (6 blocs : accroche, promesse, arguments, pour qui,
   caractéristiques, réassurance et appel à l’action), puis se contrôle avec son script.
+- Ventes, conversion, panier moyen, offres, réassurance, panier et paiement : suivre la
+  compétence `marketing-conversion` (techniques honnêtes uniquement ; remises et frais de port
+  validés par la cliente avant création). Ne jamais écrire de texte qui fasse douter le client
+  (« Et si… ? », « Vous hésitez ? », « inquiet ») : affirmer l’engagement. Contrôle :
+  `python3 ../.claude/skills/marketing-conversion/scripts/controle_confiance.py theme`.

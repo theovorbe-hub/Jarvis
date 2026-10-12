@@ -16,8 +16,11 @@ Boutique Shopify `v6shfu-w1` de papiers peints d’exception. Typologie : **luxe
 
 - Un mur blanc sans caractère, une pièce qui manque de chaleur ou de personnalité.
 - L’envie d’une maison qui raconte une histoire, d’un intérieur « habité » et intemporel.
-- La peur de se tromper de couleur ou de motif (d’où l’échantillon offert).
+- Le désir de trouver la couleur ou le motif juste (d’où l’échantillon offert).
 - Un mur aux dimensions atypiques (d’où le sur-mesure).
+
+L’accroche part d’un manque dans la pièce, jamais d’une peur liée à l’achat (se tromper, être
+déçu, hésiter) : la cliente ne veut aucun texte qui fasse douter.
 
 ## Données du produit dans Shopify
 

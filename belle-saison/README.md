@@ -30,7 +30,7 @@ belle-saison/
 Dans `theme/` :
 
 - `sections/` : en-tête, bandeau d’arguments, ouverture en diaporama, engagements,
-  liste de collections, « Notre histoire », « Vos questions » (inquiétudes et réponses),
+  liste de collections, « Notre histoire », « Questions fréquentes » (disponible, retirée de l’accueil),
   avis clients, produits mis en avant, vidéo plein écran,
   inspiration, lettre d’information, pied de page, et les pages (produit, collection,
   panier, recherche, journal, contact, favoris, mot de passe).

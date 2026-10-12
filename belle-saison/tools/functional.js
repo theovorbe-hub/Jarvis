@@ -61,9 +61,10 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.equal(await fallback.$eval('.video-hero .media-toggle', (b) => getComputedStyle(b).display), 'none');
   await fallback.close();
 
-  // Vos questions et avis clients.
+  // Avis clients. L'accueil ne contient plus de section qui évoque les doutes du client.
   await page.goto(`file://${path.join(outDir, 'index.html')}`);
-  assert.equal(await page.$$eval('.reassurance__item', (els) => els.length), 7, 'sept questions attendues');
+  assert.equal(await page.$('.reassurance'), null, 'pas de section « questions » sur l’accueil');
+  assert.doesNotMatch(await page.textContent('main'), /hésiter|Et si /, 'aucune formulation qui fait douter');
   assert.equal(await page.$$eval('.testimonial', (els) => els.length), 4);
   assert.equal(await page.$$eval('.testimonial__verified', (els) => els.length), 2, 'badge seulement sur les avis cochés');
   assert.equal(await page.$eval('.testimonial__verified', (el) => el.textContent.trim()), 'Vérifié');
