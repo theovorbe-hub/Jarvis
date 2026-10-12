@@ -73,42 +73,42 @@ restent dans Contenu > Fichiers. Pour changer de vidéo : éditeur du thème > O
 
 ## Vidéo « Notre histoire » (en ligne dans le thème)
 
-Section « Notre histoire » > Vidéo d’ambiance. Cinq plans cosy, peu de fleurs, 20 s en
+Section « Notre histoire » > Vidéo d’ambiance. Sept plans cosy, peu de fleurs, 23 s en
 boucle, format 4:3 (1440 x 1080), avec le rendu film de l’ouverture (relief, mise au point,
-grain). Inspiration :
-les publications d’alfmabi (lumière douce, textiles, lampes, matière du papier peint en gros
-plan, travellings lents). La scène vit : le voilage ondule, les bougies vacillent, la
-poussière flotte dans le soleil, une lumière rasante glisse sur le papier peint.
+grain). Chaque plan reprend une idée des photos d’alfmabi envoyées en inspiration : passer
+le seuil d’une porte, une console avec sa lampe, ses livres et un cadre, la matière du
+papier peint en gros plan, un chevet calme. La scène vit : la lampe s’allume, le voilage
+ondule, les bougies vacillent, la poussière flotte dans le soleil, une lumière rasante
+glisse sur le papier peint.
 
 | Plan | Temps | Détail | Mouvement |
 |---|---|---|---|
-| 1 | 0 à 4,8 s | le fauteuil de lecture et son plaid au soleil | travelling avant, le voilage ondule |
-| 2 | 3,8 à 8,7 s | le canapé, le plaid vert, la cheminée | glissement, le point passe du plaid aux bougies |
-| 3 | 7,7 à 12,5 s | la matière du papier peint | glissement, lumière rasante qui révèle la texture |
-| 4 | 11,5 à 16,3 s | le lit, les oreillers, le plaid | travelling avant |
-| 5 | 15,3 à 20,2 s | le chevet, la lampe, le fauteuil cannelé | le point passe du coussin à la lampe, puis fondu vers le début |
-
-```bash
-python3 tools/make-hero-video.py histoire sortie/
-```
+| 1 | 0 à 4,2 s | le seuil du salon vers la salle à manger | on passe la porte, le point va du chambranle à la fenêtre |
+| 2 | 3,2 à 7,3 s | la console, la lampe, les livres, le tableau doré | la lampe s’allume doucement |
+| 3 | 6,3 à 10,5 s | la matière du papier peint | lumière rasante qui révèle la texture |
+| 4 | 9,5 à 13,7 s | le fauteuil de lecture et son plaid au soleil | travelling avant, le voilage ondule |
+| 5 | 12,7 à 16,8 s | le canapé, le plaid vert, la cheminée | le point passe du plaid aux bougies |
+| 6 | 15,8 à 20 s | le lit, les oreillers, le plaid | travelling avant |
+| 7 | 19 à 23,2 s | le chevet, la lampe, le fauteuil cannelé | le point passe du coussin à la lampe, puis fondu vers le début |
 
 Deux étalonnages existent :
 
 - **Lumière du jour (en ligne)** : blancs cassés, sauge et bois naturel, image claire et
   douce, peu de contraste, dans l’esprit des photos d’alfmabi. Réglages `HISTOIRE_JOUR`.
-  Fichier : `belle-saison-histoire-jour-1440x1080.mp4` (3,6 Mo).
+  Fichier : `belle-saison-histoire-2-jour-1440x1080.mp4` (4,6 Mo).
 - **Heure dorée** : la lumière ambrée des photos d’origine, comme l’ouverture.
-  Fichier : `belle-saison-histoire-cosy-1440x1080.mp4` (5,1 Mo).
+  Fichier : `belle-saison-histoire-2-doree-1440x1080.mp4` (6,3 Mo).
 
 ```bash
 python3 tools/make-hero-video.py histoire-jour sortie/   # lumière du jour
+python3 tools/make-hero-video.py histoire sortie/        # heure dorée
 ```
 
-Les plans et les effets (`Flame`, `Curtain`, `LightSweep`) se règlent dans `HISTOIRE`, en
-tête du script. La première version, plus fleurie (`belle-saison-histoire-film-1440x1080.mp4`),
-reste aussi dans Contenu > Fichiers. Sur la boutique, la vidéo se lance sans son et tourne en boucle dès que la section
-est visible ; un bouton permet de la mettre en pause, et elle reste à l’arrêt pour les
-visiteurs qui ont demandé à réduire les animations.
+Les plans et les effets (`Glow`, `Flame`, `Curtain`, `LightSweep`) se règlent dans
+`HISTOIRE`, en tête du script. Les versions précédentes (`belle-saison-histoire-film-…`,
+`-cosy-…`, `-jour-…`) restent dans Contenu > Fichiers. Sur la boutique, la vidéo se lance
+sans son et tourne en boucle dès que la section est visible ; un bouton permet de la mettre
+en pause, et elle reste à l’arrêt pour les visiteurs qui ont demandé à réduire les animations.
 
 **Limite assumée :** la scène elle-même ne bouge pas (rideaux, lumière). Pour obtenir ces
 mouvements, utilisez un générateur vidéo en mode « image vers vidéo » avec les consignes

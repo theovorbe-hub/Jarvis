@@ -96,8 +96,9 @@ python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plan
 python3 tools/make-hero-video.py histoire-jour sortie/  # la même, en lumière du jour (en ligne)
 ```
 
-La section « Notre histoire » tourne en boucle sur un film de plans cosy (fauteuil et plaid,
-cheminée aux bougies, matière du papier peint, chambre). Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
+La section « Notre histoire » tourne en boucle sur un film de sept plans cosy en lumière du
+jour (le seuil d’une porte, une console dont la lampe s’allume, la matière du papier peint,
+un fauteuil et son plaid, la cheminée, la chambre). Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
 
 La section « Ouverture » (diaporama d’images), « Notre histoire » et la section « Vidéo plein écran » acceptent aussi une vidéo
 d’ambiance hébergée sur Shopify (Contenu > Fichiers). Elle se lance sans son et en boucle

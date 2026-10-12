@@ -130,7 +130,7 @@
     "story": {
       "type": "story",
       "settings": {
-        "background_video": "shopify://files/videos/belle-saison-histoire-jour-1440x1080.mp4",
+        "background_video": "shopify://files/videos/belle-saison-histoire-2-jour-1440x1080.mp4",
         "media_position": "left",
         "video_label": "Découvrir notre savoir-faire",
         "eyebrow": "Notre histoire",

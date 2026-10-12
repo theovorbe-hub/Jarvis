@@ -178,6 +178,26 @@ class LightSweep:
         return self.strength * (np.exp(-d * d) - 0.35)
 
 
+class Glow:
+    """Lampe qui s'allume doucement : l'abat-jour et son halo sur le mur montent en lumière
+    entre ramp[0] et ramp[1] du plan. x, y, size en fractions de la photo (size : rayon)."""
+
+    def __init__(self, x, y, size, strength=0.35, ramp=(0.2, 0.6)):
+        self.x, self.y, self.size, self.strength, self.ramp = x, y, size, strength, ramp
+
+    def bind(self, src):
+        self.cx, self.cy, self.r = self.x * src.w, self.y * src.h, self.size * src.w
+        return self
+
+    def motion(self, mx, my, t, u):
+        return None, None
+
+    def gain(self, mx, my, t, u):
+        k = smoothstep((u - self.ramp[0]) / (self.ramp[1] - self.ramp[0])) - 1
+        d2 = (mx - self.cx) ** 2 + (my - self.cy) ** 2
+        return self.strength * k * (0.7 * np.exp(-d2 / (2 * self.r ** 2)) + 0.3 * np.exp(-d2 / (2 * (4 * self.r) ** 2)))
+
+
 def _periodic_noise(n, seed, cutoff):
     """Champ de bruit doux et périodique (n x n), valeurs dans [-1, 1]."""
     rng = np.random.default_rng(seed)
@@ -246,8 +266,9 @@ class Atmosphere:
         return lin + amount * glow[..., None] * np.float32([1.0, 0.9, 0.74])
 
 
-# « Notre histoire » : cinq plans cosy, peu de fleurs, 20 s en boucle, format 4:3.
-# Inspiration : lumière douce, textiles, lampes, matière du papier peint en gros plan.
+# « Notre histoire » : sept plans cosy inspirés des photos d'alfmabi (le seuil d'une porte,
+# la console avec sa lampe, la matière du papier peint, le chevet), peu de fleurs, 23 s en
+# boucle, format 4:3.
 VOILAGE = (
     Curtain(((0.2105, 0.0), (0.2919, 0.0), (0.2919, 0.2125), (0.2907, 0.4463), (0.2907, 0.6589),
              (0.2961, 0.7439), (0.3110, 0.8236), (0.2632, 0.8236), (0.2632, 0.7492), (0.2063, 0.7439),
@@ -270,22 +291,29 @@ HISTOIRE_JOUR = {
     "grain": 0.012,
 }
 HISTOIRE = [
-    # 1. Le fauteuil de lecture et son plaid dans le soleil ; le voilage ondule derrière.
-    Shot("salon-ouverture-source.jpg", (0.1974, 0.7811, 0.2871), (0.2063, 0.7917, 0.2572), ((0.205, 0.80),), 3.0, 116,
+    # 1. Le seuil : on passe la porte du salon vers la salle à manger ; le point passe du
+    #    chambranle à la fenêtre du fond.
+    Shot("salon-ouverture-source.jpg", (0.4964, 0.3932, 0.3828), (0.4934, 0.4463, 0.2572), ((0.3768, 0.3188), (0.5742, 0.3507)), 4.0, 100,
+         dust=0.5),
+    # 2. La console : la lampe s'allume doucement près des livres et du tableau doré.
+    Shot("salon-ouverture-source.jpg", (0.7476, 0.4357, 0.2392), (0.7386, 0.4442, 0.2153), ((0.6968, 0.4995),), 3.0, 100,
+         effects=(Glow(0.6968, 0.4516, 0.030),), dust=0.3),
+    # 3. La matière du papier peint, révélée par une lumière rasante qui glisse.
+    Shot("montage-3-detail-papier-peint.png", (0.7775, 0.5019, 0.2028), (0.8373, 0.4906, 0.1974), ((0.80, 0.50),), 3.0, 100,
+         effects=(LightSweep(0.70, 0.92, 0.10, 0.10),)),
+    # 4. Le fauteuil de lecture et son plaid dans le soleil ; le voilage ondule derrière.
+    Shot("salon-ouverture-source.jpg", (0.1974, 0.7811, 0.2871), (0.2063, 0.7917, 0.2572), ((0.205, 0.80),), 3.0, 100,
          effects=VOILAGE, dust=0.8, shimmer=0.06),
-    # 2. Le canapé, le plaid vert et la cheminée ; le point passe du plaid aux bougies.
-    Shot("montage-2-salon-toile.png", (0.7775, 0.5056, 0.2632), (0.8254, 0.4916, 0.2512), ((0.7775, 0.7865), (0.8493, 0.1966)), 5.0, 116,
+    # 5. Le canapé, le plaid vert et la cheminée ; le point passe du plaid aux bougies.
+    Shot("montage-2-salon-toile.png", (0.7775, 0.5056, 0.2632), (0.8254, 0.4916, 0.2512), ((0.7775, 0.7865), (0.8493, 0.1966)), 5.0, 100,
          effects=(Flame(0.8565, 0.1461, 0.0015, 0.3), Flame(0.8367, 0.2022, 0.0015, 1.9),
                   Flame(0.8193, 0.2444, 0.0015, 3.1), Flame(0.9288, 0.1236, 0.0015, 4.4)),
          dust=0.3),
-    # 3. La matière du papier peint, révélée par une lumière rasante qui glisse.
-    Shot("montage-3-detail-papier-peint.png", (0.7775, 0.5019, 0.2028), (0.8373, 0.4906, 0.1974), ((0.80, 0.50),), 3.0, 116,
-         effects=(LightSweep(0.70, 0.92, 0.10, 0.10),)),
-    # 4. Le lit, les oreillers et le plaid ; lent travelling avant.
-    Shot("montage-4-chambre.png", (0.6459, 0.5065, 0.2344), (0.6549, 0.4902, 0.2153), ((0.60, 0.40),), 4.0, 116,
+    # 6. Le lit, les oreillers et le plaid ; lent travelling avant.
+    Shot("montage-4-chambre.png", (0.6459, 0.5065, 0.2344), (0.6549, 0.4902, 0.2153), ((0.60, 0.40),), 4.0, 100,
          dust=0.3),
-    # 5. Le chevet, la lampe et le fauteuil cannelé ; le point passe du coussin à la lampe.
-    Shot("montage-4-chambre.png", (0.8493, 0.5065, 0.2344), (0.8732, 0.4967, 0.2213), ((0.933, 0.75), (0.79, 0.45)), 5.0, 116,
+    # 7. Le chevet, la lampe et le fauteuil cannelé ; le point passe du coussin à la lampe.
+    Shot("montage-4-chambre.png", (0.8493, 0.5065, 0.2344), (0.8732, 0.4967, 0.2213), ((0.933, 0.75), (0.79, 0.45)), 5.0, 100,
          dust=0.3),
 ]
 
@@ -657,13 +685,13 @@ def main():
     elif len(args) == 2 and args[0] == "histoire":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)
-        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-cosy-1440x1080.mp4", HISTOIRE_SIZE, 25)
-        save_poster(poster, out / "belle-saison-histoire-cosy-couverture.jpg")
+        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-2-doree-1440x1080.mp4", HISTOIRE_SIZE, 25)
+        save_poster(poster, out / "belle-saison-histoire-2-doree-couverture.jpg")
     elif len(args) == 2 and args[0] == "histoire-jour":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)
-        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-jour-1440x1080.mp4", HISTOIRE_SIZE, 25, HISTOIRE_JOUR)
-        save_poster(poster, out / "belle-saison-histoire-jour-couverture.jpg")
+        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-2-jour-1440x1080.mp4", HISTOIRE_SIZE, 25, HISTOIRE_JOUR)
+        save_poster(poster, out / "belle-saison-histoire-2-jour-couverture.jpg")
     elif len(args) == 2 and args[0] == "boucle":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)
