@@ -12,7 +12,7 @@ Aucune IA générative : motifs, couleurs et mobilier restent ceux des photos.
 Usage (depuis belle-saison/) :
   python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans enchaînés en fondu
   python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
-  python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : les 9 plans de media/histoire/, 4:3
+  python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plans de media/histoire/, 4:3
   python3 tools/make-hero-video.py histoire-salon sortie/       # ancienne version (photos du salon)
   python3 tools/make-hero-video.py histoire-salon-jour sortie/  # la même, en lumière du jour
   python3 tools/make-hero-video.py profondeur modele.onnx photo.jpg [...]  # recalcule les cartes
@@ -319,28 +319,24 @@ HISTOIRE_SALON = [
 ]
 
 
-# « Notre histoire », version actuelle : les 9 plans fournis par Belle Saison
+# « Notre histoire », version actuelle : plans fournis par Belle Saison
 # (media/histoire/histoire-plan-1.jpg à 9), du rouleau de papier peint à la chambre tapissée.
-# 9 plans de 4 s enchaînés en fondu, 28 s en boucle, format 4:3.
+# Un seul plan de main sur le papier, au début, puis directement la chambre (demande de la
+# cliente). 6 plans de 4 s enchaînés en fondu, 19 s en boucle, format 4:3. Les plans 5, 6 et 8
+# (gros plan matière, rouleau et coupelle, seconde main) restent disponibles dans media/histoire/.
 H = "histoire/histoire-plan-{}.jpg".format
 HISTOIRE = [
     # 1. Le rouleau sur la table, dans le soleil.
     Shot(H(1), (0.50, 0.50, 0.80), (0.57, 0.54, 0.68), ((0.55, 0.45),), 3.0, 96, dust=0.6, shimmer=0.07),
     # 2. La main se pose sur le papier rayé ; lent glissement le long des rayures.
     Shot(H(2), (0.46, 0.50, 0.78), (0.54, 0.50, 0.74), ((0.62, 0.40),), 4.0, 96, dust=0.3),
-    # 3. La matière en gros plan, l'ombre des feuillages bouge sur le mur.
-    Shot(H(5), (0.45, 0.50, 0.80), (0.55, 0.50, 0.76), ((0.50, 0.50),), 2.0, 96, dust=0.5, shimmer=0.10),
-    # 4. Le rouleau rayé et la coupelle ; le point passe de la coupelle au rouleau.
-    Shot(H(6), (0.52, 0.50, 0.86), (0.56, 0.53, 0.78), ((0.75, 0.15), (0.60, 0.75)), 5.0, 96, dust=0.3),
-    # 5. La main déroule le papier près de la fenêtre.
-    Shot(H(8), (0.50, 0.50, 0.84), (0.45, 0.58, 0.70), ((0.40, 0.75),), 4.0, 96, dust=0.6, shimmer=0.05),
-    # 6. On passe la porte de la chambre.
+    # 3. On passe la porte de la chambre.
     Shot(H(4), (0.50, 0.50, 0.88), (0.50, 0.55, 0.62), ((0.12, 0.50), (0.50, 0.58)), 4.0, 96, dust=0.3),
-    # 7. Le lit et sa lampe ; le point passe des oreillers à la lampe.
+    # 4. Le lit et sa lampe ; le point passe des oreillers à la lampe.
     Shot(H(7), (0.42, 0.50, 0.80), (0.52, 0.48, 0.74), ((0.30, 0.55), (0.73, 0.35)), 4.0, 96),
-    # 8. Le chevet et la lampe champignon, lent travelling avant.
+    # 5. Le chevet et la lampe champignon, lent travelling avant.
     Shot(H(3), (0.50, 0.50, 0.82), (0.58, 0.52, 0.70), ((0.68, 0.45),), 3.0, 96, dust=0.3),
-    # 9. La chambre en plan large ; recul lent, puis retour au rouleau.
+    # 6. La chambre en plan large ; recul lent, puis retour au rouleau.
     Shot(H(9), (0.55, 0.55, 0.70), (0.50, 0.50, 0.86), ((0.60, 0.65),), 2.0, 96, dust=0.5, shimmer=0.04),
 ]
 # Étalonnage de cette version : les plans sont déjà dorés et doux ; on garde leur chaleur.
@@ -724,8 +720,8 @@ def main():
     elif len(args) == 2 and args[0] == "histoire":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)
-        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-3-1440x1080.mp4", HISTOIRE_SIZE, 25, HISTOIRE_LOOK)
-        save_poster(poster, out / "belle-saison-histoire-3-couverture.jpg")
+        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-4-1440x1080.mp4", HISTOIRE_SIZE, 25, HISTOIRE_LOOK)
+        save_poster(poster, out / "belle-saison-histoire-4-couverture.jpg")
     elif len(args) == 2 and args[0] in ("histoire-salon", "histoire-salon-jour"):
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)

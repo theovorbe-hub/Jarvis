@@ -92,12 +92,12 @@ et ffmpeg) :
 ```bash
 python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans
 python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
-python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : les 9 plans de media/histoire/, 4:3
+python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plans de media/histoire/, 4:3
 ```
 
-La section « Notre histoire » tourne en boucle sur un film de 9 plans, du rouleau de papier
-peint à la chambre tapissée (mains qui déroulent le papier, matière en gros plan, porte qui
-s’ouvre sur la chambre). Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
+La section « Notre histoire » tourne en boucle sur un film de 6 plans, du rouleau de papier
+peint à la chambre tapissée (une main sur le papier, puis la porte qui s’ouvre sur la chambre,
+le lit, le chevet). Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
 
 Chaque vidéo peut être choisie dans l’éditeur (Contenu > Fichiers) ou donnée par **lien
 direct** vers le fichier MP4 (réglages « lien direct » des sections « Ouverture vidéo » et

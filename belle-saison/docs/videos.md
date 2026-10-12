@@ -74,33 +74,35 @@ restent dans Contenu > Fichiers. Pour changer de vidéo : éditeur du thème > O
 ## Vidéo « Notre histoire » (en ligne dans le thème)
 
 Section « Notre histoire », à gauche de « Le charme des intérieurs intemporels ». Film de
-28 s en boucle, format 4:3 (1440 x 1080), fait des 9 plans fournis par Belle Saison
+19 s en boucle, format 4:3 (1440 x 1080), fait à partir des plans fournis par Belle Saison
 (`media/histoire/planche-9-plans.jpg`, découpée en `histoire-plan-1.jpg` à `-9.jpg`), avec
 le rendu film de l’ouverture (relief, mise au point, grain) et un étalonnage qui garde leur
-lumière dorée (`HISTOIRE_LOOK`).
+lumière dorée (`HISTOIRE_LOOK`). À la demande de la cliente, un seul plan de main sur le
+papier, au début, puis directement la chambre.
 
 | Plan | Temps | Image | Mouvement |
 |---|---|---|---|
 | 1 | 0 à 4 s | le rouleau sur la table, au soleil | travelling avant, poussière dans la lumière |
 | 2 | 3 à 7 s | la main posée sur le papier rayé | glissement le long des rayures |
-| 3 | 6 à 10 s | la matière en gros plan | l’ombre des feuillages bouge sur le mur |
-| 4 | 9 à 13 s | le rouleau rayé et la coupelle | le point passe de la coupelle au rouleau |
-| 5 | 12 à 16 s | la main déroule le papier près de la fenêtre | travelling avant vers la main |
-| 6 | 15 à 19 s | la porte de la chambre | on passe la porte, le point va du chambranle au lit |
-| 7 | 18 à 22 s | le lit et sa lampe | le point passe des oreillers à la lampe |
-| 8 | 21 à 25 s | le chevet et la lampe champignon | travelling avant |
-| 9 | 24 à 28 s | la chambre en plan large | recul lent, puis fondu vers le premier plan |
+| 3 | 6 à 10 s | la porte de la chambre | on passe la porte, le point va du chambranle au lit |
+| 4 | 9 à 13 s | le lit et sa lampe | le point passe des oreillers à la lampe |
+| 5 | 12 à 16 s | le chevet et la lampe champignon | travelling avant |
+| 6 | 15 à 19 s | la chambre en plan large | recul lent, puis fondu vers le premier plan |
+
+Les plans 5, 6 et 8 de la planche (gros plan sur la matière, rouleau et coupelle, seconde main
+qui déroule le papier) ne sont plus utilisés mais restent dans `media/histoire/`.
 
 ```bash
 python3 tools/make-hero-video.py histoire sortie/
 ```
 
-Fichier : `belle-saison-histoire-3-1440x1080.mp4` (7,5 Mo), aperçu
-`belle-saison-histoire-3-couverture.jpg`. Pour remplacer un plan, remplacer l’image
+Fichier : `belle-saison-histoire-4-1440x1080.mp4` (5,3 Mo), aperçu
+`belle-saison-histoire-3-couverture.jpg` (première image identique). Pour remplacer un plan, remplacer l’image
 `media/histoire/histoire-plan-N.jpg`, recalculer sa profondeur
 (`make-hero-video.py profondeur …`) et relancer le rendu ; les cadrages se règlent dans
 `HISTOIRE`. Les versions précédentes faites à partir des photos du salon
-(`belle-saison-histoire-2-…`, commandes `histoire-salon` et `histoire-salon-jour`) restent
+(`belle-saison-histoire-2-…`, commandes `histoire-salon` et `histoire-salon-jour`) et la version en
+9 plans (`belle-saison-histoire-3-1440x1080.mp4`) restent
 dans Contenu > Fichiers. Sur la boutique, la vidéo se lance sans son et tourne en boucle dès
 que la section est visible ; un bouton permet de la mettre en pause, et elle reste à l’arrêt
 pour les visiteurs qui ont demandé à réduire les animations.
@@ -151,7 +153,7 @@ Les sections « Ouverture vidéo » et « Notre histoire » acceptent une vidéo
 |---|---|---|
 | Ouverture vidéo | Vidéo ordinateur | `belle-saison-ouverture-film-1920x1080.mp4` |
 | Ouverture vidéo | Vidéo mobile | `belle-saison-ouverture-film-mobile-720x1280.mp4` |
-| Notre histoire | Vidéo d’ambiance | `belle-saison-histoire-3-1440x1080.mp4` (aperçu : `belle-saison-histoire-3-couverture.jpg`) |
+| Notre histoire | Vidéo d’ambiance | `belle-saison-histoire-4-1440x1080.mp4` (aperçu : `belle-saison-histoire-3-couverture.jpg`) |
 
 ## Où vont les vidéos sur le site
 
