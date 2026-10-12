@@ -54,8 +54,11 @@
     },
     "testimonials": {
       "rating": "Note : {{ rating }} sur 5",
-      "summary": "{{ rating }} sur 5 · {{ number }} avis",
-      "verified": "Avis vérifié",
+      "summary_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis</strong>.",
+      "summary_verified_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis vérifiés</strong>.",
+      "summary_verified_single_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis vérifié</strong>.",
+      "verified": "Vérifié",
+      "product": "Acheté :",
       "previous": "Avis précédents",
       "next": "Avis suivants",
       "empty": "Avis clients : ajoutez ici les avis réels de vos clients. La section reste invisible sur la boutique tant qu’elle est vide."

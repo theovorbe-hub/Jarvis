@@ -284,6 +284,8 @@ const indexOverrides = (t) => {
       hero.video_mobile = '';
       tpl.sections.story.settings.background_video_url = 'img/demo.webm';
       tpl.sections.story.settings.background_video = '';
+      // Variante utile aussi aux avis : tous cochés « vérifié », la synthèse dit « avis vérifiés ».
+      Object.values(tpl.sections.testimonials.blocks).forEach((b) => { b.settings = { ...b.settings, verified: true }; });
     }
     let body = '';
     for (const id of tpl.order) body += await renderSection(id, tpl.sections[id], scope);

@@ -1,18 +1,23 @@
 {%- comment -%}
   Avis clients : uniquement des avis réels. La section n'apparaît pas sur la boutique tant
   qu'aucun avis n'est ajouté (un message l'indique seulement dans l'éditeur). Le badge
-  « Avis vérifié » ne s'affiche que pour les avis cochés comme liés à un achat confirmé.
+  « Vérifié » ne s'affiche que pour les avis cochés comme liés à un achat confirmé, et la
+  ligne de synthèse ne parle d'« avis vérifiés » que si tous les avis le sont.
 {%- endcomment -%}
 {%- liquid
   assign count = section.blocks.size
   assign total = 0
+  assign verified_count = 0
   for block in section.blocks
     assign total = total | plus: block.settings.rating
+    if block.settings.verified
+      assign verified_count = verified_count | plus: 1
+    endif
   endfor
   if count > 0
     assign average = total | times: 1.0 | divided_by: count
     assign average_rounded = average | times: 10 | round | divided_by: 10.0
-    assign average_percent = average | times: 20 | round
+    assign average_label = average_rounded | append: '' | remove: '.0' | replace: '.', ','
   endif
 -%}
 {%- if count > 0 -%}
@@ -27,58 +32,61 @@
             <h2 class="h-1">{{ section.settings.heading }}</h2>
           {%- endif -%}
         </div>
-        <div class="testimonials__summary">
-          {%- assign average_label = average_rounded | append: '' | replace: '.', ',' -%}
-          <span class="stars" style="--fill: {{ average_percent }}%;" role="img" aria-label="{{ 'sections.testimonials.rating' | t: rating: average_label }}">
-            {%- render 'stars' -%}
-          </span>
-          <p>{{ 'sections.testimonials.summary' | t: rating: average_label, number: count }}</p>
-        </div>
+        {%- if count > 1 -%}
+          <div class="testimonials__nav">
+            <button type="button" class="icon-button" data-carousel-prev aria-label="{{ 'sections.testimonials.previous' | t }}">
+              {%- render 'icon', name: 'arrow-left' -%}
+            </button>
+            <button type="button" class="icon-button" data-carousel-next aria-label="{{ 'sections.testimonials.next' | t }}">
+              {%- render 'icon', name: 'arrow-right' -%}
+            </button>
+          </div>
+        {%- endif -%}
       </div>
 
       <ul class="testimonials__track" role="list" tabindex="0" aria-label="{{ section.settings.heading | strip_html | escape }}" data-carousel-track>
         {%- for block in section.blocks -%}
           <li class="testimonial" {{ block.shopify_attributes }}>
-            {%- assign fill = block.settings.rating | times: 20 -%}
-            <span class="stars" style="--fill: {{ fill }}%;" role="img" aria-label="{{ 'sections.testimonials.rating' | t: rating: block.settings.rating }}">
-              {%- render 'stars' -%}
-            </span>
+            <div class="testimonial__rating">
+              {%- assign fill = block.settings.rating | times: 20 -%}
+              <span class="stars" style="--fill: {{ fill }}%;" role="img" aria-label="{{ 'sections.testimonials.rating' | t: rating: block.settings.rating }}">
+                {%- render 'stars' -%}
+              </span>
+              {%- if block.settings.verified -%}
+                <span class="testimonial__verified">
+                  {%- render 'icon', name: 'seal-check' -%}
+                  {{ 'sections.testimonials.verified' | t }}
+                </span>
+              {%- endif -%}
+            </div>
             {%- if block.settings.title != blank -%}
               <h3 class="testimonial__title">{{ block.settings.title | escape }}</h3>
             {%- endif -%}
             <blockquote class="testimonial__text">{{ block.settings.text | escape | newline_to_br }}</blockquote>
             <footer class="testimonial__footer">
-              <p class="testimonial__author">
-                {{- block.settings.author | escape -}}
+              <p class="testimonial__signature">
+                <span class="testimonial__author">{{ block.settings.author | escape }}</span>
                 {%- if block.settings.location != blank %}, {{ block.settings.location | escape }}{% endif -%}
+                {%- if block.settings.date != blank %}, {{ block.settings.date | escape }}{% endif -%}
               </p>
-              {%- if block.settings.product != blank or block.settings.date != blank -%}
-                <p class="testimonial__meta">
-                  {{- block.settings.product | escape -}}
-                  {%- if block.settings.product != blank and block.settings.date != blank %} · {% endif -%}
-                  {{- block.settings.date | escape -}}
-                </p>
-              {%- endif -%}
-              {%- if block.settings.verified -%}
-                <p class="testimonial__verified">
-                  {%- render 'icon', name: 'check' -%}
-                  {{ 'sections.testimonials.verified' | t }}
-                </p>
+              {%- if block.settings.product != blank -%}
+                <p class="testimonial__product">{{ 'sections.testimonials.product' | t }} {{ block.settings.product | escape }}</p>
               {%- endif -%}
             </footer>
           </li>
         {%- endfor -%}
       </ul>
 
-      {%- if count > 1 -%}
-        <div class="testimonials__nav">
-          <button type="button" class="icon-button" data-carousel-prev aria-label="{{ 'sections.testimonials.previous' | t }}">
-            {%- render 'icon', name: 'arrow-left' -%}
-          </button>
-          <button type="button" class="icon-button" data-carousel-next aria-label="{{ 'sections.testimonials.next' | t }}">
-            {%- render 'icon', name: 'arrow-right' -%}
-          </button>
-        </div>
+      {%- if section.settings.show_summary -%}
+        <p class="testimonials__summary">
+          {%- if verified_count < count -%}
+            {{ 'sections.testimonials.summary_html' | t: rating: average_label, number: count }}
+          {%- elsif count == 1 -%}
+            {{ 'sections.testimonials.summary_verified_single_html' | t: rating: average_label, number: count }}
+          {%- else -%}
+            {{ 'sections.testimonials.summary_verified_html' | t: rating: average_label, number: count }}
+          {%- endif -%}
+        </p>
       {%- endif -%}
     </div>
   </section>
@@ -98,7 +106,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "N’ajoutez que des avis réels de clients. Publier de faux avis est une pratique commerciale trompeuse. La section reste invisible sur la boutique tant qu’elle ne contient aucun avis."
+      "content": "N’ajoutez que des avis réels de vos clients, jamais d’avis inventés ni copiés sur d’autres sites : c’est une pratique commerciale trompeuse. La section reste invisible sur la boutique tant qu’elle ne contient aucun avis."
     },
     {
       "type": "text",
@@ -111,6 +119,13 @@
       "id": "heading",
       "label": "Titre",
       "default": "Ils ont habillé leurs murs."
+    },
+    {
+      "type": "checkbox",
+      "id": "show_summary",
+      "label": "Afficher la note moyenne sous les avis",
+      "info": "Calculée à partir des avis de la section. Le mot « vérifiés » n’apparaît que si tous les avis sont cochés « Avis vérifié ».",
+      "default": true
     }
   ],
   "blocks": [

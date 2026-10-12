@@ -3152,13 +3152,6 @@ figure {
   margin-bottom: clamp(2rem, 4vw, 3rem);
 }
 
-.testimonials__summary {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  color: var(--color-muted);
-}
-
 .testimonials__track {
   display: grid;
   grid-auto-flow: column;
@@ -3179,12 +3172,37 @@ figure {
 .testimonial {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: clamp(1.5rem, 3vw, 2.25rem);
-  border: 1px solid var(--color-border);
+  gap: 0.875rem;
+  padding: clamp(1.5rem, 3vw, 2rem);
   border-radius: var(--radius);
-  background: var(--color-bg);
+  background: var(--color-surface);
   scroll-snap-align: start;
+}
+
+.testimonial__rating {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem 0.75rem;
+}
+
+.testimonial__rating .stars {
+  align-self: center;
+}
+
+.testimonial__verified {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3rem;
+  color: var(--color-muted);
+  font-size: 0.8125rem;
+  line-height: 1;
+}
+
+.testimonial__verified .icon {
+  width: 1rem;
+  height: 1rem;
+  color: var(--color-accent);
 }
 
 .testimonial__title {
@@ -3196,7 +3214,7 @@ figure {
 
 .testimonial__text {
   margin: 0;
-  font-size: 1.0625rem;
+  font-size: 1rem;
   line-height: 1.6;
 }
 
@@ -3204,45 +3222,41 @@ figure {
   display: grid;
   gap: 0.25rem;
   margin-top: auto;
-  padding-top: 1rem;
-  border-top: 1px solid var(--color-border);
+  padding-top: 0.25rem;
 }
 
-.testimonial__author {
-  font-family: var(--font-accent-family);
-  font-weight: var(--font-accent-weight);
-  font-size: 0.6875rem;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-
-.testimonial__meta {
+.testimonial__signature {
   color: var(--color-muted);
   font-size: 0.9375rem;
 }
 
-.testimonial__verified {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.375rem;
-  color: var(--color-accent);
-  font-size: 0.875rem;
+.testimonial__author {
+  color: var(--color-text);
 }
 
-.testimonial__verified .icon {
-  width: 0.875rem;
-  height: 0.875rem;
+.testimonial__product {
+  color: var(--color-muted);
+  font-size: 0.875rem;
 }
 
 .testimonials__nav {
   display: flex;
-  justify-content: flex-end;
   gap: 0.5rem;
-  margin-top: 1.5rem;
 }
 
 .testimonials__nav[hidden] {
   display: none;
+}
+
+.testimonials__summary {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
+  color: var(--color-muted);
+  text-align: center;
+}
+
+.testimonials__summary strong {
+  color: var(--color-text);
+  font-weight: bolder;
 }
 
 .icon-button {
@@ -3293,6 +3307,11 @@ figure {
   .testimonials__track {
     grid-auto-columns: 86%;
     gap: 1rem;
+  }
+
+  /* Sur mobile, on fait glisser les cartes : la suivante dépasse déjà du bord. */
+  .testimonials__nav {
+    display: none;
   }
 }
 

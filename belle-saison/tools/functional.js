@@ -66,6 +66,10 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.equal(await page.$$eval('.reassurance__item', (els) => els.length), 7, 'sept questions attendues');
   assert.equal(await page.$$eval('.testimonial', (els) => els.length), 4);
   assert.equal(await page.$$eval('.testimonial__verified', (els) => els.length), 2, 'badge seulement sur les avis cochés');
+  assert.equal(await page.$eval('.testimonial__verified', (el) => el.textContent.trim()), 'Vérifié');
+  assert.equal(await page.$eval('.testimonial__signature', (el) => el.textContent.trim()), 'Exemple A., Lyon, octobre 2026');
+  // Moyenne de 5, 4, 5, 5 = 4,75 arrondie à 4,8 ; deux avis sur quatre seulement sont vérifiés.
+  assert.equal(await page.$eval('.testimonials__summary', (el) => el.textContent.trim()), 'Noté 4,8/5 sur la base de 4 avis.');
   await page.locator('.testimonials').scrollIntoViewIfNeeded();
   const before = await page.$eval('[data-carousel-track]', (t) => t.scrollLeft);
   assert.equal(await page.$eval('[data-carousel-prev]', (b) => b.disabled), true);
@@ -81,6 +85,7 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   await direct.waitForTimeout(800);
   assert.equal(await direct.$eval('.story video', (v) => v.paused), false, 'la vidéo « Notre histoire » par lien direct doit jouer');
   assert.match(await direct.$eval('.story video', (v) => v.currentSrc), /demo\.webm$/);
+  assert.equal(await direct.$eval('.testimonials__summary', (el) => el.textContent.trim()), 'Noté 4,8/5 sur la base de 4 avis vérifiés.');
   await direct.close();
 
   const calmHero = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
