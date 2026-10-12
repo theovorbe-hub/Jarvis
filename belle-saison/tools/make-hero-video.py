@@ -12,6 +12,7 @@ Aucune IA générative : motifs, couleurs et mobilier restent ceux des photos.
 Usage (depuis belle-saison/) :
   python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans enchaînés en fondu
   python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
+  python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : détails du salon, 4:3
   python3 tools/make-hero-video.py profondeur modele.onnx photo.jpg [...]  # recalcule les cartes
   python3 tools/make-hero-video.py bandes image.png  # découpe une image faite de photos empilées
 Nécessite numpy, Pillow, opencv-python-headless et ffmpeg (onnxruntime pour « profondeur »).
@@ -57,6 +58,9 @@ class Shot:
     focus: tuple  # point net (x, y) en fractions de la photo, ou deux points pour une bascule de point
     aperture: float  # flou maximal (sigma en pixels pour 1920 px de large)
     frames: int = 0
+    effects: tuple = ()  # vie dans la scène : Flame, Curtain
+    dust: float = 0.0  # poussières dans la lumière
+    shimmer: float = 0.0  # lumière tamisée par des feuillages qui bougent
 
 
 # Montage ordinateur : les 4 séquences du brief (24 i/s, plans de 5,75 s, fondus de 1 s).
@@ -77,6 +81,165 @@ LOOP_IMAGE = "salon-ouverture-source.jpg"
 LOOP_FOCUS = (0.80, 0.32)
 KEYS_DESKTOP = [(836, 470, 1600), (832, 456, 1480), (960, 432, 1360), (1040, 404, 1250)]
 KEYS_MOBILE = [(820, 470, 500), (860, 462, 486), (1060, 444, 470), (1170, 412, 452)]
+
+
+# ---------------------------------------------------------------------------
+# Vie dans la scène : de petits mouvements réels, là où ils existent vraiment
+# ---------------------------------------------------------------------------
+def _wave(t, parts):
+    return sum(a * math.sin(2 * math.pi * f * t + p) for a, f, p in parts)
+
+
+class Flame:
+    """Flamme de bougie : elle vacille, se balance, et la lumière qu'elle répand respire.
+    x, y en fractions de la photo, size = demi-largeur de la flamme (fraction de la largeur)."""
+
+    def __init__(self, x, y, size, seed=0.0):
+        self.x, self.y, self.size, self.seed = x, y, size, seed
+
+    def bind(self, src):
+        self.cx, self.cy, self.r = self.x * src.w, self.y * src.h, self.size * src.w
+        return self
+
+    def level(self, t):
+        s = self.seed
+        return _wave(t, ((0.5, 1.3, s), (0.3, 3.1, 2 * s + 1), (0.2, 7.7, 3 * s + 2)))
+
+    def motion(self, mx, my, t):
+        s = self.seed
+        d2 = ((mx - self.cx) ** 2 + (my - self.cy + self.r) ** 2) / (2 * (1.6 * self.r) ** 2)
+        w = np.exp(-d2)
+        sway = _wave(t, ((0.6, 0.9, s), (0.4, 2.3, 1.7 * s + 0.5)))
+        return w * (0.35 * self.r * sway), w * (0.15 * self.r * self.level(t))
+
+    def gain(self, mx, my, t):
+        d2 = (mx - self.cx) ** 2 + (my - self.cy) ** 2
+        lv = self.level(t)
+        return lv * (0.05 * np.exp(-d2 / (2 * (14 * self.r) ** 2)) + 0.12 * np.exp(-d2 / (2 * (5 * self.r) ** 2))
+                     + 0.25 * np.exp(-d2 / (2 * (1.4 * self.r) ** 2)))
+
+
+class Curtain:
+    """Voilage ou rideau de lin qui ondule doucement. polygon en fractions de la photo ;
+    le mouvement croît du haut (tringle) vers le bas, et une ondulation descend le long du tissu."""
+
+    def __init__(self, polygon, amplitude, period, wavelength):
+        self.polygon, self.amplitude, self.period, self.wavelength = polygon, amplitude, period, wavelength
+
+    def bind(self, src):
+        from PIL import ImageDraw, ImageFilter
+
+        ow, oh = src.orig_w, src.orig_h
+        mask = Image.new("L", (ow, oh), 0)
+        ImageDraw.Draw(mask).polygon([(x * ow, y * oh) for x, y in self.polygon], fill=255)
+        mask = mask.filter(ImageFilter.GaussianBlur(ow * 0.003)).resize((src.w, src.h), Image.BILINEAR)
+        self.mask = np.asarray(mask, dtype=np.float32) / 255
+        ys = [y for _, y in self.polygon]
+        self.top, self.bottom = min(ys) * src.h, max(ys) * src.h
+        self.amp = self.amplitude * src.w
+        self.lam = self.wavelength * src.w
+        return self
+
+    def motion(self, mx, my, t):
+        m = cv2.remap(self.mask, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
+        h = np.clip((my - self.top) / (self.bottom - self.top), 0, 1) ** 1.3
+        ph = 2 * math.pi * (t / self.period - my / self.lam - mx / (3 * self.lam))
+        return m * self.amp * h * (0.75 * np.sin(ph) + 0.25 * np.sin(2 * ph + 0.8)), None
+
+    def gain(self, mx, my, t):
+        return None
+
+
+def _periodic_noise(n, seed, cutoff):
+    """Champ de bruit doux et périodique (n x n), valeurs dans [-1, 1]."""
+    rng = np.random.default_rng(seed)
+    spec = np.fft.fft2(rng.standard_normal((n, n)))
+    fy, fx = np.meshgrid(np.fft.fftfreq(n), np.fft.fftfreq(n), indexing="ij")
+    spec *= np.exp(-(fx ** 2 + fy ** 2) / (2 * cutoff ** 2))
+    field = np.real(np.fft.ifft2(spec))
+    return (field / np.abs(field).max()).astype(np.float32)
+
+
+class Atmosphere:
+    """Poussières en suspension dans la lumière et lumière tamisée par un feuillage, en
+    mouvement périodique sur la durée de la vidéo (la boucle reste parfaite)."""
+
+    def __init__(self, size, total, count=170, seed=11):
+        self.size, self.total = size, total
+        out_w, out_h = size
+        rng = np.random.default_rng(seed)
+        self.x0, self.y0 = rng.random(count), rng.random(count)
+        self.z = rng.random(count) ** 1.4  # 0 = loin et fin, 1 = tout près et flou
+        self.cx = rng.choice([-1, 0, 0, 1], count)  # traversées complètes par boucle
+        self.cy = rng.choice([-1, -1, 0, 1], count)
+        self.ax, self.ay = 0.02 + 0.04 * rng.random(count), 0.02 + 0.05 * rng.random(count)
+        self.kx, self.ky = rng.integers(1, 4, count), rng.integers(1, 4, count)
+        self.px, self.py, self.pt = (2 * math.pi * rng.random(count) for _ in range(3))
+        self.kt = rng.integers(2, 7, count)
+        self.noise = _periodic_noise(128, seed + 1, 0.035)
+        self.noise2 = _periodic_noise(128, seed + 2, 0.06)
+        k = out_w / 1920
+        self.layers = ((0.0, 0.33, 1.1 * k, 0.55), (0.33, 0.7, 2.4 * k, 0.40), (0.7, 1.01, 6.0 * k, 0.22))
+        gx, gy = np.meshgrid(np.arange(out_w, dtype=np.float32), np.arange(out_h, dtype=np.float32))
+        cell = out_w / 2.5  # taille des taches de lumière
+        self.nx, self.ny = gx / cell * 128 / 4, gy / cell * 128 / 4
+
+    def light(self, lin, lo, hi):
+        out_w, out_h = self.size
+        lum = lin @ np.float32([0.2126, 0.7152, 0.0722])
+        small = cv2.resize(lum, (out_w // 8, out_h // 8), interpolation=cv2.INTER_AREA)
+        small = cv2.resize(cv2.GaussianBlur(small, (0, 0), 2), (out_w, out_h), interpolation=cv2.INTER_LINEAR)
+        t = np.clip((small - lo) / (hi - lo), 0, 1)
+        return t * t * (3 - 2 * t)
+
+    def shimmer(self, lin, f, amount):
+        u = f / self.total
+        a = cv2.remap(self.noise, self.nx + 128 * u, self.ny + 64 * u, cv2.INTER_CUBIC, borderMode=cv2.BORDER_WRAP)
+        b = cv2.remap(self.noise2, self.nx * 1.7 - 128 * u, self.ny * 1.7 + 128 * u, cv2.INTER_CUBIC, borderMode=cv2.BORDER_WRAP)
+        mask = self.light(lin, 0.35, 0.9)
+        return lin * (1 + amount * (0.6 * a + 0.4 * b) * mask)[..., None]
+
+    def dust(self, lin, f, amount):
+        out_w, out_h = self.size
+        u = f / self.total
+        m = 0.08
+        x = (self.x0 + self.cx * u + self.ax * np.sin(2 * math.pi * self.kx * u + self.px)) % 1.0
+        y = (self.y0 + self.cy * u + self.ay * np.sin(2 * math.pi * self.ky * u + self.py)) % 1.0
+        x = (x * (1 + 2 * m) - m) * out_w
+        y = (y * (1 + 2 * m) - m) * out_h
+        twinkle = 0.55 + 0.45 * np.sin(2 * math.pi * self.kt * u + self.pt) ** 2
+        layer = np.zeros((out_h, out_w), np.float32)
+        for lo, hi, sigma, bright in self.layers:
+            sel = (self.z >= lo) & (self.z < hi) & (x >= 0) & (x < out_w - 1) & (y >= 0) & (y < out_h - 1)
+            acc = np.zeros((out_h, out_w), np.float32)
+            np.add.at(acc, (y[sel].astype(int), x[sel].astype(int)), bright * twinkle[sel] * 2 * math.pi * sigma ** 2)
+            layer += cv2.GaussianBlur(acc, (0, 0), sigma)
+        glow = layer * self.light(lin, 0.25, 0.75)
+        return lin + amount * glow[..., None] * np.float32([1.0, 0.9, 0.74])
+
+
+# « Notre histoire » : trois détails du salon à l'heure dorée, 16 s en boucle, format 4:3.
+# Le voilage ondule, les bougies vacillent, la poussière flotte dans la lumière.
+HISTOIRE_SIZE = (1440, 1080)
+HISTOIRE = [
+    # 1. La porte-fenêtre et le voilage de lin, soleil filtré par les arbres du jardin.
+    Shot("salon-ouverture-source.jpg", (0.236, 0.345, 0.383), (0.252, 0.335, 0.347), ((0.27, 0.40),), 3.0, 144,
+         effects=(
+             Curtain(((0.2105, 0.0), (0.2919, 0.0), (0.2919, 0.2125), (0.2907, 0.4463), (0.2907, 0.6589),
+                      (0.2961, 0.7439), (0.3110, 0.8236), (0.2632, 0.8236), (0.2632, 0.7492), (0.2063, 0.7439),
+                      (0.2081, 0.3720)),
+                     0.0030, 5.0, 0.30),
+             Curtain(((0.1800, 0.0), (0.2105, 0.0), (0.2081, 0.3720), (0.2063, 0.7439), (0.1800, 0.7439)),
+                     0.0040, 4.0, 0.26),
+         ), dust=1.0, shimmer=0.07),
+    # 2. Le tableau doré sur le papier peint, glissement vers les bougies de la cheminée.
+    Shot("salon-ouverture-source.jpg", (0.742, 0.351, 0.372), (0.818, 0.338, 0.347), ((0.78, 0.29),), 3.0, 144,
+         effects=(Flame(0.9737, 0.3060, 0.0022, 0.3), Flame(0.9916, 0.2997, 0.0022, 1.9), Flame(0.9611, 0.3677, 0.0020, 3.1)),
+         dust=0.6),
+    # 3. La bougie allumée sur la table basse ; le point passe du canapé à la flamme.
+    Shot("salon-ouverture-source.jpg", (0.727, 0.733, 0.335), (0.739, 0.749, 0.305), ((0.86, 0.66), (0.745, 0.80)), 6.0, 144,
+         effects=(Flame(0.7446, 0.7885, 0.0026, 0.7),), dust=0.8),
+]
 
 
 # ---------------------------------------------------------------------------
@@ -147,8 +310,9 @@ class Grid:
         self.size = size
 
 
-def view(src, grid, cam, ref, anchor, focus, aperture, jitter):
-    """Image (lumière linéaire) vue par la caméra cam = (cx, cy, largeur) en pixels de src."""
+def view(src, grid, cam, ref, anchor, focus, aperture, jitter, effects=(), t=0.0):
+    """Image (lumière linéaire) vue par la caméra cam = (cx, cy, largeur) en pixels de src.
+    effects : éléments animés de la scène (flammes, rideaux), au temps t en secondes."""
     out_w, out_h = grid.size
     cx, cy, w = cam
     jx, jy, roll = jitter
@@ -169,7 +333,19 @@ def view(src, grid, cam, ref, anchor, focus, aperture, jitter):
         g = 1.0 / (1.0 + dz * d)
         mx = cx + bx * g + dx * d
         my = cy + by * g + dy * d
+    gain = None
+    for effect in effects:
+        ex, ey = effect.motion(mx, my, t)
+        eg = effect.gain(mx, my, t)
+        if ex is not None:
+            mx = mx + ex
+        if ey is not None:
+            my = my + ey
+        if eg is not None:
+            gain = eg if gain is None else gain + eg
     image = cv2.remap(src.linear, mx, my, cv2.INTER_CUBIC, borderMode=cv2.BORDER_REFLECT_101)
+    if gain is not None:
+        image *= (1 + gain)[..., None]
     np.clip(image, 0, None, out=image)
     depth = d + anchor
     # Profondeur de champ : flou croissant avec l'écart au plan net.
@@ -281,7 +457,7 @@ class Encoder:
 # ---------------------------------------------------------------------------
 # Montage et boucle
 # ---------------------------------------------------------------------------
-def shot_frame(shot, src, grid, t, jitter):
+def shot_frame(shot, src, grid, t, jitter, f=0, atmosphere=None):
     def to_px(c):
         return c[0] * src.w, c[1] * src.h, c[2] * src.w
 
@@ -296,7 +472,16 @@ def shot_frame(shot, src, grid, t, jitter):
         focus = f0 + (f1 - f0) * smoothstep((t - 0.25) / 0.45)
     else:
         focus = anchor
-    return view(src, grid, cam, ref, anchor, focus, shot.aperture, jitter)
+    effects = [e.bind(src) if getattr(e, "_src", None) is not src else e for e in shot.effects]
+    for e in effects:
+        e._src = src
+    lin = view(src, grid, cam, ref, anchor, focus, shot.aperture, jitter, effects, f / FPS)
+    if atmosphere is not None:
+        if shot.shimmer:
+            lin = atmosphere.shimmer(lin, f, shot.shimmer)
+        if shot.dust:
+            lin = atmosphere.dust(lin, f, shot.dust)
+    return lin
 
 
 def scale_for(shot_widths, image_w, out_w):
@@ -304,30 +489,30 @@ def scale_for(shot_widths, image_w, out_w):
     return max(1.0, out_w / (min(shot_widths) * image_w) * 1.05)
 
 
-def render_montage(out_dir, size=(1920, 1080), crf=25, name="belle-saison-ouverture-film-1920x1080.mp4"):
-    total = FPS * DURATION
+def render_sequence(shots, out_path, size, crf):
+    """Plans enchaînés en fondu ; la fin se fond dans la première image pour boucler."""
     starts, t = [], 0
-    for shot in MONTAGE:
+    for shot in shots:
         starts.append(t)
         t += shot.frames - DISSOLVE
-    if starts[-1] + MONTAGE[-1].frames != total:
-        raise SystemExit("Durées des plans incohérentes avec la durée de la vidéo.")
+    total = starts[-1] + shots[-1].frames
     grid = Grid(size)
     look = Look(size)
+    atmosphere = Atmosphere(size, total) if any(s.dust or s.shimmer for s in shots) else None
     srcs = []
-    for shot in MONTAGE:
+    for shot in shots:
         w = Image.open(MEDIA / shot.image).width
         srcs.append(source(shot.image, scale_for([shot.start[2], shot.end[2]], w, size[0])))
-    first = shot_frame(MONTAGE[0], srcs[0], grid, 0.0, float_offset(0, total))
-    enc = Encoder(out_dir / name, size, crf)
+    first = shot_frame(shots[0], srcs[0], grid, 0.0, float_offset(0, total), 0, atmosphere)
+    enc = Encoder(out_path, size, crf)
     began = time.time()
     poster = None
     for f in range(total):
         jitter = float_offset(f, total)
         layers = []
-        for shot, src, start in zip(MONTAGE, srcs, starts):
+        for shot, src, start in zip(shots, srcs, starts):
             if start <= f < start + shot.frames:
-                layers.append((shot_frame(shot, src, grid, (f - start) / (shot.frames - 1), jitter), start))
+                layers.append((shot_frame(shot, src, grid, (f - start) / (shot.frames - 1), jitter, f, atmosphere), start))
         lin = layers[0][0]
         if len(layers) > 1:
             # Fondu enchaîné en lumière linéaire, comme une surimpression en pellicule.
@@ -414,8 +599,13 @@ def main():
     if len(args) == 2 and args[0] == "montage":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)
-        poster = render_montage(out)
+        poster = render_sequence(MONTAGE, out / "belle-saison-ouverture-film-1920x1080.mp4", (1920, 1080), 25)
         save_poster(poster, out / "belle-saison-ouverture-film-couverture.jpg")
+    elif len(args) == 2 and args[0] == "histoire":
+        out = Path(args[1])
+        out.mkdir(parents=True, exist_ok=True)
+        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-film-1440x1080.mp4", HISTOIRE_SIZE, 25)
+        save_poster(poster, out / "belle-saison-histoire-film-couverture.jpg")
     elif len(args) == 2 and args[0] == "boucle":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)

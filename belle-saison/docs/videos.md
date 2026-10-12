@@ -71,6 +71,29 @@ Les premières versions, sans le rendu film (`belle-saison-ouverture-montage-192
 restent dans Contenu > Fichiers. Pour changer de vidéo : éditeur du thème > Ouverture vidéo
 > Vidéo (ordinateur) ou Vidéo (mobile), et l’image de couverture correspondante.
 
+## Vidéo « Notre histoire » (en ligne dans le thème)
+
+Section « Notre histoire » > Vidéo d’ambiance. Trois détails du salon à l’heure dorée,
+16 s en boucle, format 4:3 (1440 x 1080), avec le même rendu film que l’ouverture. Ici la
+scène vit : le voilage de lin ondule, les bougies vacillent et leur lumière respire, la
+poussière flotte dans les rayons du soleil, la lumière est tamisée par les arbres du jardin.
+
+| Plan | Temps | Détail | Mouvement |
+|---|---|---|---|
+| 1 | 0 à 6 s | la porte-fenêtre et le voilage | travelling avant, le voilage ondule |
+| 2 | 5 à 11 s | le tableau doré sur le papier peint | glissement vers les bougies de la cheminée |
+| 3 | 10 à 16 s | la bougie de la table basse | le point passe du canapé à la flamme, puis fondu vers le début |
+
+```bash
+python3 tools/make-hero-video.py histoire sortie/
+```
+
+Les plans, les flammes (`Flame`) et le voilage (`Curtain`) se règlent dans `HISTOIRE`, en
+tête du script. Fichier : `belle-saison-histoire-film-1440x1080.mp4` (3,9 Mo). Sur la
+boutique, la vidéo se lance sans son et tourne en boucle dès que la section est visible ;
+un bouton permet de la mettre en pause, et elle reste à l’arrêt pour les visiteurs qui ont
+demandé à réduire les animations.
+
 **Limite assumée :** la scène elle-même ne bouge pas (rideaux, lumière). Pour obtenir ces
 mouvements, utilisez un générateur vidéo en mode « image vers vidéo » avec les consignes
 ci-dessous, puis remplacez la vidéo dans l’éditeur (section « Ouverture vidéo »).
@@ -110,7 +133,7 @@ le plus fréquent des générateurs, et il trahirait le produit.
 | Emplacement | Réglage dans l’éditeur Shopify | Format | Durée |
 |---|---|---|---|
 | Ouverture vidéo (plein écran) | Ouverture vidéo > Vidéo (ordinateur) et Vidéo (mobile) | 16:9 et 9:16 | 15 à 20 s en boucle |
-| Notre histoire | Notre histoire > Vidéo d’ambiance | 16:9 ou 3:2 | 8 à 12 s en boucle |
+| Notre histoire | Notre histoire > Vidéo d’ambiance | 4:3 | 12 à 16 s en boucle |
 | Film « Découvrir notre savoir-faire » | Notre histoire > Film complet (YouTube ou Vimeo) | 16:9 | 45 à 90 s, avec son |
 | Vidéo plein écran | Vidéo plein écran > Vidéo | 16:9 paysage | 12 à 20 s en boucle |
 | Fiche produit | Produit > Médias (à côté des photos) | 4:5 portrait | 6 à 10 s |
