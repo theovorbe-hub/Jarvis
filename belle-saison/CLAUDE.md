@@ -19,3 +19,8 @@ Shopify (Liquid). Les consignes Next.js d'`AGENTS.md` ne s'y appliquent pas.
 - Avant d'envoyer `config/settings_data.json`, `templates/*.json` ou
   `sections/*-group.json` dans Shopify, récupérer d'abord la version de la boutique :
   le marchand les modifie depuis l'éditeur.
+- Vidéos réglées depuis le code : le format de référence d'un réglage `video` dans un
+  modèle JSON n'est pas documenté, et `shopify://files/videos/<fichier>` ne fonctionne pas.
+  Utiliser les réglages « lien direct » (`video_url`, `video_mobile_url`,
+  `background_video_url`) avec l'URL `originalSource` du fichier (API Admin, Contenu > Fichiers).
+  Une vidéo choisie dans l'éditeur reste prioritaire sur le lien direct.

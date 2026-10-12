@@ -11,8 +11,8 @@
         "text": "<p>Des papiers peints d’exception, imaginés pour révéler le charme, l’élégance et le caractère de chaque intérieur.</p>",
         "button_label": "Découvrir nos collections",
         "button_link": "shopify://collections",
-        "video": "shopify://files/videos/belle-saison-ouverture-film-1920x1080.mp4",
-        "video_mobile": "shopify://files/videos/belle-saison-ouverture-film-mobile-720x1280.mp4",
+        "video_url": "https://cdn.shopify.com/videos/c/o/v/8183c96b84c04f7eb091ea3bbbb1c199.mp4",
+        "video_mobile_url": "https://cdn.shopify.com/videos/c/o/v/1f99d84295914aa3ae4b18fee672b611.mp4",
         "poster": "shopify://shop_images/belle-saison-ouverture-film-couverture.jpg",
         "poster_mobile": "shopify://shop_images/belle-saison-ouverture-film-couverture-mobile.jpg"
       }
@@ -130,7 +130,8 @@
     "story": {
       "type": "story",
       "settings": {
-        "background_video": "shopify://files/videos/belle-saison-histoire-2-jour-1440x1080.mp4",
+        "background_video_url": "https://cdn.shopify.com/videos/c/o/v/aa308f2089bb4c3bb8e1b1cfdb1b2f2b.mp4",
+        "image": "shopify://shop_images/belle-saison-histoire-2-jour-couverture.jpg",
         "media_position": "left",
         "video_label": "Découvrir notre savoir-faire",
         "eyebrow": "Notre histoire",

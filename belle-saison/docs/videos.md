@@ -144,6 +144,20 @@ puis générer 4 plans de 5 s à monter bout à bout (fondus de 0,5 s) :
 Contrôler image par image que le motif du papier peint ne se déforme pas : c’est le défaut
 le plus fréquent des générateurs, et il trahirait le produit.
 
+## Comment les vidéos sont reliées au thème
+
+Les sections « Ouverture vidéo » et « Notre histoire » acceptent une vidéo de deux façons :
+
+1. **Choisie dans l’éditeur** (champ vidéo, depuis Contenu > Fichiers). C’est prioritaire.
+2. **Lien direct** vers le fichier MP4 (champs « lien direct »). C’est ce qu’utilise la page
+   d’accueil, car Shopify ne permet pas de choisir une vidéo depuis le code du thème.
+
+| Section | Champ « lien direct » | Fichier |
+|---|---|---|
+| Ouverture vidéo | Vidéo ordinateur | `belle-saison-ouverture-film-1920x1080.mp4` |
+| Ouverture vidéo | Vidéo mobile | `belle-saison-ouverture-film-mobile-720x1280.mp4` |
+| Notre histoire | Vidéo d’ambiance | `belle-saison-histoire-2-jour-1440x1080.mp4` (aperçu : `belle-saison-histoire-2-jour-couverture.jpg`) |
+
 ## Où vont les vidéos sur le site
 
 | Emplacement | Réglage dans l’éditeur Shopify | Format | Durée |

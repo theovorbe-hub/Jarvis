@@ -221,6 +221,7 @@ const renderGroup = async (name, scope, overrides = {}) => {
 const pages = {
   index: { template: 'index', page_type: 'index', title: 'Belle Saison' },
   'index-repli': { template: 'index', page_type: 'index', title: 'Belle Saison', forceMp4: true },
+  'index-lien': { template: 'index', page_type: 'index', title: 'Belle Saison', directLinks: true },
   product: { template: 'product', page_type: 'product', title: products[0].title, product: products[0] },
   'product-rouleau': { template: 'product', page_type: 'product', title: products[3].title, product: products[3] },
   collection: { template: 'collection', page_type: 'collection', title: collection.title, collection },
@@ -263,6 +264,16 @@ const indexOverrides = (t) => {
     const header = await renderGroup('header-group', scope);
     let tpl = JSON.parse(read(`templates/${p.template}.json`));
     if (p.template === 'index') tpl = indexOverrides(tpl);
+    if (p.directLinks) {
+      // Vidéos par lien direct (réglages « lien direct ») au lieu du sélecteur de fichiers.
+      const hero = tpl.sections.hero_video.settings;
+      hero.video_url = `img/${hero.video}.webm`;
+      hero.video_mobile_url = `img/${hero.video_mobile}.webm`;
+      hero.video = '';
+      hero.video_mobile = '';
+      tpl.sections.story.settings.background_video_url = 'img/demo.webm';
+      tpl.sections.story.settings.background_video = '';
+    }
     let body = '';
     for (const id of tpl.order) body += await renderSection(id, tpl.sections[id], scope);
     const footer = await renderGroup('footer-group', scope);

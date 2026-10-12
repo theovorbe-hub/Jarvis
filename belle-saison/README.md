@@ -100,6 +100,11 @@ La section « Notre histoire » tourne en boucle sur un film de sept plans cosy 
 jour (le seuil d’une porte, une console dont la lampe s’allume, la matière du papier peint,
 un fauteuil et son plaid, la cheminée, la chambre). Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
 
+Chaque vidéo peut être choisie dans l’éditeur (Contenu > Fichiers) ou donnée par **lien
+direct** vers le fichier MP4 (réglages « lien direct » des sections « Ouverture vidéo » et
+« Notre histoire »). Les vidéos de l’accueil passent par ces liens directs ; une vidéo choisie
+dans l’éditeur les remplace.
+
 La section « Ouverture » (diaporama d’images), « Notre histoire » et la section « Vidéo plein écran » acceptent aussi une vidéo
 d’ambiance hébergée sur Shopify (Contenu > Fichiers). Elle se lance sans son et en boucle
 quand elle est visible, avec un bouton pause, et reste à l’arrêt pour les visiteurs qui

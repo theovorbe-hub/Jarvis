@@ -54,6 +54,9 @@
               { "url": {{ source.url | json }}, "width": {{ source.width | json }}, "height": {{ source.height | json }} }
             {%- endif -%}
           {%- endfor -%}
+          {%- if first_done == false and section.settings.video_url != blank -%}
+            { "url": {{ section.settings.video_url | json }}, "width": 1920, "height": 1080 }
+          {%- endif -%}
         ],
         {%- assign first_done = false -%}
         "mobile": [
@@ -63,6 +66,9 @@
               { "url": {{ source.url | json }}, "width": {{ source.width | json }}, "height": {{ source.height | json }} }
             {%- endif -%}
           {%- endfor -%}
+          {%- if first_done == false and section.settings.video_mobile_url != blank -%}
+            { "url": {{ section.settings.video_mobile_url | json }}, "width": 720, "height": 1280 }
+          {%- endif -%}
         ]
       }
     </script>
@@ -121,6 +127,18 @@
       "id": "video_mobile",
       "label": "Vidéo (mobile)",
       "info": "Facultatif. Format vertical 9:16. Sinon, la vidéo ordinateur est recadrée."
+    },
+    {
+      "type": "url",
+      "id": "video_url",
+      "label": "Vidéo ordinateur (lien direct)",
+      "info": "Facultatif. Lien vers un fichier MP4 en 1920 x 1080, utilisé si aucune vidéo n’est choisie ci-dessus."
+    },
+    {
+      "type": "url",
+      "id": "video_mobile_url",
+      "label": "Vidéo mobile (lien direct)",
+      "info": "Facultatif. Lien vers un fichier MP4 vertical en 720 x 1280, utilisé si aucune vidéo mobile n’est choisie ci-dessus."
     },
     {
       "type": "image_picker",

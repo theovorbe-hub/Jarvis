@@ -61,6 +61,16 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.equal(await fallback.$eval('.video-hero .media-toggle', (b) => getComputedStyle(b).display), 'none');
   await fallback.close();
 
+  // Liens directs : mêmes vidéos, fournies par URL au lieu du sélecteur de fichiers Shopify.
+  const direct = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await direct.goto(`file://${path.join(outDir, 'index-lien.html')}`);
+  await direct.waitForFunction(() => document.querySelector('.video-hero__media').classList.contains('is-playing'), null, { timeout: 8000 });
+  await direct.locator('.story [data-bg-video]').scrollIntoViewIfNeeded();
+  await direct.waitForTimeout(800);
+  assert.equal(await direct.$eval('.story video', (v) => v.paused), false, 'la vidéo « Notre histoire » par lien direct doit jouer');
+  assert.match(await direct.$eval('.story video', (v) => v.currentSrc), /demo\.webm$/);
+  await direct.close();
+
   const calmHero = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
   await calmHero.goto(`file://${path.join(outDir, 'index.html')}`);
   await calmHero.waitForTimeout(1500);
