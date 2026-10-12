@@ -36,3 +36,6 @@ Shopify (Liquid). Les consignes Next.js d'`AGENTS.md` ne s'y appliquent pas.
   validés par la cliente avant création). Ne jamais écrire de texte qui fasse douter le client
   (« Et si… ? », « Vous hésitez ? », « inquiet ») : affirmer l’engagement. Contrôle :
   `python3 ../.claude/skills/marketing-conversion/scripts/controle_confiance.py theme`.
+- Ordinateur et mobile doivent montrer le même site : mêmes contenus, mêmes vidéos (version
+  verticale du même film), rien de masqué sur mobile ; seule la mise en page s’adapte. Toute
+  nouvelle vidéo d’ouverture se fait en deux versions (`montage` et `montage-mobile`).

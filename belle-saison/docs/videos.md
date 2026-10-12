@@ -22,9 +22,9 @@ lentement dans de vraies photos. Motifs, couleurs et mobilier restent ceux des p
   grain fin, 24 images par seconde.
 - **Caméra portée.** Un flottement à peine perceptible, comme sur un stabilisateur.
 
-Les réglages sont en tête du script (`LOOK`, `MONTAGE`, `KEYS_DESKTOP`, `KEYS_MOBILE`).
+Les réglages sont en tête du script (`LOOK`, `MONTAGE`, `MONTAGE_MOBILE`, `KEYS_DESKTOP`, `KEYS_MOBILE`).
 
-### Montage en 4 plans (ordinateur, en ligne)
+### Montage en 4 plans (en ligne sur ordinateur et sur mobile)
 
 À partir de `media/salon-ouverture-source.jpg` et des trois photos `media/montage-*.png`
 (découpées dans `media/bandes-salon-detail-chambre.png`), 20 s en boucle :
@@ -42,17 +42,24 @@ grain et la profondeur de champ l’atténuent). Avec les photos d’origine en 
 résolution, le montage sera net d’un bout à l’autre : remplacer les fichiers
 `media/montage-*.png`, recalculer leur profondeur, puis relancer le montage.
 
-### Boucle sur une seule photo (mobile, en ligne)
+**Version mobile (9:16).** Le même film, plan pour plan et au même rythme : chaque plan est
+recadré en vertical autour du même centre, à la même hauteur de cadre, donc à la même
+échelle (`MONTAGE_MOBILE`, fonction `portrait`). Le flou, le halo et le grain sont rapportés à
+la hauteur de l’image, pour le même rendu à l’écran que sur ordinateur. Ordinateur et mobile
+montrent ainsi exactement les mêmes scènes : la porte ouverte sur la salle à manger, le
+bouquet puis la toile, la matière du papier peint, la chambre.
+
+### Boucle sur une seule photo (ancienne version mobile)
 
 Un plan-séquence sur la photo du salon : travelling avant, glissement vers le mur tapissé,
-rapproché sur le motif et le cadre doré, puis retour au plan large. C’est la version mobile
-en ligne, car les photos du montage, très panoramiques, ne remplissent pas un écran
-vertical. Une version ordinateur de cette boucle est aussi fournie.
+rapproché sur le motif et le cadre doré, puis retour au plan large. Elle a servi de version
+mobile jusqu’au 12 octobre 2026 ; le mobile montre désormais le même film que l’ordinateur.
 
 ```bash
 # depuis belle-saison/, avec numpy, Pillow, opencv-python-headless et ffmpeg
-python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans
-python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
+python3 tools/make-hero-video.py montage sortie/         # ordinateur, 4 plans
+python3 tools/make-hero-video.py montage-mobile sortie/  # le même film en vertical
+python3 tools/make-hero-video.py boucle sortie/          # salon seul : ordinateur et mobile
 # recalculer les cartes de profondeur (onnxruntime et le modèle
 # depth_anything_v2_vits.onnx de github.com/fabio-sim/Depth-Anything-ONNX)
 python3 tools/make-hero-video.py profondeur depth_anything_v2_vits.onnx media/montage-2-salon-toile.png
@@ -61,10 +68,12 @@ python3 tools/make-hero-video.py profondeur depth_anything_v2_vits.onnx media/mo
 | Fichier (Contenu > Fichiers) | Format | Poids |
 |---|---|---|
 | `belle-saison-ouverture-film-1920x1080.mp4` | ordinateur, 16:9, montage 4 plans (en ligne) | 7,1 Mo |
-| `belle-saison-ouverture-film-mobile-720x1280.mp4` | mobile, 9:16 (en ligne) | 5,0 Mo |
+| `belle-saison-ouverture-film-vertical-720x1280.mp4` | mobile, 9:16, même montage 4 plans (en ligne) | 5,6 Mo |
+| `belle-saison-ouverture-film-mobile-720x1280.mp4` | mobile, 9:16, salon seul (ancienne version) | 5,0 Mo |
 | `belle-saison-ouverture-film-boucle-1920x1080.mp4` | ordinateur, 16:9, salon seul | 6,9 Mo |
 | `belle-saison-ouverture-film-couverture.jpg` | couverture ordinateur (première image du film) | 0,4 Mo |
-| `belle-saison-ouverture-film-couverture-mobile.jpg` | couverture mobile | 0,2 Mo |
+| `belle-saison-ouverture-film-vertical-couverture.jpg` | couverture mobile (première image du film vertical) | 0,2 Mo |
+| `belle-saison-ouverture-film-couverture-mobile.jpg` | couverture de l’ancienne version mobile | 0,2 Mo |
 
 Les premières versions, sans le rendu film (`belle-saison-ouverture-montage-1920x1080.mp4`,
 `belle-saison-ouverture-1920x1080.mp4`, `belle-saison-ouverture-mobile-720x1280.mp4`),
@@ -152,7 +161,7 @@ Les sections « Ouverture vidéo » et « Notre histoire » acceptent une vidéo
 | Section | Champ « lien direct » | Fichier |
 |---|---|---|
 | Ouverture vidéo | Vidéo ordinateur | `belle-saison-ouverture-film-1920x1080.mp4` |
-| Ouverture vidéo | Vidéo mobile | `belle-saison-ouverture-film-mobile-720x1280.mp4` |
+| Ouverture vidéo | Vidéo mobile | `belle-saison-ouverture-film-vertical-720x1280.mp4` |
 | Notre histoire | Vidéo d’ambiance | `belle-saison-histoire-4-1440x1080.mp4` (aperçu : `belle-saison-histoire-3-couverture.jpg`) |
 
 ## Où vont les vidéos sur le site

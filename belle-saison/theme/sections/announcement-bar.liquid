@@ -1,19 +1,28 @@
+{%- comment -%}
+  Bandeau d'arguments. Sur grand écran, tous les messages tiennent sur une ligne ; en dessous
+  de 1200 px (mobile, tablette), ils défilent lentement en continu pour que tous restent
+  visibles (la seconde liste, masquée aux lecteurs d'écran, sert à boucler sans saut).
+{%- endcomment -%}
 {%- if section.blocks.size > 0 -%}
   <div class="usp-bar">
-    <ul class="usp-bar__list page-width" role="list">
-      {%- for block in section.blocks -%}
-        <li class="usp-bar__item" {{ block.shopify_attributes }}>
-          {%- if block.settings.icon != 'none' -%}
-            {%- render 'icon', name: block.settings.icon -%}
-          {%- endif -%}
-          {%- if block.settings.link != blank -%}
-            <a href="{{ block.settings.link }}">{{ block.settings.text | escape }}</a>
-          {%- else -%}
-            <span>{{ block.settings.text | escape }}</span>
-          {%- endif -%}
-        </li>
+    <div class="usp-bar__viewport page-width">
+      {%- for pass in (1..2) -%}
+        <ul class="usp-bar__list{% if pass == 2 %} usp-bar__list--copy{% endif %}" role="list"{% if pass == 2 %} aria-hidden="true"{% endif %}>
+          {%- for block in section.blocks -%}
+            <li class="usp-bar__item" {% if pass == 1 %}{{ block.shopify_attributes }}{% endif %}>
+              {%- if block.settings.icon != 'none' -%}
+                {%- render 'icon', name: block.settings.icon -%}
+              {%- endif -%}
+              {%- if block.settings.link != blank -%}
+                <a href="{{ block.settings.link }}"{% if pass == 2 %} tabindex="-1"{% endif %}>{{ block.settings.text | escape }}</a>
+              {%- else -%}
+                <span>{{ block.settings.text | escape }}</span>
+              {%- endif -%}
+            </li>
+          {%- endfor -%}
+        </ul>
       {%- endfor -%}
-    </ul>
+    </div>
   </div>
 {%- endif -%}
 

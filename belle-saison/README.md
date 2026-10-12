@@ -94,13 +94,14 @@ immédiatement, puis la vidéo (version ordinateur ou verticale selon l’écran
 adaptée) apparaît en fondu, muette et en boucle. Elle n’est pas chargée pour les visiteurs
 qui réduisent les animations ou économisent leurs données, et l’image reste en place si la
 lecture échoue. Sur ordinateur, c’est un montage en 4 plans (salon, mur tapissé, gros plan
-sur le motif, chambre) ; sur mobile, une boucle sur la photo du salon. Les deux ont un rendu
+sur le motif, chambre) ; sur mobile, le même film recadré en vertical. Les deux ont un rendu
 « film » : relief grâce à une carte de profondeur, bascules de point, étalonnage pellicule,
 halo des lumières et grain. Pour refaire les vidéos (numpy, Pillow, opencv-python-headless
 et ffmpeg) :
 
 ```bash
 python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans
+python3 tools/make-hero-video.py montage-mobile sortie/  # le même film en vertical (mobile)
 python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
 python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plans de media/histoire/, 4:3
 ```
@@ -169,3 +170,12 @@ les réglages faits dans l’éditeur seront écrasés.
 - Vérifier les arguments repris de la maquette (« Impression européenne haut de
   gamme », « Livraison sous 5 à 7 jours », « Échantillon offert »).
 - Publier le thème.
+
+## Ordinateur et mobile
+
+Le site montre le même contenu sur tous les écrans : mêmes sections dans le même ordre, même
+film d’ouverture (recadré en vertical sur mobile), tous les messages du bandeau (en défilement
+lent sous 1200 px), toutes les collections et inspirations (en grille sur mobile), flèches des
+avis, tri des collections avec son libellé. Seule la mise en page s’adapte : les colonnes se
+superposent et, sur petit écran, le menu, le compte et les favoris passent dans le menu ☰.
+Les tests (`npm test`) vérifient cette parité à 390 px.

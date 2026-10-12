@@ -511,18 +511,21 @@ figure {
   color: var(--color-on-accent);
 }
 
-.usp-bar__list {
+.usp-bar__viewport {
   display: flex;
-  justify-content: space-between;
-  gap: 2rem;
-  min-height: 38px;
-  align-items: center;
-  overflow-x: auto;
-  scrollbar-width: none;
-  scroll-snap-type: x mandatory;
+  overflow: hidden;
 }
 
-.usp-bar__list::-webkit-scrollbar {
+.usp-bar__list {
+  display: flex;
+  flex: 1 0 100%;
+  justify-content: space-between;
+  align-items: center;
+  gap: 2rem;
+  min-height: 38px;
+}
+
+.usp-bar__list--copy {
   display: none;
 }
 
@@ -531,7 +534,6 @@ figure {
   align-items: center;
   gap: 0.625rem;
   flex-shrink: 0;
-  scroll-snap-align: center;
   font-family: var(--font-accent-family);
   font-weight: var(--font-accent-weight);
   font-size: 0.65625rem;
@@ -549,14 +551,54 @@ figure {
   text-decoration: none;
 }
 
-@media (max-width: 989px) {
-  .usp-bar__list {
-    justify-content: flex-start;
+/* Mobile, tablette et petits écrans (quand les messages ne tiennent pas sur une ligne) :
+   les mêmes messages, en défilement lent et continu. */
+@media (max-width: 1199px) {
+  .usp-bar__viewport {
+    padding-inline: 0;
   }
 
-  .usp-bar__item {
-    min-width: 100%;
-    justify-content: center;
+  .usp-bar__list {
+    flex: 0 0 auto;
+    justify-content: flex-start;
+    gap: 2.5rem;
+    padding-right: 2.5rem;
+  }
+
+  .usp-bar__list--copy {
+    display: flex;
+  }
+
+  .usp-bar__list,
+  .usp-bar__list--copy {
+    animation: usp-defile 32s linear infinite;
+  }
+
+  .usp-bar:hover .usp-bar__list,
+  .usp-bar:focus-within .usp-bar__list {
+    animation-play-state: paused;
+  }
+}
+
+@media (max-width: 1199px) and (prefers-reduced-motion: reduce) {
+  .usp-bar__viewport {
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  .usp-bar__list {
+    animation: none;
+    padding-inline: var(--gutter);
+  }
+
+  .usp-bar__list--copy {
+    display: none;
+  }
+}
+
+@keyframes usp-defile {
+  to {
+    transform: translateX(-100%);
   }
 }
 
@@ -1613,27 +1655,47 @@ figure {
   transform: translateX(4px);
 }
 
-@media (max-width: 989px) {
-  .collection-list__scroller,
-  .inspiration__grid {
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
+/* Tablette : les cinq cartes sur une ligne, comme sur ordinateur, avec un texte plus compact. */
+@media (min-width: 750px) and (max-width: 1199px) {
+  .collection-card__body {
+    padding: 0.875rem 0.75rem 1rem;
   }
 
-  .collection-list__scroller::-webkit-scrollbar,
-  .inspiration__grid::-webkit-scrollbar {
-    display: none;
+  .collection-card__title {
+    font-size: 0.8125rem;
+    letter-spacing: 0.04em;
   }
 
+  .collection-card__text {
+    font-size: 0.8125rem;
+  }
+}
+
+/* Mobile : toutes les collections restent visibles, comme sur ordinateur, sur deux colonnes ;
+   une dernière carte seule prend toute la largeur. */
+@media (max-width: 749px) {
   .collection-list__grid {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: min(72vw, 320px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .collection-card {
-    scroll-snap-align: start;
+  .collection-card:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .collection-card:last-child:nth-child(odd) .collection-card__media {
+    aspect-ratio: 2 / 1;
+  }
+
+  .collection-card__body {
+    padding: 0.875rem 0.875rem 1rem;
+  }
+
+  .collection-card__title {
+    font-size: 0.9375rem;
+  }
+
+  .collection-card__text {
+    font-size: 0.875rem;
   }
 }
 
@@ -1896,15 +1958,17 @@ figure {
   font-size: 0.9375rem;
 }
 
-@media (max-width: 989px) {
+@media (max-width: 749px) {
   .inspiration__grid {
-    grid-template-columns: none;
-    grid-auto-flow: column;
-    grid-auto-columns: min(64vw, 300px);
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .inspiration__item {
-    scroll-snap-align: start;
+  .inspiration__item:last-child:nth-child(odd) {
+    grid-column: 1 / -1;
+  }
+
+  .inspiration__item:last-child:nth-child(odd) .inspiration__image {
+    aspect-ratio: 3 / 2;
   }
 }
 
@@ -2620,11 +2684,13 @@ figure {
   }
 
   .facets__sort .field__label {
-    display: none;
+    flex-shrink: 0;
+    margin: 0;
   }
 
   .facets__sort .select {
-    width: 100%;
+    flex: 1;
+    width: auto;
   }
 }
 
@@ -3307,11 +3373,6 @@ figure {
   .testimonials__track {
     grid-auto-columns: 86%;
     gap: 1rem;
-  }
-
-  /* Sur mobile, on fait glisser les cartes : la suivante dépasse déjà du bord. */
-  .testimonials__nav {
-    display: none;
   }
 }
 

@@ -11,6 +11,7 @@ Aucune IA générative : motifs, couleurs et mobilier restent ceux des photos.
 
 Usage (depuis belle-saison/) :
   python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans enchaînés en fondu
+  python3 tools/make-hero-video.py montage-mobile sortie/  # le même film en vertical (mobile)
   python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
   python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plans de media/histoire/, 4:3
   python3 tools/make-hero-video.py histoire-salon sortie/       # ancienne version (photos du salon)
@@ -23,7 +24,7 @@ import math
 import subprocess
 import sys
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 from pathlib import Path
 
 import cv2
@@ -37,6 +38,13 @@ MEDIA = Path(__file__).resolve().parent.parent / "media"
 FPS = 24
 DURATION = 20  # secondes
 DISSOLVE = 24  # images (1 s) entre deux plans et au raccord de la boucle
+
+
+def frame_scale(out_w, out_h):
+    """Échelle des rayons et du flou, donnés pour une image 1920 x 1080. En paysage, elle suit
+    la largeur ; en vertical, la hauteur, pour que flou, halo et poussières aient la même
+    taille à l'écran que sur la version ordinateur."""
+    return out_w / 1920 if out_w >= out_h else out_h / 1080
 
 # Image « film ». Les rayons et le flou sont donnés pour une image de 1920 px de large.
 LOOK = {
@@ -82,6 +90,29 @@ MONTAGE = [
     Shot("montage-3-detail-papier-peint.png", (0.520, 0.50, 0.262), (0.600, 0.49, 0.255), ((0.36, 0.55), (0.66, 0.45)), 7.0, 138),
     # 4. Recul lent dans la chambre, retour vers une vue d'ensemble.
     Shot("montage-4-chambre.png", (0.535, 0.50, 0.285), (0.525, 0.50, 0.312), ((0.55, 0.40),), 4.0, 138),
+]
+
+
+def portrait(shot, start_x=None, end_x=None):
+    """Le même plan recadré en vertical (9:16) : même centre, même hauteur de cadre, donc
+    la même scène à la même échelle ; seule la largeur se resserre (le flou suit la hauteur
+    de l'image, voir frame_scale).
+    start_x, end_x : recentrage horizontal facultatif pour garder le sujet dans le cadre."""
+    k = (9 / 16) ** 2
+    s, e = shot.start, shot.end
+    return replace(
+        shot,
+        start=(s[0] if start_x is None else start_x, s[1], s[2] * k),
+        end=(e[0] if end_x is None else end_x, e[1], e[2] * k),
+    )
+
+
+# Mobile : exactement les plans du montage ordinateur, dans le même ordre et au même rythme.
+MONTAGE_MOBILE = [
+    portrait(MONTAGE[0]),  # la porte ouverte vers la salle à manger
+    portrait(MONTAGE[1], end_x=0.715),  # du bouquet jusqu'à la toile, où se fait le point
+    portrait(MONTAGE[2], start_x=0.49, end_x=0.635),  # la matière, jusqu'à la feuille nette
+    portrait(MONTAGE[3]),  # le lit et ses coussins
 ]
 
 # Boucle sur une seule photo : trajectoire fermée (centre x, centre y, largeur) en pixels de
@@ -227,7 +258,7 @@ class Atmosphere:
         self.kt = rng.integers(2, 7, count)
         self.noise = _periodic_noise(128, seed + 1, 0.035)
         self.noise2 = _periodic_noise(128, seed + 2, 0.06)
-        k = out_w / 1920
+        k = frame_scale(out_w, out_h)
         self.layers = ((0.0, 0.33, 1.1 * k, 0.55), (0.33, 0.7, 2.4 * k, 0.40), (0.7, 1.01, 6.0 * k, 0.22))
         gx, gy = np.meshgrid(np.arange(out_w, dtype=np.float32), np.arange(out_h, dtype=np.float32))
         cell = out_w / 2.5  # taille des taches de lumière
@@ -460,7 +491,7 @@ def view(src, grid, cam, ref, anchor, focus, aperture, jitter, effects=(), t=0.0
     np.clip(image, 0, None, out=image)
     depth = d + anchor
     # Profondeur de champ : flou croissant avec l'écart au plan net.
-    k = out_w / 1920
+    k = frame_scale(out_w, out_h)
     coc = np.clip(aperture * k * (np.abs(depth - focus) - 0.04) * 1.6, 0, aperture * k)
     sigmas = [0.0, 1.0 * k, 2.2 * k, 4.0 * k, 6.5 * k]
     sigmas = [sg for sg in sigmas if sg <= aperture * k + 1e-6] or [0.0]
@@ -490,7 +521,7 @@ class Look:
         self.p = {**LOOK, **overrides}
         out_w, out_h = size
         self.size = size
-        self.k = out_w / 1920
+        self.k = frame_scale(out_w, out_h)
         yy, xx = np.mgrid[0:out_h, 0:out_w].astype(np.float32)
         nx = (xx + 0.5) / out_w * 2 - 1
         ny = (yy + 0.5) / out_h * 2 - 1
@@ -717,6 +748,11 @@ def main():
         out.mkdir(parents=True, exist_ok=True)
         poster = render_sequence(MONTAGE, out / "belle-saison-ouverture-film-1920x1080.mp4", (1920, 1080), 25)
         save_poster(poster, out / "belle-saison-ouverture-film-couverture.jpg")
+    elif len(args) == 2 and args[0] == "montage-mobile":
+        out = Path(args[1])
+        out.mkdir(parents=True, exist_ok=True)
+        poster = render_sequence(MONTAGE_MOBILE, out / "belle-saison-ouverture-film-vertical-720x1280.mp4", (720, 1280), 23)
+        save_poster(poster, out / "belle-saison-ouverture-film-vertical-couverture.jpg")
     elif len(args) == 2 and args[0] == "histoire":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)

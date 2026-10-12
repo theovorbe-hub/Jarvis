@@ -45,11 +45,20 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.ok(hero.muted && hero.loop && !hero.paused, 'la vidéo d’ouverture doit jouer en boucle sans son');
   assert.match(hero.src, /(ouverture|demo)\.(mp4|webm)$/);
   assert.ok(await page.$('.video-hero__poster'), 'l’image de couverture doit rester en place');
+  assert.equal(await page.$eval('.usp-bar__list--copy', (l) => getComputedStyle(l).display), 'none', 'bandeau fixe sur grand écran');
 
   const phone = await browser.newPage({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 });
   await phone.goto(`file://${path.join(outDir, 'index.html')}`);
   await phone.waitForSelector('.video-hero video', { timeout: 5000 });
   assert.match(await phone.$eval('.video-hero video', (v) => v.getAttribute('src')), /mobile\.(mp4|webm)$/, 'version verticale sur mobile');
+  // Même site sur mobile et sur ordinateur : rien de masqué, tout reste visible.
+  const phoneWidth = await phone.evaluate(() => document.documentElement.clientWidth);
+  assert.equal(await phone.evaluate(() => document.documentElement.scrollWidth), phoneWidth, 'pas de défilement horizontal');
+  const cards = await phone.$$eval('.collection-card', (els) => els.map((e) => e.getBoundingClientRect()).map((r) => r.left >= 0 && r.right <= window.innerWidth + 1));
+  assert.ok(cards.length === 5 && cards.every(Boolean), 'les cinq collections visibles sur mobile');
+  assert.equal(await phone.$eval('.usp-bar__list--copy', (l) => getComputedStyle(l).display), 'flex', 'messages du bandeau en défilement');
+  assert.notEqual(await phone.$eval('.usp-bar__list', (l) => getComputedStyle(l).animationName), 'none');
+  assert.notEqual(await phone.$eval('.testimonials__nav', (n) => getComputedStyle(n).display), 'none', 'flèches des avis sur mobile');
   await phone.close();
 
   // Repli : une vidéo illisible est retirée, l'image de couverture reste et le bouton pause disparaît.
