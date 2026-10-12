@@ -28,3 +28,6 @@ Shopify (Liquid). Les consignes Next.js d'`AGENTS.md` ne s'y appliquent pas.
   européens) et import de produits dans la boutique : suivre la compétence
   `veille-sourcing-belle-saison` (`.claude/skills/`). Produits toujours créés en brouillon.
 - Répondre à la cliente en français.
+- Chaque description de produit de la boutique se rédige avec la compétence
+  `description-de-produit` (6 blocs : accroche, promesse, arguments, pour qui,
+  caractéristiques, réassurance et appel à l’action), puis se contrôle avec son script.

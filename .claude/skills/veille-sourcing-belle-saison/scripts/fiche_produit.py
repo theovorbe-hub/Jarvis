@@ -147,6 +147,12 @@ def main():
     elif len(seo_desc) > 160:
         avertissements.append(f"seo.description : {len(seo_desc)} caractères (160 au plus conseillé).")
 
+    description = p.get("description_html", "")
+    if not description.strip():
+        erreurs.append("description_html manquante : la rédiger avec la compétence description-de-produit.")
+    elif description.count("<ul") < 2 or "<strong>" not in description:
+        avertissements.append("description_html : structure en 6 blocs non reconnue (compétence description-de-produit, script verifier_fiche.py).")
+
     etiquettes = [collection] + [e for e in p.get("etiquettes", []) if e != collection]
 
     for a in avertissements:

@@ -73,7 +73,9 @@ risques. Calculer le prix de vente conseillé avec `scripts/prix.py` (marge, TVA
 
 Suivre `references/import-shopify.md`. En bref :
 
-1. Décrire chaque produit retenu dans un petit fichier JSON (modèle dans la référence).
+1. Décrire chaque produit retenu dans un petit fichier JSON (modèle dans la référence). La
+   description (`description_html`) et les textes SEO se rédigent avec la compétence
+   `description-de-produit` (6 blocs, contrôlés par son script `verifier_fiche.py`).
 2. `python3 scripts/fiche_produit.py produit.json > input.json` : le script construit l’entrée
    `productSet` au format du thème (option « Papier », variante « Échantillon A4 », métachamps
    `papier_peint.*`, étiquette de collection, statut brouillon) et signale les erreurs.

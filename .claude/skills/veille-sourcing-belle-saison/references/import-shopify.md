@@ -32,6 +32,8 @@ Belle Saison, **en brouillon**, prêt à être relu par l’utilisateur.
 }
 ```
 
+- `description_html` et `seo` : rédigés avec la compétence `description-de-produit` (structure
+  en 6 blocs, adaptée à Belle Saison), puis contrôlés avec son script `verifier_fiche.py`.
 - `collection` : `essentiels`, `motifs`, `paysages`, `toiles` ou `enfant` (devient l’étiquette).
 - `mode_vente` : `m2` (prix des qualités = prix au m²) ou `rouleau` (prix d’un rouleau ; ajouter
   alors `largeur_le` en cm et `longueur_rouleau` en m dans `metachamps`).
