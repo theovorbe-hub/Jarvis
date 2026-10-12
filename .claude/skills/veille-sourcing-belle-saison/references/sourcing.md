@@ -1,0 +1,83 @@
+# Sourcing de produits
+
+But : proposer une courte sélection de papiers peints (et, si demandé, d’accessoires cohérents :
+colle, outils de pose) qui ont leur place chez Belle Saison, avec un fournisseur fiable.
+
+## Choisir la plateforme
+
+| Plateforme | Intérêt | Limites pour Belle Saison |
+|---|---|---|
+| **Imprimeur européen à la demande** (marque blanche) | impression en Europe, sur mesure, délais courts : cohérent avec les promesses du site | à trouver par la recherche, souvent un minimum ou un compte pro |
+| **CJ Dropshipping** | catalogue large, entrepôts en Europe pour certains produits, demandes de sourcing sur mesure, API, application Shopify | la plupart des produits partent de Chine (délais longs) ; filtrer les entrepôts européens |
+| **AliExpress** (avec l’application DSers) | énorme choix de papiers peints sur mesure au m² | qualité très variable, copies fréquentes, délais souvent de 10 à 25 jours, le sur-mesure demande d’envoyer les dimensions au vendeur à chaque commande |
+| Autres places de marché de dropshipping (Spocket, BigBuy, etc.) | fournisseurs européens | catalogue papier peint à vérifier |
+
+Recommandation par défaut : chercher d’abord un imprimeur européen à la demande ou un produit CJ
+expédié depuis l’Europe ; AliExpress en complément, en signalant l’écart avec les promesses.
+
+## Mots-clés de recherche
+
+Les catalogues sont surtout en anglais :
+
+- `custom size mural wallpaper non-woven` (sur mesure)
+- `linen texture wallpaper beige`, `grasscloth wallpaper`, `textured plain wallpaper`
+  (essentiels)
+- `striped wallpaper beige sage`, `ticking stripe wallpaper` (rayures, essentiels)
+- `botanical leaves wallpaper sage green`, `trailing vine wallpaper` (motifs)
+- `landscape mural wallpaper countryside`, `misty hills mural` (paysages)
+- `toile de jouy wallpaper`, `pastoral toile mural` (toiles)
+- `kids room wallpaper watercolor animals`, `soft nursery mural` (enfant)
+
+Recherche : `WebSearch` avec `allowed_domains` (`["aliexpress.com"]`,
+`["cjdropshipping.com"]`) ; lecture des fiches avec `WebFetch` si le réseau le permet ; sinon
+demander à l’utilisateur les liens ou des captures des fiches qui l’intéressent.
+
+## API CJ Dropshipping (si la clé et le réseau sont disponibles)
+
+Documentation officielle : https://developers.cjdropshipping.com (la relire avant usage, les
+paramètres changent).
+
+- Authentification : `POST https://developers.cjdropshipping.com/api2.0/v1/authentication/getAccessToken`
+  avec la clé API du compte de l’utilisateur ; le jeton (valable environ 15 jours) se passe
+  ensuite dans l’en-tête `CJ-Access-Token`. Demander un nouveau jeton est limité dans le temps :
+  le réutiliser.
+- Produits : liste et recherche (« Product List »), détail d’un produit, stock par entrepôt,
+  calcul des frais de port vers la France.
+- La clé API est un secret : la demander comme secret d’environnement, ne jamais l’écrire dans
+  le dépôt, un fichier ou la conversation.
+
+## Grille de notation (sur 20)
+
+| Critère | Points | Bon signe |
+|---|---|---|
+| Accord avec le style Belle Saison | 5 | palette crème, sauge, bois ; motif calme ; peu de fleurs ; entre dans une collection |
+| Qualité du support | 4 | intissé 150 à 250 g/m², lessivable, encres latex ou à l’eau, classement feu |
+| Fiabilité du fournisseur | 4 | note ≥ 4,7, nombreuses ventes, avis avec photos, ancienneté |
+| Délai et origine | 4 | entrepôt ou impression en Europe, livraison France ≤ 7 jours |
+| Marge possible | 3 | prix de vente conseillé (voir `scripts/prix.py`) dans la fourchette des concurrents |
+
+Éliminatoire, quelle que soit la note : copie d’un motif d’éditeur connu, photos avec filigrane
+ou texte d’une autre marque, avis signalant des couleurs très différentes des photos.
+
+## Prix de vente conseillé
+
+```bash
+python3 scripts/prix.py --cout-m2 9.50 --port-commande 12 --m2-commande 10 --marge 0.55
+python3 scripts/prix.py --cout-rouleau 18 --m2-rouleau 5.33 --port-commande 9 --m2-commande 10.6
+python3 scripts/prix.py --aide
+```
+
+Le script ramène tout au m², ajoute le port, la TVA (20 %) et les frais de paiement, puis donne
+le prix TTC conseillé, arrondi à l’euro, pour la marge nette visée. Comparer le résultat aux
+prix relevés pendant la veille : un prix au-dessus du marché doit se justifier (qualité,
+service, sur-mesure, délai).
+
+## Présentation de la sélection
+
+```
+| # | Produit | Collection | Lien | Coût | Délai France | Origine | Note /20 | Prix conseillé | Risques |
+|---|---|---|---|---|---|---|---|---|---|
+```
+
+Puis : les 2 ou 3 produits recommandés en priorité, la commande d’échantillons à prévoir, et les
+écarts éventuels avec les promesses du site.

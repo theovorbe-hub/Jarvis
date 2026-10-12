@@ -24,3 +24,7 @@ Shopify (Liquid). Les consignes Next.js d'`AGENTS.md` ne s'y appliquent pas.
   Utiliser les réglages « lien direct » (`video_url`, `video_mobile_url`,
   `background_video_url`) avec l'URL `originalSource` du fichier (API Admin, Contenu > Fichiers).
   Une vidéo choisie dans l'éditeur reste prioritaire sur le lien direct.
+- Veille concurrentielle, recherche de produits (AliExpress, CJ Dropshipping, imprimeurs
+  européens) et import de produits dans la boutique : suivre la compétence
+  `veille-sourcing-belle-saison` (`.claude/skills/`). Produits toujours créés en brouillon.
+- Répondre à la cliente en français.
