@@ -13,6 +13,7 @@ Usage (depuis belle-saison/) :
   python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans enchaînés en fondu
   python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
   python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plans cosy, 4:3
+  python3 tools/make-hero-video.py histoire-jour sortie/  # la même, en lumière du jour
   python3 tools/make-hero-video.py profondeur modele.onnx photo.jpg [...]  # recalcule les cartes
   python3 tools/make-hero-video.py bandes image.png  # découpe une image faite de photos empilées
 Nécessite numpy, Pillow, opencv-python-headless et ffmpeg (onnxruntime pour « profondeur »).
@@ -47,6 +48,13 @@ LOOK = {
     "grain": 0.016,
     "float": 0.0012,     # flottement de la caméra (part de la largeur du cadre)
     "roll": 0.06,        # roulis en degrés
+    # Étalonnage
+    "exposure": 0.0,     # diaphragmes
+    "white": (1.0, 1.0, 1.0),  # balance des blancs (gains rouge, vert, bleu en lumière linéaire)
+    "tone": (0.028, 0.072, 0.17, 0.39, 0.635, 0.815, 0.965),  # courbe film (sorties)
+    "shadow_tint": (-0.016, 0.006, 0.002),  # ombres vers le vert forêt
+    "light_tint": (0.016, 0.004, -0.022),   # hautes lumières ambrées
+    "saturation": 0.9,
 }
 
 
@@ -247,6 +255,20 @@ VOILAGE = (
     Curtain(((0.1800, 0.0), (0.2105, 0.0), (0.2081, 0.3720), (0.2063, 0.7439), (0.1800, 0.7439)), 0.0040, 4.0, 0.26),
 )
 HISTOIRE_SIZE = (1440, 1080)
+# Version « lumière du jour » : blancs neutres, image plus claire et plus douce, peu de
+# contraste et de saturation, comme les intérieurs photographiés en lumière diffuse.
+HISTOIRE_JOUR = {
+    "white": (0.76, 1.0, 1.42),  # environ 55 % de la correction vers un blanc neutre
+    "exposure": 0.7,
+    "tone": (0.05, 0.10, 0.205, 0.415, 0.635, 0.80, 0.935),
+    "shadow_tint": (0.004, 0.003, -0.002),
+    "light_tint": (0.006, 0.003, -0.004),
+    "saturation": 0.74,
+    "halation": 0.04,
+    "mist": 0.2,
+    "vignette": 0.08,
+    "grain": 0.012,
+}
 HISTOIRE = [
     # 1. Le fauteuil de lecture et son plaid dans le soleil ; le voilage ondule derrière.
     Shot("salon-ouverture-source.jpg", (0.1974, 0.7811, 0.2871), (0.2063, 0.7917, 0.2572), ((0.205, 0.80),), 3.0, 116,
@@ -396,11 +418,13 @@ def view(src, grid, cam, ref, anchor, focus, aperture, jitter, effects=(), t=0.0
 # Image film
 # ---------------------------------------------------------------------------
 TONE_IN = np.array([0.0, 0.06, 0.18, 0.40, 0.62, 0.82, 1.0], np.float32)
-TONE_OUT = np.array([0.028, 0.072, 0.17, 0.39, 0.635, 0.815, 0.965], np.float32)
 
 
 class Look:
-    def __init__(self, size, seed=7):
+    """Traitement « film » ; les réglages de LOOK peuvent être remplacés vidéo par vidéo."""
+
+    def __init__(self, size, seed=7, **overrides):
+        self.p = {**LOOK, **overrides}
         out_w, out_h = size
         self.size = size
         self.k = out_w / 1920
@@ -409,14 +433,17 @@ class Look:
         ny = (yy + 0.5) / out_h * 2 - 1
         r = np.sqrt(nx ** 2 + ny ** 2) / math.sqrt(2)
         t = np.clip((r - 0.35) / 0.75, 0, 1)
-        self.vignette = (1 - LOOK["vignette"] * t * t * (3 - 2 * t))[..., None].astype(np.float32)
+        self.vignette = (1 - self.p["vignette"] * t * t * (3 - 2 * t))[..., None].astype(np.float32)
         self.rng = np.random.default_rng(seed)
 
     def __call__(self, lin):
         out_w, out_h = self.size
         k = self.k
+        p = self.p
+        if p["exposure"] or p["white"] != (1.0, 1.0, 1.0):
+            lin = lin * (np.float32(p["white"]) * np.float32(2 ** p["exposure"]))
         # Aberration chromatique : rouge un peu agrandi, bleu un peu réduit, depuis le centre.
-        ab = LOOK["aberration"] * k
+        ab = p["aberration"] * k
         if ab > 0:
             for c, sign in ((0, 1), (2, -1)):
                 sc = 1 + sign * ab / (out_w / 2)
@@ -427,27 +454,27 @@ class Look:
         small = cv2.resize(lin, (out_w // 4, out_h // 4), interpolation=cv2.INTER_AREA)
         glow = 0.6 * cv2.GaussianBlur(small, (0, 0), 6 * k) + 0.4 * cv2.GaussianBlur(small, (0, 0), 22 * k)
         glow = cv2.resize(glow, (out_w, out_h), interpolation=cv2.INTER_LINEAR)
-        lin = lin + LOOK["mist"] * np.maximum(glow - lin, 0)
+        lin = lin + p["mist"] * np.maximum(glow - lin, 0)
         # Halo chaud autour des sources lumineuses (fenêtres, lampes, bougies).
         hot = np.clip((lum - 0.55) / 0.45, 0, 1)
         hot = cv2.resize(hot, (out_w // 2, out_h // 2), interpolation=cv2.INTER_AREA)
         hot = cv2.resize(cv2.GaussianBlur(hot, (0, 0), 5 * k), (out_w, out_h), interpolation=cv2.INTER_LINEAR)
-        lin = lin + LOOK["halation"] * hot[..., None] * np.float32([1.0, 0.42, 0.16])
+        lin = lin + p["halation"] * hot[..., None] * np.float32([1.0, 0.42, 0.16])
         lin *= self.vignette
         # Courbe film : noirs relevés, contraste doux, hautes lumières arrondies.
         img = np.clip(lin, 0, 1) ** (1 / 2.2)
-        img = np.interp(img, TONE_IN, TONE_OUT).astype(np.float32)
+        img = np.interp(img, TONE_IN, np.float32(p["tone"])).astype(np.float32)
         # Virage : ombres vers le vert forêt, hautes lumières ambrées ; saturation un peu retenue.
         y = img @ np.float32([0.2126, 0.7152, 0.0722])
         shadow = ((1 - y) ** 2)[..., None]
         light = (y ** 2)[..., None]
-        img = img + shadow * np.float32([-0.016, 0.006, 0.002]) + light * np.float32([0.016, 0.004, -0.022])
-        img = y[..., None] + (img - y[..., None]) * 0.9
+        img = img + shadow * np.float32(p["shadow_tint"]) + light * np.float32(p["light_tint"])
+        img = y[..., None] + (img - y[..., None]) * p["saturation"]
         # Grain : plus marqué dans les tons moyens, comme sur une pellicule.
-        if LOOK["grain"] > 0:
+        if p["grain"] > 0:
             noise = self.rng.standard_normal((out_h // 2, out_w // 2)).astype(np.float32)
             noise = cv2.resize(noise, (out_w, out_h), interpolation=cv2.INTER_LINEAR)
-            img = img + (LOOK["grain"] * (0.45 + 2.2 * y * (1 - y)) * noise)[..., None]
+            img = img + (p["grain"] * (0.45 + 2.2 * y * (1 - y)) * noise)[..., None]
         return (np.clip(img, 0, 1) * 255 + 0.5).astype(np.uint8)
 
 
@@ -515,7 +542,7 @@ def scale_for(shot_widths, image_w, out_w):
     return max(1.0, out_w / (min(shot_widths) * image_w) * 1.05)
 
 
-def render_sequence(shots, out_path, size, crf):
+def render_sequence(shots, out_path, size, crf, look=None):
     """Plans enchaînés en fondu ; la fin se fond dans la première image pour boucler."""
     starts, t = [], 0
     for shot in shots:
@@ -523,7 +550,7 @@ def render_sequence(shots, out_path, size, crf):
         t += shot.frames - DISSOLVE
     total = starts[-1] + shots[-1].frames
     grid = Grid(size)
-    look = Look(size)
+    look = Look(size, **(look or {}))
     atmosphere = Atmosphere(size, total) if any(s.dust or s.shimmer for s in shots) else None
     srcs = []
     for shot in shots:
@@ -632,6 +659,11 @@ def main():
         out.mkdir(parents=True, exist_ok=True)
         poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-cosy-1440x1080.mp4", HISTOIRE_SIZE, 25)
         save_poster(poster, out / "belle-saison-histoire-cosy-couverture.jpg")
+    elif len(args) == 2 and args[0] == "histoire-jour":
+        out = Path(args[1])
+        out.mkdir(parents=True, exist_ok=True)
+        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-jour-1440x1080.mp4", HISTOIRE_SIZE, 25, HISTOIRE_JOUR)
+        save_poster(poster, out / "belle-saison-histoire-jour-couverture.jpg")
     elif len(args) == 2 and args[0] == "boucle":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)

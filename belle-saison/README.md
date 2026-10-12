@@ -93,6 +93,7 @@ et ffmpeg) :
 python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans
 python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
 python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plans cosy, 4:3
+python3 tools/make-hero-video.py histoire-jour sortie/  # la même, en lumière du jour (en ligne)
 ```
 
 La section « Notre histoire » tourne en boucle sur un film de plans cosy (fauteuil et plaid,

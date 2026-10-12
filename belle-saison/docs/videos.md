@@ -74,7 +74,8 @@ restent dans Contenu > Fichiers. Pour changer de vidéo : éditeur du thème > O
 ## Vidéo « Notre histoire » (en ligne dans le thème)
 
 Section « Notre histoire » > Vidéo d’ambiance. Cinq plans cosy, peu de fleurs, 20 s en
-boucle, format 4:3 (1440 x 1080), avec le même rendu film que l’ouverture. Inspiration :
+boucle, format 4:3 (1440 x 1080), avec le rendu film de l’ouverture (relief, mise au point,
+grain). Inspiration :
 les publications d’alfmabi (lumière douce, textiles, lampes, matière du papier peint en gros
 plan, travellings lents). La scène vit : le voilage ondule, les bougies vacillent, la
 poussière flotte dans le soleil, une lumière rasante glisse sur le papier peint.
@@ -91,10 +92,21 @@ poussière flotte dans le soleil, une lumière rasante glisse sur le papier pein
 python3 tools/make-hero-video.py histoire sortie/
 ```
 
+Deux étalonnages existent :
+
+- **Lumière du jour (en ligne)** : blancs cassés, sauge et bois naturel, image claire et
+  douce, peu de contraste, dans l’esprit des photos d’alfmabi. Réglages `HISTOIRE_JOUR`.
+  Fichier : `belle-saison-histoire-jour-1440x1080.mp4` (3,6 Mo).
+- **Heure dorée** : la lumière ambrée des photos d’origine, comme l’ouverture.
+  Fichier : `belle-saison-histoire-cosy-1440x1080.mp4` (5,1 Mo).
+
+```bash
+python3 tools/make-hero-video.py histoire-jour sortie/   # lumière du jour
+```
+
 Les plans et les effets (`Flame`, `Curtain`, `LightSweep`) se règlent dans `HISTOIRE`, en
-tête du script. Fichier : `belle-saison-histoire-cosy-1440x1080.mp4` (5,1 Mo). La première
-version, plus fleurie (`belle-saison-histoire-film-1440x1080.mp4`), reste dans Contenu >
-Fichiers. Sur la boutique, la vidéo se lance sans son et tourne en boucle dès que la section
+tête du script. La première version, plus fleurie (`belle-saison-histoire-film-1440x1080.mp4`),
+reste aussi dans Contenu > Fichiers. Sur la boutique, la vidéo se lance sans son et tourne en boucle dès que la section
 est visible ; un bouton permet de la mettre en pause, et elle reste à l’arrêt pour les
 visiteurs qui ont demandé à réduire les animations.
 
