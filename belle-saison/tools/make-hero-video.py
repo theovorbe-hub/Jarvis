@@ -12,7 +12,7 @@ Aucune IA générative : motifs, couleurs et mobilier restent ceux des photos.
 Usage (depuis belle-saison/) :
   python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans enchaînés en fondu
   python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
-  python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : détails du salon, 4:3
+  python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plans cosy, 4:3
   python3 tools/make-hero-video.py profondeur modele.onnx photo.jpg [...]  # recalcule les cartes
   python3 tools/make-hero-video.py bandes image.png  # découpe une image faite de photos empilées
 Nécessite numpy, Pillow, opencv-python-headless et ffmpeg (onnxruntime pour « profondeur »).
@@ -105,14 +105,14 @@ class Flame:
         s = self.seed
         return _wave(t, ((0.5, 1.3, s), (0.3, 3.1, 2 * s + 1), (0.2, 7.7, 3 * s + 2)))
 
-    def motion(self, mx, my, t):
+    def motion(self, mx, my, t, u):
         s = self.seed
         d2 = ((mx - self.cx) ** 2 + (my - self.cy + self.r) ** 2) / (2 * (1.6 * self.r) ** 2)
         w = np.exp(-d2)
         sway = _wave(t, ((0.6, 0.9, s), (0.4, 2.3, 1.7 * s + 0.5)))
         return w * (0.35 * self.r * sway), w * (0.15 * self.r * self.level(t))
 
-    def gain(self, mx, my, t):
+    def gain(self, mx, my, t, u):
         d2 = (mx - self.cx) ** 2 + (my - self.cy) ** 2
         lv = self.level(t)
         return lv * (0.05 * np.exp(-d2 / (2 * (14 * self.r) ** 2)) + 0.12 * np.exp(-d2 / (2 * (5 * self.r) ** 2))
@@ -140,14 +140,34 @@ class Curtain:
         self.lam = self.wavelength * src.w
         return self
 
-    def motion(self, mx, my, t):
+    def motion(self, mx, my, t, u):
         m = cv2.remap(self.mask, mx, my, cv2.INTER_LINEAR, borderMode=cv2.BORDER_CONSTANT, borderValue=0)
         h = np.clip((my - self.top) / (self.bottom - self.top), 0, 1) ** 1.3
         ph = 2 * math.pi * (t / self.period - my / self.lam - mx / (3 * self.lam))
         return m * self.amp * h * (0.75 * np.sin(ph) + 0.25 * np.sin(2 * ph + 0.8)), None
 
-    def gain(self, mx, my, t):
+    def gain(self, mx, my, t, u):
         return None
+
+
+class LightSweep:
+    """Lumière rasante qui glisse lentement sur le mur et révèle la matière du papier peint.
+    La bande lumineuse va de x0 à x1 (fractions de la largeur de la photo) pendant le plan."""
+
+    def __init__(self, x0, x1, width, strength, slope=0.6):
+        self.x0, self.x1, self.width, self.strength, self.slope = x0, x1, width, strength, slope
+
+    def bind(self, src):
+        self.w, self.h = src.w, src.h
+        return self
+
+    def motion(self, mx, my, t, u):
+        return None, None
+
+    def gain(self, mx, my, t, u):
+        pos = (self.x0 + (self.x1 - self.x0) * u) * self.w
+        d = (mx + (my - self.h / 2) * self.slope - pos) / (self.width * self.w)
+        return self.strength * (np.exp(-d * d) - 0.35)
 
 
 def _periodic_noise(n, seed, cutoff):
@@ -218,27 +238,33 @@ class Atmosphere:
         return lin + amount * glow[..., None] * np.float32([1.0, 0.9, 0.74])
 
 
-# « Notre histoire » : trois détails du salon à l'heure dorée, 16 s en boucle, format 4:3.
-# Le voilage ondule, les bougies vacillent, la poussière flotte dans la lumière.
+# « Notre histoire » : cinq plans cosy, peu de fleurs, 20 s en boucle, format 4:3.
+# Inspiration : lumière douce, textiles, lampes, matière du papier peint en gros plan.
+VOILAGE = (
+    Curtain(((0.2105, 0.0), (0.2919, 0.0), (0.2919, 0.2125), (0.2907, 0.4463), (0.2907, 0.6589),
+             (0.2961, 0.7439), (0.3110, 0.8236), (0.2632, 0.8236), (0.2632, 0.7492), (0.2063, 0.7439),
+             (0.2081, 0.3720)), 0.0030, 5.0, 0.30),
+    Curtain(((0.1800, 0.0), (0.2105, 0.0), (0.2081, 0.3720), (0.2063, 0.7439), (0.1800, 0.7439)), 0.0040, 4.0, 0.26),
+)
 HISTOIRE_SIZE = (1440, 1080)
 HISTOIRE = [
-    # 1. La porte-fenêtre et le voilage de lin, soleil filtré par les arbres du jardin.
-    Shot("salon-ouverture-source.jpg", (0.236, 0.345, 0.383), (0.252, 0.335, 0.347), ((0.27, 0.40),), 3.0, 144,
-         effects=(
-             Curtain(((0.2105, 0.0), (0.2919, 0.0), (0.2919, 0.2125), (0.2907, 0.4463), (0.2907, 0.6589),
-                      (0.2961, 0.7439), (0.3110, 0.8236), (0.2632, 0.8236), (0.2632, 0.7492), (0.2063, 0.7439),
-                      (0.2081, 0.3720)),
-                     0.0030, 5.0, 0.30),
-             Curtain(((0.1800, 0.0), (0.2105, 0.0), (0.2081, 0.3720), (0.2063, 0.7439), (0.1800, 0.7439)),
-                     0.0040, 4.0, 0.26),
-         ), dust=1.0, shimmer=0.07),
-    # 2. Le tableau doré sur le papier peint, glissement vers les bougies de la cheminée.
-    Shot("salon-ouverture-source.jpg", (0.742, 0.351, 0.372), (0.818, 0.338, 0.347), ((0.78, 0.29),), 3.0, 144,
-         effects=(Flame(0.9737, 0.3060, 0.0022, 0.3), Flame(0.9916, 0.2997, 0.0022, 1.9), Flame(0.9611, 0.3677, 0.0020, 3.1)),
-         dust=0.6),
-    # 3. La bougie allumée sur la table basse ; le point passe du canapé à la flamme.
-    Shot("salon-ouverture-source.jpg", (0.727, 0.733, 0.335), (0.739, 0.749, 0.305), ((0.86, 0.66), (0.745, 0.80)), 6.0, 144,
-         effects=(Flame(0.7446, 0.7885, 0.0026, 0.7),), dust=0.8),
+    # 1. Le fauteuil de lecture et son plaid dans le soleil ; le voilage ondule derrière.
+    Shot("salon-ouverture-source.jpg", (0.1974, 0.7811, 0.2871), (0.2063, 0.7917, 0.2572), ((0.205, 0.80),), 3.0, 116,
+         effects=VOILAGE, dust=0.8, shimmer=0.06),
+    # 2. Le canapé, le plaid vert et la cheminée ; le point passe du plaid aux bougies.
+    Shot("montage-2-salon-toile.png", (0.7775, 0.5056, 0.2632), (0.8254, 0.4916, 0.2512), ((0.7775, 0.7865), (0.8493, 0.1966)), 5.0, 116,
+         effects=(Flame(0.8565, 0.1461, 0.0015, 0.3), Flame(0.8367, 0.2022, 0.0015, 1.9),
+                  Flame(0.8193, 0.2444, 0.0015, 3.1), Flame(0.9288, 0.1236, 0.0015, 4.4)),
+         dust=0.3),
+    # 3. La matière du papier peint, révélée par une lumière rasante qui glisse.
+    Shot("montage-3-detail-papier-peint.png", (0.7775, 0.5019, 0.2028), (0.8373, 0.4906, 0.1974), ((0.80, 0.50),), 3.0, 116,
+         effects=(LightSweep(0.70, 0.92, 0.10, 0.10),)),
+    # 4. Le lit, les oreillers et le plaid ; lent travelling avant.
+    Shot("montage-4-chambre.png", (0.6459, 0.5065, 0.2344), (0.6549, 0.4902, 0.2153), ((0.60, 0.40),), 4.0, 116,
+         dust=0.3),
+    # 5. Le chevet, la lampe et le fauteuil cannelé ; le point passe du coussin à la lampe.
+    Shot("montage-4-chambre.png", (0.8493, 0.5065, 0.2344), (0.8732, 0.4967, 0.2213), ((0.933, 0.75), (0.79, 0.45)), 5.0, 116,
+         dust=0.3),
 ]
 
 
@@ -310,7 +336,7 @@ class Grid:
         self.size = size
 
 
-def view(src, grid, cam, ref, anchor, focus, aperture, jitter, effects=(), t=0.0):
+def view(src, grid, cam, ref, anchor, focus, aperture, jitter, effects=(), t=0.0, u=0.0):
     """Image (lumière linéaire) vue par la caméra cam = (cx, cy, largeur) en pixels de src.
     effects : éléments animés de la scène (flammes, rideaux), au temps t en secondes."""
     out_w, out_h = grid.size
@@ -335,8 +361,8 @@ def view(src, grid, cam, ref, anchor, focus, aperture, jitter, effects=(), t=0.0
         my = cy + by * g + dy * d
     gain = None
     for effect in effects:
-        ex, ey = effect.motion(mx, my, t)
-        eg = effect.gain(mx, my, t)
+        ex, ey = effect.motion(mx, my, t, u)
+        eg = effect.gain(mx, my, t, u)
         if ex is not None:
             mx = mx + ex
         if ey is not None:
@@ -475,7 +501,7 @@ def shot_frame(shot, src, grid, t, jitter, f=0, atmosphere=None):
     effects = [e.bind(src) if getattr(e, "_src", None) is not src else e for e in shot.effects]
     for e in effects:
         e._src = src
-    lin = view(src, grid, cam, ref, anchor, focus, shot.aperture, jitter, effects, f / FPS)
+    lin = view(src, grid, cam, ref, anchor, focus, shot.aperture, jitter, effects, f / FPS, t)
     if atmosphere is not None:
         if shot.shimmer:
             lin = atmosphere.shimmer(lin, f, shot.shimmer)
@@ -604,8 +630,8 @@ def main():
     elif len(args) == 2 and args[0] == "histoire":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)
-        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-film-1440x1080.mp4", HISTOIRE_SIZE, 25)
-        save_poster(poster, out / "belle-saison-histoire-film-couverture.jpg")
+        poster = render_sequence(HISTOIRE, out / "belle-saison-histoire-cosy-1440x1080.mp4", HISTOIRE_SIZE, 25)
+        save_poster(poster, out / "belle-saison-histoire-cosy-couverture.jpg")
     elif len(args) == 2 and args[0] == "boucle":
         out = Path(args[1])
         out.mkdir(parents=True, exist_ok=True)

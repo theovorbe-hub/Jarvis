@@ -92,11 +92,11 @@ et ffmpeg) :
 ```bash
 python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans
 python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
-python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : détails du salon, 4:3
+python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plans cosy, 4:3
 ```
 
-La section « Notre histoire » tourne en boucle sur un film de détails du salon : voilage qui
-ondule, bougies qui vacillent, poussière dans la lumière. Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
+La section « Notre histoire » tourne en boucle sur un film de plans cosy (fauteuil et plaid,
+cheminée aux bougies, matière du papier peint, chambre). Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
 
 La section « Ouverture » (diaporama d’images), « Notre histoire » et la section « Vidéo plein écran » acceptent aussi une vidéo
 d’ambiance hébergée sur Shopify (Contenu > Fichiers). Elle se lance sans son et en boucle

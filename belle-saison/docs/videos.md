@@ -73,26 +73,30 @@ restent dans Contenu > Fichiers. Pour changer de vidéo : éditeur du thème > O
 
 ## Vidéo « Notre histoire » (en ligne dans le thème)
 
-Section « Notre histoire » > Vidéo d’ambiance. Trois détails du salon à l’heure dorée,
-16 s en boucle, format 4:3 (1440 x 1080), avec le même rendu film que l’ouverture. Ici la
-scène vit : le voilage de lin ondule, les bougies vacillent et leur lumière respire, la
-poussière flotte dans les rayons du soleil, la lumière est tamisée par les arbres du jardin.
+Section « Notre histoire » > Vidéo d’ambiance. Cinq plans cosy, peu de fleurs, 20 s en
+boucle, format 4:3 (1440 x 1080), avec le même rendu film que l’ouverture. Inspiration :
+les publications d’alfmabi (lumière douce, textiles, lampes, matière du papier peint en gros
+plan, travellings lents). La scène vit : le voilage ondule, les bougies vacillent, la
+poussière flotte dans le soleil, une lumière rasante glisse sur le papier peint.
 
 | Plan | Temps | Détail | Mouvement |
 |---|---|---|---|
-| 1 | 0 à 6 s | la porte-fenêtre et le voilage | travelling avant, le voilage ondule |
-| 2 | 5 à 11 s | le tableau doré sur le papier peint | glissement vers les bougies de la cheminée |
-| 3 | 10 à 16 s | la bougie de la table basse | le point passe du canapé à la flamme, puis fondu vers le début |
+| 1 | 0 à 4,8 s | le fauteuil de lecture et son plaid au soleil | travelling avant, le voilage ondule |
+| 2 | 3,8 à 8,7 s | le canapé, le plaid vert, la cheminée | glissement, le point passe du plaid aux bougies |
+| 3 | 7,7 à 12,5 s | la matière du papier peint | glissement, lumière rasante qui révèle la texture |
+| 4 | 11,5 à 16,3 s | le lit, les oreillers, le plaid | travelling avant |
+| 5 | 15,3 à 20,2 s | le chevet, la lampe, le fauteuil cannelé | le point passe du coussin à la lampe, puis fondu vers le début |
 
 ```bash
 python3 tools/make-hero-video.py histoire sortie/
 ```
 
-Les plans, les flammes (`Flame`) et le voilage (`Curtain`) se règlent dans `HISTOIRE`, en
-tête du script. Fichier : `belle-saison-histoire-film-1440x1080.mp4` (3,9 Mo). Sur la
-boutique, la vidéo se lance sans son et tourne en boucle dès que la section est visible ;
-un bouton permet de la mettre en pause, et elle reste à l’arrêt pour les visiteurs qui ont
-demandé à réduire les animations.
+Les plans et les effets (`Flame`, `Curtain`, `LightSweep`) se règlent dans `HISTOIRE`, en
+tête du script. Fichier : `belle-saison-histoire-cosy-1440x1080.mp4` (5,1 Mo). La première
+version, plus fleurie (`belle-saison-histoire-film-1440x1080.mp4`), reste dans Contenu >
+Fichiers. Sur la boutique, la vidéo se lance sans son et tourne en boucle dès que la section
+est visible ; un bouton permet de la mettre en pause, et elle reste à l’arrêt pour les
+visiteurs qui ont demandé à réduire les animations.
 
 **Limite assumée :** la scène elle-même ne bouge pas (rideaux, lumière). Pour obtenir ces
 mouvements, utilisez un générateur vidéo en mode « image vers vidéo » avec les consignes
