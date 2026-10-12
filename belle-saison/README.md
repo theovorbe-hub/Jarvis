@@ -23,7 +23,7 @@ Le thème en ligne reste Horizon tant que « Belle Saison » n’est pas publié
 belle-saison/
 ├── theme/        Le thème Shopify (dossiers standard d'un thème Online Store 2.0)
 ├── tools/        Validation, aperçu local, tests et fabrication des vidéos
-├── media/        Photos des vidéos et leurs cartes de profondeur
+├── media/        Photos des vidéos (dont histoire/ : les 9 plans) et leurs cartes de profondeur
 └── docs/         Maquette de référence
 ```
 
@@ -92,13 +92,12 @@ et ffmpeg) :
 ```bash
 python3 tools/make-hero-video.py montage sortie/   # ordinateur, 4 plans
 python3 tools/make-hero-video.py boucle sortie/    # salon seul : ordinateur et mobile
-python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : plans cosy, 4:3
-python3 tools/make-hero-video.py histoire-jour sortie/  # la même, en lumière du jour (en ligne)
+python3 tools/make-hero-video.py histoire sortie/  # « Notre histoire » : les 9 plans de media/histoire/, 4:3
 ```
 
-La section « Notre histoire » tourne en boucle sur un film de sept plans cosy en lumière du
-jour (le seuil d’une porte, une console dont la lampe s’allume, la matière du papier peint,
-un fauteuil et son plaid, la cheminée, la chambre). Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
+La section « Notre histoire » tourne en boucle sur un film de 9 plans, du rouleau de papier
+peint à la chambre tapissée (mains qui déroulent le papier, matière en gros plan, porte qui
+s’ouvre sur la chambre). Le détail des plans, des réglages et des fichiers est dans [`docs/videos.md`](docs/videos.md).
 
 Chaque vidéo peut être choisie dans l’éditeur (Contenu > Fichiers) ou donnée par **lien
 direct** vers le fichier MP4 (réglages « lien direct » des sections « Ouverture vidéo » et

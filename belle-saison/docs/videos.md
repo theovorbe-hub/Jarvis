@@ -73,42 +73,37 @@ restent dans Contenu > Fichiers. Pour changer de vidéo : éditeur du thème > O
 
 ## Vidéo « Notre histoire » (en ligne dans le thème)
 
-Section « Notre histoire » > Vidéo d’ambiance. Sept plans cosy, peu de fleurs, 23 s en
-boucle, format 4:3 (1440 x 1080), avec le rendu film de l’ouverture (relief, mise au point,
-grain). Chaque plan reprend une idée des photos d’alfmabi envoyées en inspiration : passer
-le seuil d’une porte, une console avec sa lampe, ses livres et un cadre, la matière du
-papier peint en gros plan, un chevet calme. La scène vit : la lampe s’allume, le voilage
-ondule, les bougies vacillent, la poussière flotte dans le soleil, une lumière rasante
-glisse sur le papier peint.
+Section « Notre histoire », à gauche de « Le charme des intérieurs intemporels ». Film de
+28 s en boucle, format 4:3 (1440 x 1080), fait des 9 plans fournis par Belle Saison
+(`media/histoire/planche-9-plans.jpg`, découpée en `histoire-plan-1.jpg` à `-9.jpg`), avec
+le rendu film de l’ouverture (relief, mise au point, grain) et un étalonnage qui garde leur
+lumière dorée (`HISTOIRE_LOOK`).
 
-| Plan | Temps | Détail | Mouvement |
+| Plan | Temps | Image | Mouvement |
 |---|---|---|---|
-| 1 | 0 à 4,2 s | le seuil du salon vers la salle à manger | on passe la porte, le point va du chambranle à la fenêtre |
-| 2 | 3,2 à 7,3 s | la console, la lampe, les livres, le tableau doré | la lampe s’allume doucement |
-| 3 | 6,3 à 10,5 s | la matière du papier peint | lumière rasante qui révèle la texture |
-| 4 | 9,5 à 13,7 s | le fauteuil de lecture et son plaid au soleil | travelling avant, le voilage ondule |
-| 5 | 12,7 à 16,8 s | le canapé, le plaid vert, la cheminée | le point passe du plaid aux bougies |
-| 6 | 15,8 à 20 s | le lit, les oreillers, le plaid | travelling avant |
-| 7 | 19 à 23,2 s | le chevet, la lampe, le fauteuil cannelé | le point passe du coussin à la lampe, puis fondu vers le début |
-
-Deux étalonnages existent :
-
-- **Lumière du jour (en ligne)** : blancs cassés, sauge et bois naturel, image claire et
-  douce, peu de contraste, dans l’esprit des photos d’alfmabi. Réglages `HISTOIRE_JOUR`.
-  Fichier : `belle-saison-histoire-2-jour-1440x1080.mp4` (4,6 Mo).
-- **Heure dorée** : la lumière ambrée des photos d’origine, comme l’ouverture.
-  Fichier : `belle-saison-histoire-2-doree-1440x1080.mp4` (6,3 Mo).
+| 1 | 0 à 4 s | le rouleau sur la table, au soleil | travelling avant, poussière dans la lumière |
+| 2 | 3 à 7 s | la main posée sur le papier rayé | glissement le long des rayures |
+| 3 | 6 à 10 s | la matière en gros plan | l’ombre des feuillages bouge sur le mur |
+| 4 | 9 à 13 s | le rouleau rayé et la coupelle | le point passe de la coupelle au rouleau |
+| 5 | 12 à 16 s | la main déroule le papier près de la fenêtre | travelling avant vers la main |
+| 6 | 15 à 19 s | la porte de la chambre | on passe la porte, le point va du chambranle au lit |
+| 7 | 18 à 22 s | le lit et sa lampe | le point passe des oreillers à la lampe |
+| 8 | 21 à 25 s | le chevet et la lampe champignon | travelling avant |
+| 9 | 24 à 28 s | la chambre en plan large | recul lent, puis fondu vers le premier plan |
 
 ```bash
-python3 tools/make-hero-video.py histoire-jour sortie/   # lumière du jour
-python3 tools/make-hero-video.py histoire sortie/        # heure dorée
+python3 tools/make-hero-video.py histoire sortie/
 ```
 
-Les plans et les effets (`Glow`, `Flame`, `Curtain`, `LightSweep`) se règlent dans
-`HISTOIRE`, en tête du script. Les versions précédentes (`belle-saison-histoire-film-…`,
-`-cosy-…`, `-jour-…`) restent dans Contenu > Fichiers. Sur la boutique, la vidéo se lance
-sans son et tourne en boucle dès que la section est visible ; un bouton permet de la mettre
-en pause, et elle reste à l’arrêt pour les visiteurs qui ont demandé à réduire les animations.
+Fichier : `belle-saison-histoire-3-1440x1080.mp4` (7,5 Mo), aperçu
+`belle-saison-histoire-3-couverture.jpg`. Pour remplacer un plan, remplacer l’image
+`media/histoire/histoire-plan-N.jpg`, recalculer sa profondeur
+(`make-hero-video.py profondeur …`) et relancer le rendu ; les cadrages se règlent dans
+`HISTOIRE`. Les versions précédentes faites à partir des photos du salon
+(`belle-saison-histoire-2-…`, commandes `histoire-salon` et `histoire-salon-jour`) restent
+dans Contenu > Fichiers. Sur la boutique, la vidéo se lance sans son et tourne en boucle dès
+que la section est visible ; un bouton permet de la mettre en pause, et elle reste à l’arrêt
+pour les visiteurs qui ont demandé à réduire les animations.
 
 **Limite assumée :** la scène elle-même ne bouge pas (rideaux, lumière). Pour obtenir ces
 mouvements, utilisez un générateur vidéo en mode « image vers vidéo » avec les consignes
@@ -156,14 +151,14 @@ Les sections « Ouverture vidéo » et « Notre histoire » acceptent une vidéo
 |---|---|---|
 | Ouverture vidéo | Vidéo ordinateur | `belle-saison-ouverture-film-1920x1080.mp4` |
 | Ouverture vidéo | Vidéo mobile | `belle-saison-ouverture-film-mobile-720x1280.mp4` |
-| Notre histoire | Vidéo d’ambiance | `belle-saison-histoire-2-jour-1440x1080.mp4` (aperçu : `belle-saison-histoire-2-jour-couverture.jpg`) |
+| Notre histoire | Vidéo d’ambiance | `belle-saison-histoire-3-1440x1080.mp4` (aperçu : `belle-saison-histoire-3-couverture.jpg`) |
 
 ## Où vont les vidéos sur le site
 
 | Emplacement | Réglage dans l’éditeur Shopify | Format | Durée |
 |---|---|---|---|
 | Ouverture vidéo (plein écran) | Ouverture vidéo > Vidéo (ordinateur) et Vidéo (mobile) | 16:9 et 9:16 | 15 à 20 s en boucle |
-| Notre histoire | Notre histoire > Vidéo d’ambiance | 4:3 | 12 à 16 s en boucle |
+| Notre histoire | Notre histoire > Vidéo d’ambiance | 4:3 | 20 à 30 s en boucle |
 | Film « Découvrir notre savoir-faire » | Notre histoire > Film complet (YouTube ou Vimeo) | 16:9 | 45 à 90 s, avec son |
 | Vidéo plein écran | Vidéo plein écran > Vidéo | 16:9 paysage | 12 à 20 s en boucle |
 | Fiche produit | Produit > Médias (à côté des photos) | 4:5 portrait | 6 à 10 s |
