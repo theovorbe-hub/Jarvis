@@ -3301,3 +3301,7 @@ figure {
     scroll-behavior: smooth;
   }
 }
+
+.section-newsletter + .section-reassurance .reassurance {
+  border-top: 1px solid var(--color-border);
+}

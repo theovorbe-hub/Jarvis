@@ -274,7 +274,7 @@
         "q7"
       ],
       "settings": {
-        "eyebrow": "Acheter en confiance",
+        "eyebrow": "Questions fréquentes",
         "heading": "Ce qui pourrait vous faire hésiter.",
         "text": "<p>Choisir un papier peint en ligne, c’est se projeter sans le toucher. Voici nos réponses aux questions que l’on se pose avant de tapisser.</p>",
         "button_label": "Choisir mon échantillon offert",
@@ -294,11 +294,11 @@
     "engagements",
     "collections",
     "story",
-    "reassurance",
     "testimonials",
     "featured",
     "video",
     "inspiration",
-    "newsletter"
+    "newsletter",
+    "reassurance"
   ]
 }
