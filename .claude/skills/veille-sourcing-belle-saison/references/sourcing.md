@@ -64,6 +64,23 @@ boutiques de papiers peints haut de gamme), sous le nom de chaque marque.
 
 Muralconcept exige un point de vente physique pour ses revendeurs.
 
+### Avis clients et prix d’achat (13 octobre 2026)
+
+Budget visé par la cliente : 10 € le m² au plus à l’achat.
+
+- Les avis publics sur les fournisseurs de papier peint en dropshipping sont rares : Fancy
+  Walls 4,1 à 4,5 sur 5 (5 à 9 avis Trustpilot, bons retours sur la qualité et le SAV), Bimago
+  quelques avis (produit apprécié, colis laissé devant la porte), Wallmur 780 avis avec des
+  plaintes (dimensions, impression pixelisée), CJ Dropshipping plus de 13 000 avis Trustpilot
+  sur la plateforme (pas sur le papier peint), vendeurs AliExpress de panoramiques peu notés
+  (beibehang : notation vendeur d’environ 60 %).
+- Prix d’achat relevés : CJ, panoramique intissé 5,50 $ le m² (Chine) ; AliExpress, environ
+  9,45 $ le m² (Chine) ; imprimeurs polonais, à partir de 45 zł HT le m² en volume (environ
+  10,50 €), 70 zł dès 100 m² ; Fancy Walls environ 1,85 $ le pied carré (environ 18 € le m²).
+- Conséquence : sous 10 € le m², seuls les fournisseurs chinois tiennent le prix, avec 7 à
+  20 jours de délai et sans « impression européenne ». Garder les promesses du site demande
+  environ 11 à 18 € le m².
+
 ## Mots-clés de recherche
 
 Les catalogues sont surtout en anglais :
