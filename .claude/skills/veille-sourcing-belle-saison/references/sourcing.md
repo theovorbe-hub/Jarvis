@@ -15,6 +15,19 @@ colle, outils de pose) qui ont leur place chez Belle Saison, avec un fournisseur
 Recommandation par défaut : chercher d’abord un imprimeur européen à la demande ou un produit CJ
 expédié depuis l’Europe ; AliExpress en complément, en signalant l’écart avec les promesses.
 
+### Pistes relevées le 13 octobre 2026 (à revérifier, contacter avant tout engagement)
+
+| Piste | Ce qui est annoncé | À vérifier |
+|---|---|---|
+| Print Wallpaper Pro (application Shopify de Caspar GmbH, Allemagne, fabricant depuis 1886) | sur mesure aux dimensions du mur, 11 supports, marque blanche, sans abonnement ni minimum, fabrication en 5 à 7 jours ouvrés, livraison UE, coût au m² | application récente sans avis ; supports exacts (intissé ?) ; délai total jusqu’en France ; compatibilité avec le configurateur du thème |
+| Mon Imprimeur Français | papier peint personnalisé, intissé 195 g préencollé ou 150 g à encoller, lessivable, marque blanche | délais, prix pro, expédition au client final |
+| Neodko (près de Lyon, groupe Piolat) | fabricant français haut de gamme, intissé mat ou vinyle gaufré, créations sur mesure | conditions revendeur, marque blanche, délais |
+| Fancy Walls (Europe) | papier peint à la demande, intissé, API Shopify | pays de fabrication, grammage, délais réels |
+| CJ Dropshipping | entrepôts européens (surtout Allemagne) pour les articles stockés ; impression à la demande limitée au textile et aux objets | aucun papier peint sur mesure trouvé ; papiers peints du catalogue expédiés de Chine : réserver CJ aux accessoires de pose stockés en Europe |
+
+Avec un imprimeur à la demande, la boutique fournit ses propres motifs : vérifier qu’elle en
+détient les droits (création, achat sous licence).
+
 ## Mots-clés de recherche
 
 Les catalogues sont surtout en anglais :
