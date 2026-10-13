@@ -147,3 +147,29 @@ service, sur-mesure, délai).
 
 Puis : les 2 ou 3 produits recommandés en priorité, la commande d’échantillons à prévoir, et les
 écarts éventuels avec les promesses du site.
+
+### Sélection CJ par collection (décision du 13 octobre 2026)
+
+La cliente a choisi CJ Dropshipping (10 € le m² au plus), sans échantillon pour le moment.
+Elle veut les meilleurs produits par collection, aux **tons chauds et cosy**. Avant toute mise
+en vente, corriger les promesses du site (impression européenne, délai de 5 à 7 jours) avec
+le délai réel de CJ.
+
+Accès nécessaire : domaines `cjdropshipping.com`, `developers.cjdropshipping.com` et les
+hôtes d’images de CJ autorisés dans l’accès réseau de l’environnement, et une clé API CJ en
+variable d’environnement `CJ_API_KEY` (compte CJ de la cliente). Sans cela, la recherche web
+ne voit presque aucune fiche produit CJ et les photos ne s’affichent pas.
+
+Critères : palette chaude (crème, lin, miel, ocre, terracotta douce, sauge chaude, bois),
+ni gris froid ni bleu vif ; pas de 3D, marbre ou doré clinquant ; peu de fleurs ; intissé de
+préférence au PVC adhésif ; sur mesure au m² ; coût ≤ 10 € le m² ; commandes et avis visibles ;
+aucune copie d’éditeur connu. Viser 3 produits par collection (15 au total).
+
+| Collection | Mots-clés CJ (anglais) |
+|---|---|
+| Les essentiels | `linen texture wallpaper`, `grasscloth wallpaper`, `beige stripe wallpaper`, `ticking stripe wallpaper`, `plain textured wallpaper cream` |
+| Les motifs | `vintage botanical wallpaper`, `leaf wallpaper beige`, `trailing vine wallpaper`, `retro leaves mural warm` |
+| Les paysages | `oil painting landscape mural`, `vintage countryside mural`, `misty mountain mural warm`, `retro landscape wallpaper` |
+| Les toiles | `toile de jouy wallpaper`, `pastoral toile mural`, `chinoiserie mural beige` |
+| La collection enfant | `hot air balloon mural`, `watercolor animals nursery mural`, `beige kids room mural`, `boho rainbow nursery mural` |
+
