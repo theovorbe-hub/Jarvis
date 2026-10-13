@@ -28,6 +28,24 @@ expédié depuis l’Europe ; AliExpress en complément, en signalant l’écart
 Avec un imprimeur à la demande, la boutique fournit ses propres motifs : vérifier qu’elle en
 détient les droits (création, achat sous licence).
 
+### Fournisseurs « clé en main » (catalogue de motifs + expédition au client), 13 octobre 2026
+
+La cliente préfère un catalogue existant à des motifs à créer. Pistes, toutes à confirmer
+(compte revendeur, prix, délais, échantillons) :
+
+| Fournisseur | Ce qui est annoncé | Point de vigilance |
+|---|---|---|
+| Artgeist (Pologne, grand fabricant de décoration murale) | programme de dropshipping : catalogue avec visuels et textes, fabrication et expédition par Artgeist, plus de 200 partenaires, 34 pays | délais vers la France et format du flux à demander |
+| Bimago (Pologne) | page dropshipping ; panoramiques sur mesure, intissé ; expédition neutre sous 7 jours en Europe (UPS, DPD) | vend aussi en direct en France : mêmes motifs visibles ailleurs, parfois en promotion |
+| Vimando (Allemagne) | application Shopify gratuite, plus de 20 000 papiers peints et tableaux, sur mesure, fabrication en 2 à 3 jours ouvrés, DPD dans toute l’Europe, envoi neutre | 1 seul avis (1 étoile, support injoignable), peu d’installations |
+| Walldelivery (Wall Group) | panoramiques sur mesure réservés aux revendeurs, livraison en marque blanche | expédition directe au client final non confirmée |
+| Fancy Walls (Europe) | fabrication en 1 à 2 jours, API Shopify | accès au catalogue après 10 commandes à la demande |
+| BigBuy (Espagne) | rayon papiers peints, livraison Europe 48 à 72 h | abonnement mensuel, style plutôt grand public |
+
+Critères propres à Belle Saison : style (rayures, lin, botanique discret, toile, paysages,
+enfant), intissé épais, fabrication dans l’UE, délai réel ≤ 7 jours, et exclusivité relative
+(un motif vendu partout, moins cher, nuit au positionnement haut de gamme).
+
 ## Mots-clés de recherche
 
 Les catalogues sont surtout en anglais :
