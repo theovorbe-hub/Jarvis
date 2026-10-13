@@ -46,6 +46,24 @@ Critères propres à Belle Saison : style (rayures, lin, botanique discret, toil
 enfant), intissé épais, fabrication dans l’UE, délai réel ≤ 7 jours, et exclusivité relative
 (un motif vendu partout, moins cher, nuit au positionnement haut de gamme).
 
+### Éditeurs au positionnement proche de Belle Saison (13 octobre 2026)
+
+Style plus juste que les catalogues grand public ci-dessus, mais délais plus longs et marge à
+négocier. Belle Saison devient alors une « maison » qui sélectionne des éditeurs (comme les
+boutiques de papiers peints haut de gamme), sous le nom de chaque marque.
+
+| Éditeur | Style | Conditions connues | À confirmer |
+|---|---|---|---|
+| Bien Fait (Paris) | panoramiques d’artistes : illustrations du XVIIIe, botanique peinte, paysages poétiques ; fabriqué en France, imprimé à la commande, lessivable | compte professionnel commun avec Rebel Walls, Sandberg et Hovia : sans minimum, impression à la demande ; Hovia annonce 20 % de remise | livraison chez le client final, colis neutre, délai (2 à 4 semaines chez un revendeur) |
+| Sandberg (Suède) | classique scandinave, rayures, botanique ; fabriqué en Suède | même compte professionnel | délai vers la France (environ 15 jours ouvrés vers les États-Unis) |
+| Rebel Walls (Suède) | grand catalogue de panoramiques, imprimés à la demande en Suède | même compte professionnel, sans minimum | expédition au client, délai |
+| Ananbô (France, depuis 2008) | panoramiques peints à la main, esprit XIXe, environ 150 modèles, imprimés à Bordeaux | travaille avec architectes et décorateurs | conditions revendeur |
+| Papiers de Paris, La Route des Indes (France) | panoramiques de luxe, sur mesure | inconnues | conditions revendeur |
+| Isidore Leroy, Casadéco et Caselio (France) | toile, rayures, botanique, esprit maison de famille | vendus par revendeurs agréés | ouverture à une boutique en ligne |
+| ESTAhome, Origin (Pays-Bas) | chaleureux, familial ; Origin haut de gamme | grossiste sur Faire (achat de stock) | minimums |
+
+Muralconcept exige un point de vente physique pour ses revendeurs.
+
 ## Mots-clés de recherche
 
 Les catalogues sont surtout en anglais :
