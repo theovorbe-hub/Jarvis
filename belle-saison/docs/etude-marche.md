@@ -312,7 +312,7 @@ du succès :
 3. **La demande décide des motifs** : panoramiques peints, rayures (en hausse dans toutes les
    couleurs), fleuri, toile de Jouy, effet lin. Les tons chauds sont la signature et aussi les
    couleurs les plus recherchées ; on y ajoute le bleu, le rose et le vert sauge en motif. Pas
-   de jungle ni de tropical. Liste des 22 produits : compétence `veille-sourcing-belle-saison`,
+   de jungle ni de tropical. Les 5 meilleurs thèmes de chaque collection : compétence `veille-sourcing-belle-saison`,
    `references/sourcing.md`.
 4. **Acquisition équilibrée** : publicité Google sur les recherches d’achat, Pinterest pour
    l’inspiration, référencement sur les recherches précises.

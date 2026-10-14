@@ -201,8 +201,10 @@ Critères :
 - commandes et avis visibles ;
 - aucune copie d’éditeur connu.
 
-Nombre de produits : réparti selon la demande, 22 au total. Le panoramique est le plus
-recherché : 49 500 recherches par mois.
+Nombre de produits : les 5 thèmes les plus recherchés de chaque collection, soit 25
+produits. Lancer d’abord les 3 premiers de chaque collection, soit 15 produits en ligne avant
+fin décembre pour le pic de janvier. Le panoramique est la plus forte demande : 49 500
+recherches par mois.
 
 Demande par couleur en France (recherches Google par mois, évolution sur 3 ans) :
 
@@ -219,62 +221,88 @@ Demande par couleur en France (recherches Google par mois, évolution sur 3 ans)
 Les rayures progressent dans toutes les couleurs. Le bleu et le rose se vendent en motif
 (rayures, fleuri, toile), pas en uni.
 
-Motifs à sourcer, par ordre de priorité (étude du 14 octobre 2026). La preuve combine :
+Les 5 meilleurs thèmes de chaque collection, classés par demande (étude du 14 octobre 2026).
 
-- les recherches Google en France : volume par mois, évolution sur un an et sur trois ans ;
-- les best-sellers et les mises en avant des concurrents.
+Lecture des colonnes :
 
-Reprendre le thème, jamais le dessin d’un concurrent. « Chaud » signale un produit aux tons
-chauds.
+- **Recherches par mois** : somme des recherches Google en France sur le thème (ex. :
+  forêt = « forêt » + « panoramique forêt » + « arbre »).
+- **3 ans** : évolution sur trois ans.
+- **Preuve concurrents** : best-sellers ou modèles mis en avant.
 
-| Priorité | Collection | Motif | Preuve | Mots-clés CJ (anglais) |
-|---|---|---|---|---|
-| 1 | essentiels | Rayure fine grège sur crème (chaud) | « rayures » 6 600 (+156 % sur 3 ans) ; rayé beige 880 (+378 %) ; nouveauté Leroy Merlin 2026 ; tendance Pinterest 2026 | `pinstripe wallpaper beige`, `thin stripe wallpaper cream`, `ticking stripe wallpaper` |
-| 2 | essentiels | Rayure bleue douce | rayé bleu 1 300 (+458 %), la rayure la plus recherchée | `blue stripe wallpaper`, `blue ticking stripe wallpaper` |
-| 3 | paysages | Montagne et lac dans la brume (chaud) | « montagne » 1 900 ; « panoramique montagne » 880 (+11 %) ; Muralconcept et Photowall (Alpes) | `misty mountain mural warm`, `alpine lake painting mural` |
-| 4 | motifs | Fleuri vintage terracotta et ocre (chaud) | « fleuri » 5 400 et « fleurs » 3 600 ; vintage fleuri 1 900 (+11 %) ; fleuri beige +130 %, terracotta +37 % | `vintage floral wallpaper terracotta`, `small floral wallpaper warm` |
-| 5 | toiles | Toile de Jouy écru ou beige (chaud) | « toile de jouy » 2 900, au plus haut depuis 8 ans ; beige +142 % | `toile de jouy wallpaper beige`, `pastoral toile wallpaper cream` |
-| 6 | paysages | Campagne vallonnée peinte, façon tableau ancien, tons miel (chaud) | paysages peints en tête des tendances 2026 ; Rebel Walls (Hilltop Vista), Photowall (Tuscany Eden) ; « provence » +59 % | `oil painting landscape mural`, `tuscany landscape mural`, `vintage countryside mural` |
-| 7 | essentiels | Rayure vert sauge | rayé vert 880 (+359 %) ; vert sauge +86 % | `sage green stripe wallpaper` |
-| 8 | paysages | Panoramique terracotta : collines, arches ou dunes (chaud) | terracotta, première couleur recherchée (4 400) et première couleur du panoramique (480) ; « arche » +24 % | `terracotta landscape mural`, `boho arch mural terracotta` |
-| 9 | motifs | Fleuri rose | fleuri rose 1 000, stable | `pink floral wallpaper vintage` |
-| 10 | essentiels | Effet lin naturel (chaud) | « effet lin » +426 % sur 3 ans ; texture +27 % ; raphia +176 % | `linen texture wallpaper beige`, `grasscloth wallpaper` |
-| 11 | toiles | Toile de Jouy bleue | toile bleue 320 (+110 %), la toile de couleur la plus recherchée | `blue toile de jouy wallpaper` |
-| 12 | essentiels | Grand vichy crème et miel (chaud) | « vichy » 1 300 (+210 %) ; Photowall (Tranquil Gingham), Isidore Leroy (Grand Vichy) | `gingham wallpaper beige`, `check wallpaper cream` |
-| 13 | paysages | Forêt peinte au matin (chaud) | « forêt » 2 900 et « panoramique forêt » 880 (en recul, gros volume) ; Isidore Leroy (Forêt de Bretagne, Cyprès) | `vintage forest mural painting`, `misty forest mural warm` |
-| 14 | essentiels | Rayure terracotta (chaud) | rayé terracotta 320 (+407 %) | `terracotta stripe wallpaper`, `rust stripe wallpaper` |
-| 15 | motifs | Fleuri bleu | fleuri bleu 480 (+46 %) | `blue floral wallpaper vintage` |
-| 16 | motifs | Petit motif bordeaux ou chocolat sur lin (chaud) | bordeaux +72 % sur un an, marron +29 %, chocolat +39 % | `burgundy pattern wallpaper`, `brown botanical wallpaper vintage` |
-| 17 | toiles | Toile de Jouy rose ou verte | rose 210 (+102 %), vert 170 (+135 %) | `pink toile wallpaper`, `green toile de jouy wallpaper` |
-| 18 | toiles | Chinoiserie douce sur fond crème (chaud) | « oiseaux » 1 600 ; « Chinoiserie Chic » parmi les plus populaires de Rebel Walls | `chinoiserie mural beige`, `chinoiserie birds wallpaper cream` |
-| 19 | paysages | Dunes et bord de mer, tons sable (chaud) | « Dune », premier best-seller cité d’Isidore Leroy ; « panoramique mer » 400 (en recul) | `sand dunes mural painting`, `coastal landscape mural beige` |
-| 20 | enfant | Montgolfières, tons doux | montgolfière 480, le thème enfant le plus stable | `hot air balloon mural` |
-| 21 | enfant | Animaux de la forêt, aquarelle | « animaux » 1 000 ; Rebel Walls (forêt de conte) | `woodland animals nursery mural` |
-| 22 | enfant | Ciel et nuages doux | « nuage » 1 300 | `soft clouds nursery mural beige` |
+Thèmes écartés pour le positionnement : football, voitures, avions, licornes, baroque chargé,
+effet béton, jungle et tropical.
 
-Répartition :
+Ne jamais reprendre le dessin d’un concurrent. Ne pas utiliser de nom de marque (Liberty,
+Morris & Co.) dans les titres.
 
-| Collection | Produits | Dont tons chauds |
-|---|---|---|
-| essentiels | 6 | 4 |
-| paysages | 5 | 5 |
-| motifs | 4 | 2 |
-| toiles | 4 | 2 |
-| enfant | 3 | doux |
-| **total** | **22** | **13** |
+#### Les paysages (panoramiques)
 
-Lancement : les priorités 1 à 10 d’abord, en ligne avant fin décembre pour le pic de janvier.
+| Rang | Thème | Recherches par mois | 3 ans | Preuve concurrents | Mots-clés CJ |
+|---|---|---|---|---|---|
+| 1 | Forêt peinte au matin, tons chauds | 5 100 | en recul | Isidore Leroy (Forêt de Bretagne, Cyprès), Rebel Walls (forêts) | `vintage forest mural painting`, `misty forest mural warm` |
+| 2 | Montagne et lac dans la brume | 2 800 | **en hausse** (+11 %) | Photowall (Alpes), Muralconcept (lac alpin) | `misty mountain mural warm`, `alpine lake painting mural` |
+| 3 | Campagne vallonnée peinte, tons miel | 2 200 | stable | Rebel Walls (Hilltop Vista), Photowall (Tuscany Eden) | `oil painting landscape mural`, `vintage countryside mural` |
+| 4 | Bord de mer et dunes, tons sable | 2 000 | en recul | Isidore Leroy (Dune, premier best-seller cité) | `sand dunes mural painting`, `coastal landscape mural beige` |
+| 5 | Coucher de soleil terracotta (collines ou arches) | 900 | stable | terracotta, première couleur du panoramique | `terracotta landscape mural`, `sunset hills mural warm` |
 
-Enfant : Google ne donne aucun volume pour les recherches liées aux enfants (« chambre
-d’enfant », « bébé »…). Les thèmes mesurables (animaux, arc-en-ciel, savane) reculent : 3
-produits suffisent.
+#### Les essentiels
+
+| Rang | Thème | Recherches par mois | 3 ans | Preuve concurrents | Mots-clés CJ |
+|---|---|---|---|---|---|
+| 1 | Rayures : bleue (1 300), grège (880), sauge (880), rose (590), terracotta (320) | 6 600 | **+156 %** | Leroy Merlin (nouveauté 2026), tendance Pinterest 2026 | `pinstripe wallpaper beige`, `blue stripe wallpaper`, `sage green stripe wallpaper`, `terracotta stripe wallpaper` |
+| 2 | Texturé effet lin ou tissé | 2 600 | **en hausse** (lin +426 %) | Leroy Merlin (effet taloche) | `linen texture wallpaper beige`, `grasscloth wallpaper` |
+| 3 | Vichy et petits carreaux, crème et miel | 2 200 | **+210 %** (vichy) | Photowall (Tranquil Gingham), Isidore Leroy (Grand Vichy) | `gingham wallpaper beige`, `check wallpaper cream` |
+| 4 | Uni chaud (beige, terracotta) | 1 300 | −18 % | | `plain textured wallpaper beige` |
+| 5 | Effet chaux ou enduit | 110 | **+37 %** | Leroy Merlin (effet taloche) | `limewash wallpaper`, `plaster texture wallpaper` |
+
+Rayures : lancer d’abord bleue, grège et sauge.
+
+#### Les motifs
+
+| Rang | Thème | Recherches par mois | 3 ans | Preuve concurrents | Mots-clés CJ |
+|---|---|---|---|---|---|
+| 1 | Fleuri vintage à petites fleurs, tons chauds | 9 000 (fleuri et fleurs), dont vintage fleuri 1 900 | stable | Lilipinso (fleurs délicates) | `vintage small floral wallpaper`, `ditsy floral wallpaper warm` |
+| 2 | Feuillage fin vert sauge (olivier, branches) | 4 100 | en recul (gros volume) | Papermint (Botanic), Muralconcept (feuillage beige et ocre) | `olive branch wallpaper`, `sage botanical wallpaper` |
+| 3 | Oiseaux et branches, ou papillons, sur fond crème | 2 100 | en recul | Rebel Walls (Chinoiserie Chic) | `birds and branches wallpaper cream` |
+| 4 | Fleuri rose et pivoines | 1 600 | stable | | `pink floral wallpaper vintage`, `peony wallpaper` |
+| 5 | Fleuri bleu | 480 | **+46 %** | | `blue floral wallpaper vintage` |
+
+#### Les toiles
+
+| Rang | Thème | Recherches par mois | 3 ans | Preuve concurrents | Mots-clés CJ |
+|---|---|---|---|---|---|
+| 1 | Toile de Jouy : beige d’abord, puis bleue (+110 %), rose, verte | 2 900 | **au plus haut depuis 8 ans** | tendance 2026 (toile revisitée) | `toile de jouy wallpaper beige`, `blue toile de jouy wallpaper` |
+| 2 | Estampe japonaise douce (grues, vagues, montagnes), tons sable | 2 200 | en recul | Photowall (collection Japandi) | `japanese crane wallpaper beige`, `japanese landscape mural` |
+| 3 | Cottage anglais, esprit Arts & Crafts (façon William Morris, dessins du domaine public) | 1 900 | **en forte hausse** (cottage +239 %, William Morris +30 %) | Morris & Co., Sanderson | `arts and crafts wallpaper`, `william morris style wallpaper` |
+| 4 | Chinoiserie douce sur fond crème | 1 000 | stable | Rebel Walls (Chinoiserie Chic, parmi les plus populaires) | `chinoiserie mural beige`, `chinoiserie birds wallpaper cream` |
+| 5 | Art nouveau, tons ocre | 880 | en recul | | `art nouveau wallpaper vintage` |
+
+#### La collection enfant
+
+Google ne donne aucun volume pour les recherches contenant « enfant » ou « bébé ». La demande
+est mesurée par thème.
+
+| Rang | Thème | Recherches par mois | 3 ans | Preuve concurrents | Mots-clés CJ |
+|---|---|---|---|---|---|
+| 1 | Ciel, nuages et étoiles | 2 200 | en recul | thème « nuages et étoiles » parmi les plus vendus | `soft clouds nursery mural beige`, `stars and moon nursery wallpaper` |
+| 2 | Animaux de la forêt (ours, renard, lapin) | 1 800 | ours **+56 %** | Lilipinso (KHARU, best-seller), forêt et animaux en tête des ventes | `woodland animals nursery mural` |
+| 3 | Savane douce (lion, éléphant, girafe) | 1 700 | en recul | Lilipinso (jungle YATSUNI), jungle parmi les plus vendus | `watercolor safari nursery mural beige` |
+| 4 | Carte du monde vintage | 1 100 | en recul | | `vintage world map mural` |
+| 5 | Arc-en-ciel aux tons terre | 880 | en recul | thème courant des chambres de bébé | `boho rainbow nursery mural` |
+
+En réserve :
+
+- montgolfières : 480 recherches, la plus stable ;
+- dinosaures en aquarelle : 880, −62 % ;
+- fonds marins : best-seller Lilipinso OCEAN FIELD.
 
 À ne pas sélectionner (recherches en chute sur 3 ans) :
 
 | Motif | Évolution sur 3 ans |
 |---|---|
 | grand feuillage | −69 % |
-| jungle, tropical, palmier, bananier, savane | −30 à −60 % |
+| jungle, tropical, palmier, bananier (sauf la savane douce de la collection enfant) | −30 à −60 % |
 | brique | −61 % |
 | bois | −53 % |
 | marbre | −50 % |
