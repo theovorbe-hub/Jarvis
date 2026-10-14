@@ -122,8 +122,128 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
 
   assert.deepEqual(errors, []);
   await browser.close();
+
+  await testSimulator();
   console.log('Configurateur, calculateur, ouverture vidéo et vidéos : tous les tests passent.');
 })().catch((error) => {
   console.error(error.message);
   process.exit(1);
 });
+
+// Simulateur « Voir sur mon mur » : servi en HTTP (la caméra et les images CORS l'exigent),
+// avec une caméra simulée par Chromium.
+async function testSimulator() {
+  const http = require('http');
+  const fs = require('fs');
+  const types = { '.html': 'text/html', '.js': 'text/javascript', '.css': 'text/css', '.jpg': 'image/jpeg', '.webm': 'video/webm', '.mp4': 'video/mp4' };
+  const server = http.createServer((req, res) => {
+    const file = path.join(outDir, decodeURIComponent(req.url.split('?')[0]));
+    fs.readFile(file, (error, data) => {
+      if (error) {
+        res.writeHead(404);
+        res.end();
+        return;
+      }
+      res.writeHead(200, { 'Content-Type': types[path.extname(file)] || 'application/octet-stream' });
+      res.end(data);
+    });
+  });
+  await new Promise((resolve) => server.listen(0, '127.0.0.1', resolve));
+  const base = `http://127.0.0.1:${server.address().port}`;
+  const browser = await launch({ args: ['--use-fake-device-for-media-stream', '--use-fake-ui-for-media-stream', '--use-gl=swiftshader', '--enable-unsafe-swiftshader'] });
+  const page = await browser.newPage({ viewport: { width: 1280, height: 900 }, acceptDownloads: true });
+  const errors = [];
+  page.on('pageerror', (error) => errors.push(error.message));
+
+  await page.goto(`${base}/product.html`);
+  await page.click('[data-simulator-open]');
+  assert.equal(await page.$eval('[data-simulator]', (d) => d.open), true, 'la fenêtre du simulateur s’ouvre');
+  assert.equal(await page.$eval('[data-sim-ar]', (d) => d.hidden), true, 'pas de réalité augmentée sur ordinateur');
+  assert.equal(await page.inputValue('[data-sim-width]'), '300');
+
+  // Géométrie : l'homographie envoie bien les quatre coins.
+  const corners = await page.evaluate(() => {
+    const { homography, project } = window.BelleSaisonSimulator;
+    const dst = [[10, 20], [300, 40], [280, 260], [30, 240]];
+    const H = homography([[0, 0], [100, 0], [100, 50], [0, 50]], dst);
+    return [[0, 0], [100, 0], [100, 50], [0, 50]].map(([x, y], i) => Math.hypot(project(H, x, y)[0] - dst[i][0], project(H, x, y)[1] - dst[i][1]));
+  });
+  assert.ok(corners.every((d) => d < 1e-6), 'homographie exacte aux coins');
+
+  // Photo du mur : le papier peint s'affiche dans le quadrilatère, pas en dehors.
+  await page.setInputFiles('[data-sim-file]', path.join(outDir, 'img', 'mur-test.jpg'));
+  await page.waitForFunction(() => !document.querySelector('[data-sim-work]').hidden);
+  await page.waitForTimeout(800);
+  const pixels = await page.evaluate(() => {
+    const canvas = document.querySelector('[data-sim-canvas]');
+    const ctx = canvas.getContext('2d');
+    const at = (fx, fy) => Array.from(ctx.getImageData(Math.round(canvas.width * fx), Math.round(canvas.height * fy), 1, 1).data);
+    return { inside: at(0.5, 0.45), outside: at(0.5, 0.06) };
+  });
+  const distance = (a, b) => Math.hypot(a[0] - b[0], a[1] - b[1], a[2] - b[2]);
+  assert.ok(distance(pixels.inside, [226, 219, 206]) > 25, `papier peint visible sur le mur (${pixels.inside})`);
+  assert.ok(distance(pixels.outside, [226, 219, 206]) < 12, `photo intacte hors du mur (${pixels.outside})`);
+
+  // Coins déplaçables à la souris et au clavier.
+  const handle = await page.$('[data-sim-handle="0"]');
+  const before = await handle.boundingBox();
+  await page.mouse.move(before.x + before.width / 2, before.y + before.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(before.x + 80, before.y + 60, { steps: 4 });
+  await page.mouse.up();
+  const after = await handle.boundingBox();
+  assert.ok(after.x - before.x > 40 && after.y - before.y > 25, 'le coin suit la souris');
+  const second = await page.$('[data-sim-handle="1"]');
+  const keyBefore = await second.boundingBox();
+  await second.focus();
+  await page.keyboard.press('Shift+ArrowLeft');
+  assert.ok((await second.boundingBox()).x < keyBefore.x - 5, 'le coin se règle au clavier');
+
+  // Enregistrer l'image composée.
+  const [download] = await Promise.all([page.waitForEvent('download'), page.click('[data-sim-save]')]);
+  assert.equal(download.suggestedFilename(), 'belle-saison-motif-1.jpg');
+  assert.ok(fs.statSync(await download.path()).size > 20000, 'image enregistrée');
+
+  // Caméra en direct, puis photo figée.
+  await page.click('[data-sim-restart]');
+  await page.click('[data-sim-camera]');
+  await page.waitForFunction(() => !document.querySelector('[data-sim-freeze]').hidden, null, { timeout: 8000 });
+  await page.click('[data-sim-freeze]');
+  assert.equal(await page.$eval('[data-sim-freeze]', (b) => b.hidden), true, 'la photo est prise');
+  await page.click('[data-sim-close]');
+  assert.equal(await page.$eval('[data-simulator]', (d) => d.open), false);
+
+  // Modèle 3D de réalité augmentée : un panneau aux dimensions du mur, lisible par model-viewer.
+  const model = await page.evaluate(async () => {
+    const script = document.createElement('script');
+    script.type = 'module';
+    script.src = 'assets/model-viewer.min.js';
+    document.head.append(script);
+    await customElements.whenDefined('model-viewer');
+    const canvas = document.createElement('canvas');
+    canvas.width = 64;
+    canvas.height = 64;
+    canvas.getContext('2d').fillRect(0, 0, 64, 64);
+    const jpeg = await new Promise((resolve) => canvas.toBlob(resolve, 'image/jpeg'));
+    const glb = window.BelleSaisonSimulator.buildGlb(new Uint8Array(await jpeg.arrayBuffer()), 3, 2.5);
+    const viewer = document.createElement('model-viewer');
+    viewer.setAttribute('loading', 'eager');
+    viewer.style.cssText = 'position:fixed;top:0;left:0;width:300px;height:300px;z-index:10';
+    document.body.append(viewer);
+    const status = await new Promise((resolve) => {
+      viewer.addEventListener('load', () => resolve('load'));
+      viewer.addEventListener('error', () => resolve('error'));
+      setTimeout(() => resolve('timeout'), 20000);
+      viewer.src = URL.createObjectURL(new Blob([glb], { type: 'model/gltf-binary' }));
+    });
+    return { status, size: viewer.getDimensions() };
+  });
+  assert.equal(model.status, 'load', 'le modèle 3D se charge');
+  assert.deepEqual([model.size.x, model.size.y], [3, 2.5], 'panneau de 3 m sur 2,5 m');
+
+  assert.deepEqual(errors, []);
+  await browser.close();
+  server.close();
+  console.log('Simulateur « Voir sur mon mur » : tous les tests passent.');
+}
+

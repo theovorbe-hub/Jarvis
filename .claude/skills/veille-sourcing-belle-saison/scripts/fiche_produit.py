@@ -16,7 +16,7 @@ COLLECTIONS = {"essentiels", "motifs", "paysages", "toiles", "enfant"}
 MODES = {"m2", "rouleau"}
 OPTION = "Papier"
 TEXTE = {"matiere", "pose", "entretien", "type_raccord"}
-DECIMAL = {"largeur_le", "longueur_rouleau", "raccord"}
+DECIMAL = {"largeur_le", "longueur_rouleau", "raccord", "largeur_visuel"}
 
 erreurs, avertissements = [], []
 
@@ -109,6 +109,11 @@ def main():
     if not images:
         erreurs.append("au moins une image est nécessaire.")
     fichiers = []
+    visuels = [i for i, im in enumerate(images) if im.get("visuel")]
+    if not visuels:
+        avertissements.append("aucune image marquée « visuel »: true (motif à plat) : le simulateur « Voir sur mon mur » ne s’affichera pas.")
+    elif len(visuels) > 1:
+        erreurs.append("une seule image peut être marquée « visuel ».")
     for i, im in enumerate(images):
         url = im.get("url", "")
         if not url.startswith("https://"):
@@ -177,6 +182,12 @@ def main():
     }
     json.dump({"input": entree}, sys.stdout, ensure_ascii=False, indent=2)
     print()
+    if visuels:
+        print(
+            f"Après création : relier l’image n° {visuels[0] + 1} (motif à plat) au métachamp "
+            "papier_peint.visuel (étape 3 bis de references/import-shopify.md).",
+            file=sys.stderr,
+        )
 
 
 if __name__ == "__main__":

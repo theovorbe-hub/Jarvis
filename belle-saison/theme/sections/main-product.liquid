@@ -38,6 +38,13 @@
   assign strip_width = pp.largeur_le.value | default: settings.default_strip_width
   assign roll_length = pp.longueur_rouleau.value | default: settings.default_roll_length
   assign pattern_repeat = pp.raccord.value | default: 0
+
+  # Simulateur « Voir sur mon mur » : visuel à plat et largeur réelle d'un motif (0 = panoramique, le visuel couvre le mur).
+  assign sim_visuel = pp.visuel.value
+  assign sim_tile = pp.largeur_visuel.value | default: 0
+  if sim_tile == 0 and sale_mode == 'rouleau'
+    assign sim_tile = strip_width
+  endif
 -%}
 
 <section
@@ -284,6 +291,26 @@
                 </details>
               {%- endif -%}
 
+            {%- when 'simulator' -%}
+              {%- if sim_visuel != blank -%}
+                <div class="simulator-launch" {{ block.shopify_attributes }}>
+                  <button
+                    type="button"
+                    class="button button--secondary button--full simulator-launch__button"
+                    data-simulator-open="Simulator-{{ section.id }}"
+                    aria-haspopup="dialog"
+                  >
+                    {%- render 'icon', name: 'ar' -%}
+                    {{ block.settings.label | escape }}
+                  </button>
+                  {%- if block.settings.text != blank -%}
+                    <p class="simulator-launch__text">{{ block.settings.text | escape }}</p>
+                  {%- endif -%}
+                </div>
+              {%- elsif request.design_mode -%}
+                <p class="simulator-launch__empty" {{ block.shopify_attributes }}>{{ 'products.simulator.missing_visual' | t }}</p>
+              {%- endif -%}
+
             {%- when 'buy_buttons' -%}
               <div class="product__buy{% if sale_mode == 'm2' %} product__buy--single{% endif %}" {{ block.shopify_attributes }}>
                 {%- if sale_mode == 'rouleau' -%}
@@ -387,6 +414,13 @@
           {%- endcase -%}
         {%- endfor -%}
       {%- endform -%}
+
+      {%- comment -%} Fenêtre du simulateur, hors du formulaire d'ajout au panier. {%- endcomment -%}
+      {%- for block in section.blocks -%}
+        {%- if block.type == 'simulator' and sim_visuel != blank -%}
+          {%- render 'wall-simulator', product: product, section_id: section.id, visuel: sim_visuel, tile_cm: sim_tile -%}
+        {%- endif -%}
+      {%- endfor -%}
     </div>
   </div>
 </section>
@@ -478,6 +512,29 @@
           "id": "open",
           "label": "Ouvert par défaut",
           "default": false
+        }
+      ]
+    },
+    {
+      "type": "simulator",
+      "name": "Voir sur mon mur",
+      "limit": 1,
+      "settings": [
+        {
+          "type": "paragraph",
+          "content": "Réalité augmentée sur téléphone, caméra ou photo du mur sur tous les appareils. Le bouton apparaît quand le produit a un « Visuel à plat » (métachamp papier_peint.visuel)."
+        },
+        {
+          "type": "text",
+          "id": "label",
+          "label": "Bouton",
+          "default": "Voir sur mon mur"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Texte sous le bouton",
+          "default": "Visualisez ce papier peint chez vous, avec l’appareil photo de votre téléphone ou de votre ordinateur."
         }
       ]
     },

@@ -3385,3 +3385,336 @@ figure {
 .section-newsletter + .section-reassurance .reassurance {
   border-top: 1px solid var(--color-border);
 }
+
+/* --------------------------------------------------------------------------
+   Simulateur « Voir sur mon mur »
+   -------------------------------------------------------------------------- */
+.simulator-launch {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.simulator-launch__button {
+  gap: 0.625rem;
+}
+
+.simulator-launch__text,
+.simulator-launch__empty {
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+  line-height: 1.5;
+}
+
+.simulator {
+  width: min(1180px, 94vw);
+  height: min(880px, 92vh);
+  max-width: none;
+  max-height: none;
+  padding: 0;
+  border: 0;
+  border-radius: var(--radius);
+  background: var(--color-bg);
+  color: var(--color-text);
+}
+
+.simulator::backdrop {
+  background: rgb(14 16 13 / 0.78);
+}
+
+.simulator__inner {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.simulator__header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.875rem 1rem 0.875rem 1.5rem;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.simulator__heading {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.25rem 1rem;
+  margin-right: auto;
+  min-width: 0;
+}
+
+.simulator__title {
+  font-family: var(--font-heading-family);
+  font-weight: var(--font-heading-weight);
+  font-size: 1.5rem;
+  line-height: 1.2;
+}
+
+.simulator__product {
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+}
+
+.simulator__close {
+  border-color: transparent;
+}
+
+.simulator__start {
+  display: grid;
+  align-content: start;
+  gap: 1.5rem;
+  width: 100%;
+  max-width: 760px;
+  margin-inline: auto;
+  padding: clamp(1.5rem, 4vw, 3rem) clamp(1rem, 4vw, 2rem);
+  overflow-y: auto;
+}
+
+.simulator__intro {
+  font-family: var(--font-heading-family);
+  font-size: clamp(1.25rem, 1.1rem + 0.6vw, 1.625rem);
+  line-height: 1.35;
+}
+
+.simulator__ar {
+  display: grid;
+  gap: 0.75rem;
+}
+
+.simulator__ar[hidden] {
+  display: none;
+}
+
+.simulator__preview model-viewer {
+  display: block;
+  width: 100%;
+  height: clamp(220px, 34vh, 320px);
+  background: var(--color-surface);
+  --poster-color: transparent;
+}
+
+.simulator__preview model-viewer::part(default-ar-button) {
+  display: none;
+}
+
+.simulator__choices {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.simulator__choice {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-surface);
+  color: inherit;
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: border-color 0.3s var(--ease-out);
+}
+
+.simulator__choice:hover,
+.simulator__choice:focus-within,
+.simulator__choice:focus-visible {
+  border-color: var(--color-text);
+}
+
+.simulator__choice .icon {
+  flex: none;
+  width: 1.75rem;
+  height: 1.75rem;
+  color: var(--color-accent);
+}
+
+.simulator__choice strong {
+  display: block;
+  font-size: 1.0625rem;
+  font-weight: 600;
+}
+
+.simulator__choice small {
+  display: block;
+  margin-top: 0.25rem;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  line-height: 1.45;
+}
+
+.simulator__note,
+.simulator__privacy,
+.simulator__message {
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.simulator__message {
+  color: var(--color-text);
+}
+
+.simulator__work {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  min-height: 0;
+}
+
+.simulator__work[hidden],
+.simulator__start[hidden] {
+  display: none;
+}
+
+.simulator__stage {
+  position: relative;
+  flex: 1;
+  min-height: 0;
+  overflow: hidden;
+  background: #1d1f1a;
+  touch-action: none;
+  user-select: none;
+}
+
+.simulator__canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.simulator__video {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.simulator__handle {
+  position: absolute;
+  width: 44px;
+  height: 44px;
+  margin: -22px 0 0 -22px;
+  padding: 0;
+  border: 0;
+  background: none;
+  cursor: grab;
+  touch-action: none;
+}
+
+.simulator__handle::before {
+  content: '';
+  position: absolute;
+  inset: 12px;
+  border: 2px solid var(--color-accent);
+  border-radius: 50%;
+  background: #fbf8f3;
+  box-shadow: 0 2px 10px rgb(0 0 0 / 0.35);
+  transition: transform 0.2s var(--ease-out);
+}
+
+.simulator__handle.is-dragging {
+  cursor: grabbing;
+}
+
+.simulator__handle.is-dragging::before,
+.simulator__handle:hover::before {
+  transform: scale(1.15);
+}
+
+.simulator__handle:focus-visible {
+  outline: none;
+}
+
+.simulator__handle:focus-visible::before {
+  outline: 2px solid #fbf8f3;
+  outline-offset: 3px;
+}
+
+.simulator__hint {
+  padding: 0.75rem 1.5rem 0;
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+}
+
+.simulator__controls {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 1.5rem 1.25rem;
+}
+
+.simulator__dims {
+  display: flex;
+  gap: 0.75rem;
+}
+
+.simulator__dims .field__input {
+  width: 7.5rem;
+}
+
+.simulator__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+
+.simulator__actions .button {
+  gap: 0.5rem;
+}
+
+.simulator__actions .button[hidden] {
+  display: none;
+}
+
+@media (max-width: 749px) {
+  .simulator {
+    width: 100vw;
+    height: 100dvh;
+    border-radius: 0;
+  }
+
+  .simulator__header {
+    padding: 0.625rem 0.5rem 0.625rem 1rem;
+  }
+
+  .simulator__title {
+    font-size: 1.25rem;
+  }
+
+  .simulator__choices {
+    grid-template-columns: 1fr;
+  }
+
+  .simulator__hint {
+    padding: 0.625rem 1rem 0;
+  }
+
+  .simulator__controls {
+    padding: 0.625rem 1rem 1rem;
+  }
+
+  .simulator__dims,
+  .simulator__dims .field {
+    flex: 1;
+  }
+
+  .simulator__dims .field__input {
+    width: 100%;
+  }
+
+  .simulator__actions {
+    width: 100%;
+  }
+
+  .simulator__actions .button {
+    flex: 1 1 calc(50% - 0.25rem);
+  }
+}

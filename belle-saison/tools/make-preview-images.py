@@ -36,6 +36,21 @@ for name, box in CROPS.items():
     crop.resize((crop.width * scale, crop.height * scale), Image.LANCZOS).save(OUT / f"{name}.jpg", quality=88)
 print(f"{len(CROPS)} images écrites dans {OUT}")
 
+# Simulateur « Voir sur mon mur » : un visuel à plat (motif répété), un visuel panoramique et
+# une photo de mur pour les tests.
+media = HERE.parent / "media"
+motif = Image.open(media / "montage-3-detail-papier-peint.png").convert("RGB").crop((820, 10, 1080, 255))
+motif.resize((motif.width * 2, motif.height * 2), Image.LANCZOS).save(OUT / "visuel-motif.jpg", quality=88)
+panoramique = mockup.crop(CROPS["col3"])
+panoramique.resize((panoramique.width * 4, panoramique.height * 4), Image.LANCZOS).save(OUT / "visuel-panoramique.jpg", quality=88)
+mur = Image.new("RGB", (1600, 1200), (226, 219, 206))
+for x in range(1600):
+    shade = int(18 * (x / 1600))
+    for y in range(1050, 1200):
+        mur.putpixel((x, y), (150 - shade, 120 - shade, 90 - shade))
+mur.save(OUT / "mur-test.jpg", quality=90)
+print("Images du simulateur écrites (visuel-motif, visuel-panoramique, mur-test).")
+
 if shutil.which("ffmpeg"):
     subprocess.run(
         [

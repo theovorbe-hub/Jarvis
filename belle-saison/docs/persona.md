@@ -206,6 +206,7 @@ l’accord de la cliente).
 | **Date de livraison en clair** (« Commandé aujourd’hui, livré entre le … et le … »), calculée sur le délai réel de CJ | thème, après mesure du délai réel |
 | Engagements sous le bouton d’achat | fait (textes à corriger pour CJ, voir section 5) |
 | **Guide de pose** (étapes, matériel, vidéo) : « se pose en un samedi » | contenus |
+| **« Voir sur mon mur »** : réalité augmentée sur téléphone, caméra ou photo du mur sur tous les appareils, image à enregistrer ou à partager | fait (le produit doit avoir son visuel à plat) |
 | Bouton **« Partager »** (copier le lien, WhatsApp) pour la décision à deux | thème |
 | Favoris | fait |
 | **Paiement en 3 ou 4 fois** au-delà d’environ 400 € (PayPal ou Alma) | décision (frais) |

@@ -86,6 +86,8 @@ comme un échantillon : elle disparaît du choix du papier et devient le bouton
 | `longueur_rouleau` | décimal (m) | Rouleau : longueur |
 | `raccord` | décimal (cm) | Hauteur du raccord, masqué si 0 |
 | `type_raccord` | texte | Raccord droit, sauté ou sans raccord |
+| `visuel` | fichier (image) | Motif à plat pour « Voir sur mon mur ». Sans lui, le bouton n’apparaît pas |
+| `largeur_visuel` | décimal (cm) | Largeur réelle du motif s’il se répète (souvent 53). Vide = panoramique ajusté au mur |
 
 ## Vidéos
 
@@ -179,3 +181,24 @@ lent sous 1200 px), toutes les collections et inspirations (en grille sur mobile
 avis, tri des collections avec son libellé. Seule la mise en page s’adapte : les colonnes se
 superposent et, sur petit écran, le menu, le compte et les favoris passent dans le menu ☰.
 Les tests (`npm test`) vérifient cette parité à 390 px.
+
+## Voir sur mon mur (simulateur)
+
+Sur chaque fiche produit, le bouton « Voir sur mon mur » (bloc « Voir sur mon mur » de la fiche)
+ouvre un simulateur :
+
+- **Réalité augmentée** sur les téléphones compatibles (Android avec ARCore dans Chrome, iPhone
+  avec Quick Look) : un panneau aux dimensions du mur, texturé avec le papier peint, à taille
+  réelle. Sur Android il se pose sur le mur ; sur iPhone il apparaît debout et se fait glisser
+  contre le mur. La bibliothèque `assets/model-viewer.min.js` (Google, licence Apache-2.0,
+  version 4.2.0) n’est chargée qu’à l’ouverture du simulateur sur ces téléphones.
+- **Caméra ou photo du mur**, sur tous les appareils (ordinateur compris) : le client place les
+  quatre coins de son mur ; le papier peint s’applique en perspective, à l’échelle (largeur du
+  motif rapportée à la largeur du mur, préremplie depuis le configurateur), en gardant les
+  ombres de la pièce. Il peut enregistrer ou partager l’image. Rien n’est envoyé : tout se passe
+  dans le navigateur.
+
+Le bouton n’apparaît que si le produit a son métachamp `papier_peint.visuel` (le motif à plat,
+voir l’import de produits). Code : `snippets/wall-simulator.liquid` et `assets/simulateur.js`.
+Tests : `npm test` (perspective, coins à la souris et au clavier, image enregistrée, caméra
+simulée, modèle 3D). La réalité augmentée elle-même se vérifie sur un vrai téléphone.

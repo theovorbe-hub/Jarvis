@@ -43,8 +43,8 @@ const mkProduct = (i, title, images, mode = 'm2') => {
     variants, selected_or_first_available_variant: variants[0], media, featured_media: media[0],
     description: '<p>Un feuillage dessiné à la main, imprimé sur un intissé mat qui laisse respirer les couleurs. Le visuel est adapté aux dimensions exactes de votre mur.</p>',
     metafields: { papier_peint: mode === 'm2'
-      ? { mode_vente: { value: 'm2' }, matiere: { value: 'Intissé premium 190 g/m²' }, raccord: { value: 0 }, pose: { value: 'Encollage du mur' }, entretien: { value: 'Lessivable' } }
-      : { mode_vente: { value: 'rouleau' }, matiere: { value: 'Intissé' }, largeur_le: { value: 53 }, longueur_rouleau: { value: 10.05 }, raccord: { value: 32 }, type_raccord: { value: 'Raccord droit' }, pose: { value: 'Encollage du mur' } } },
+      ? { mode_vente: { value: 'm2' }, matiere: { value: 'Intissé premium 190 g/m²' }, raccord: { value: 0 }, pose: { value: 'Encollage du mur' }, entretien: { value: 'Lessivable' }, visuel: { value: img('visuel-panoramique', 1600, 1150) } }
+      : { mode_vente: { value: 'rouleau' }, matiere: { value: 'Intissé' }, largeur_le: { value: 53 }, longueur_rouleau: { value: 10.05 }, raccord: { value: 32 }, type_raccord: { value: 'Raccord droit' }, pose: { value: 'Encollage du mur' }, visuel: { value: img('visuel-motif', 520, 490) }, largeur_visuel: { value: 53 } } },
   };
 };
 const products = [
@@ -99,7 +99,7 @@ engine.registerFilter('t', (key, ...args) => {
 engine.registerFilter('money', money);
 engine.registerFilter('money_with_currency', (c) => `${money(c)} EUR`);
 engine.registerFilter('money_without_currency', (c) => ((Number(c) || 0) / 100).toFixed(2).replace('.', ','));
-engine.registerFilter('image_url', (image, ...args) => (image && image.__image ? { ...image, __url: image.src } : image ? String(image) : ''));
+engine.registerFilter('image_url', (image, ...args) => (image && image.__image ? { ...image, __url: image.src, toString() { return this.__url; } } : image ? String(image) : ''));
 engine.registerFilter('image_tag', (image, ...args) => {
   const o = kw(args);
   const src = image && image.__url ? image.__url : String(image);

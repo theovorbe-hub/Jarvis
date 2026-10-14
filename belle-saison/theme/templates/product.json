@@ -70,11 +70,19 @@
             "heading": "Livraison et retours",
             "content": "<p>Ajoutez ici vos délais et conditions de livraison et de retour.</p>"
           }
+        },
+        "simulator": {
+          "type": "simulator",
+          "settings": {
+            "label": "Voir sur mon mur",
+            "text": "Visualisez ce papier peint chez vous, avec l’appareil photo de votre téléphone ou de votre ordinateur."
+          }
         }
       },
       "block_order": [
         "title",
         "price",
+        "simulator",
         "variant_picker",
         "dimensions",
         "roll_calculator",

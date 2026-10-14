@@ -42,4 +42,6 @@ Shopify (Liquid). Les consignes Next.js d'`AGENTS.md` ne s'y appliquent pas.
 - Clientèle visée : lire `docs/persona.md` (Claire, 41 ans, maison ancienne rénovée pièce par
   pièce ; Léa et la chambre d’enfant ; Hélène et la maison de campagne). Toute adaptation du
   site, fiche produit ou offre se décide à partir de ce persona.
-
+- Chaque produit importé doit avoir son motif à plat (`papier_peint.visuel`, et
+  `largeur_visuel` pour un motif qui se répète) : sans lui, le simulateur « Voir sur mon mur »
+  ne s’affiche pas. Voir `README.md`, section « Voir sur mon mur ».

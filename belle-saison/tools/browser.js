@@ -4,7 +4,7 @@ const { chromium } = require('playwright-core');
 
 const DEFAULT_PATH = '/opt/pw-browsers/chromium-1194/chrome-linux/chrome';
 
-module.exports = () => {
+module.exports = (options = {}) => {
   const executablePath = process.env.CHROMIUM_PATH || (fs.existsSync(DEFAULT_PATH) ? DEFAULT_PATH : undefined);
-  return chromium.launch(executablePath ? { executablePath } : {});
+  return chromium.launch({ ...(executablePath ? { executablePath } : {}), ...options });
 };

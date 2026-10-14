@@ -18,9 +18,11 @@ Belle Saison, **en brouillon**, prêt à être relu par l’utilisateur.
   ],
   "echantillon": { "prix": 0, "cout": 1.8 },
   "images": [
-    { "url": "https://…/photo-1.jpg", "alt": "Chambre tapissée d’une rayure lin sauge" }
+    { "url": "https://…/photo-1.jpg", "alt": "Chambre tapissée d’une rayure lin sauge" },
+    { "url": "https://…/motif.jpg", "alt": "Motif rayure lin sauge à plat", "visuel": true }
   ],
   "metachamps": {
+    "largeur_visuel": 53,
     "matiere": "Intissé premium 190 g/m²",
     "pose": "Encollage du mur",
     "entretien": "Lessivable",
@@ -40,6 +42,11 @@ Belle Saison, **en brouillon**, prêt à être relu par l’utilisateur.
 - `echantillon` : `null` pour ne pas proposer d’échantillon.
 - `cout` : coût d’achat livré, enregistré dans Shopify pour suivre la marge.
 - `fournisseur` : enregistré dans des métachamps `sourcing.*`, invisibles sur le site.
+- `"visuel": true` sur **une** image : le motif à plat, sans pièce autour (souvent une image du
+  fournisseur). Il alimente le simulateur « Voir sur mon mur » (réalité augmentée et photo du
+  mur). `largeur_visuel` : largeur réelle de cette image en cm quand c’est un motif qui se répète
+  (souvent la largeur d’un lé, 53 cm) ; à omettre pour un panoramique, que le simulateur ajuste
+  au mur entier.
 - Textes en français, apostrophe ’, sans tiret cadratin. Le script corrige les apostrophes
   droites et signale le reste.
 
@@ -82,6 +89,31 @@ variables. Si `userErrors` n’est pas vide, corriger le fichier JSON et recomme
   doivent être publiques. Préférer les photos d’ambiance à fond neutre, sans filigrane.
 - Le statut reste `DRAFT`. Ne pas activer ni publier sans l’accord explicite de l’utilisateur :
   la boutique en ligne actuelle (thème Horizon) afficherait le produit aussitôt.
+
+## 3 bis. Relier le visuel à plat (simulateur « Voir sur mon mur »)
+
+Le métachamp `papier_peint.visuel` (type `file_reference`) pointe vers l’image du motif à plat.
+Récupérer l’identifiant de cette image une fois le produit créé, puis l’enregistrer :
+
+```graphql
+query Medias($id: ID!) {
+  product(id: $id) { media(first: 20) { nodes { id alt status } } }
+}
+```
+
+```graphql
+mutation Visuel($metafields: [MetafieldsSetInput!]!) {
+  metafieldsSet(metafields: $metafields) {
+    metafields { key value }
+    userErrors { field message }
+  }
+}
+```
+
+Variables : `{"metafields": [{"ownerId": "gid://shopify/Product/…", "namespace": "papier_peint",
+"key": "visuel", "type": "file_reference", "value": "gid://shopify/MediaImage/…"}]}` (l’image
+dont `alt` est celui du motif à plat, au statut `READY`). Le bouton « Voir sur mon mur »
+n’apparaît sur la fiche qu’une fois ce métachamp rempli.
 
 ## 4. Vérifier et passer la main
 

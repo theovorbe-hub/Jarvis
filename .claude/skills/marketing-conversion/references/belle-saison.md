@@ -50,6 +50,9 @@ s’il est sourcé (compétence `veille-sourcing-belle-saison`).
   d’échantillon, engagements sous le bouton d’achat (bloc « Réassurance » : échantillon offert,
   adaptation sur mesure incluse, livraison sous 5 à 7 jours), tableau de caractéristiques,
   favoris, recommandations de produits.
+- Simulateur « Voir sur mon mur » sur la fiche produit (réalité augmentée sur téléphone, caméra
+  ou photo du mur partout, image à enregistrer ou partager) : levier n° 1 de projection pour
+  Claire ; il exige le métachamp `papier_peint.visuel` sur chaque produit.
 - Ajout au panier : court message de confirmation, pas de panier latéral.
 - Paiement express : présent dans le panier (`content_for_additional_checkout_buttons`),
   absent de la fiche produit. Avant de l’ajouter à la fiche d’un produit sur mesure, passer une
