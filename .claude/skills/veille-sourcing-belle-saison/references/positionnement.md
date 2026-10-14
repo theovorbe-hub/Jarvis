@@ -10,8 +10,15 @@
   matières naturelles (lin, bois, céramique, rotin), esprit cosy et calme.
 - **Palette** : crème `#F9F5F0`, vert forêt `#2D3829`, sauge, bois naturel, ivoire.
 - **Typographie** : Garamond pour les titres et le texte, petites capitales pour les boutons.
-- **Goûts exprimés par la cliente** : peu de fleurs, plans cosy, textures de lin, rayures
-  fines, motifs botaniques discrets, lumière naturelle. Références visuelles : les
+- **Goûts exprimés par la cliente** : plans cosy, textures de lin, rayures fines, motifs
+  botaniques discrets, lumière naturelle.
+- **Choix des produits (décision du 14 octobre 2026)** : la demande décide.
+  - Les tons chauds restent la signature (environ 6 produits sur 10) ; ce sont aussi les
+    couleurs les plus recherchées.
+  - On ajoute les couleurs et motifs les plus demandés, même hors tons chauds : bleu, rose et
+    vert sauge en rayures, en fleuri et en toile de Jouy.
+  - Le fleuri est accepté : c’est la deuxième demande après le panoramique.
+  - Données et liste : `references/sourcing.md`, « Sélection CJ par collection ». Références visuelles : les
   publications d’alfmabi (rayures grège ou ocre, chambres claires, rouleaux de papier en gros
   plan, mains qui déroulent le papier).
 
