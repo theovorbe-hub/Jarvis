@@ -16,6 +16,11 @@ COLLECTIONS = {"essentiels", "motifs", "paysages", "toiles", "enfant"}
 MODES = {"m2", "rouleau"}
 OPTION = "Papier"
 TEXTE = {"matiere", "pose", "entretien", "type_raccord"}
+# Règle de prix Belle Saison (octobre 2026) : aligné sur le bas du marché des panoramiques sur
+# mesure (cible 39 € le m²) avec au moins 25 % de marge nette (TVA 20 %, paiement 2 %, provision
+# de 5 % pour échantillons, réimpressions et litiges ; le coût saisi est le coût d'achat livré).
+MARGE_MIN = 0.25
+PRIX_M2_MARCHE = (35, 42)
 DECIMAL = {"largeur_le", "longueur_rouleau", "raccord", "largeur_visuel"}
 
 erreurs, avertissements = [], []
@@ -93,10 +98,15 @@ def main():
             erreurs.append(f"qualites[{i}] : nom en double ({nom}).")
         noms.append(nom)
         prix, cout = q.get("prix"), q.get("cout")
-        if cout is not None and prix is not None and float(prix) / 1.2 <= float(cout):
-            erreurs.append(f"qualites[{i}] ({nom}) : le prix HT ne couvre pas le coût d'achat.")
-        elif cout is not None and prix is not None and float(prix) / 1.2 < 2 * float(cout):
-            avertissements.append(f"{nom} : marge faible (prix HT inférieur à deux fois le coût).")
+        if cout is not None and prix is not None:
+            ht = float(prix) / 1.2
+            marge = (ht - 0.02 * float(prix) - 0.05 * ht - float(cout)) / ht if ht else -1
+            if marge < MARGE_MIN:
+                erreurs.append(f"qualites[{i}] ({nom}) : marge nette de {marge * 100:.0f} %, sous le minimum de {MARGE_MIN * 100:.0f} %.")
+        elif prix is not None:
+            avertissements.append(f"{nom} : coût d'achat absent, marge nette non vérifiée.")
+        if mode == "m2" and prix is not None and not PRIX_M2_MARCHE[0] <= float(prix) <= PRIX_M2_MARCHE[1]:
+            avertissements.append(f"{nom} : {prix} € le m², hors de la fourchette du marché ({PRIX_M2_MARCHE[0]} à {PRIX_M2_MARCHE[1]} €, cible 39 €).")
         variantes.append(variante(nom, prix, cout, q.get("sku"), f"qualites[{i}]"))
 
     ech = p.get("echantillon")

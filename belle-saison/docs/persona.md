@@ -13,12 +13,15 @@ charme d’un papier peint d’éditeur à un prix qu’elle peut s’offrir.
 
 ## Positionnement prix qui en découle
 
-- Prix de vente visé : **29 à 39 € le m²** (coût d’achat CJ de 10 € le m² au plus, marge nette
-  d’environ 50 %, voir `scripts/prix.py` de la compétence de sourcing). Un mur de tête de lit
-  (environ 9 m²) revient donc à 260 à 350 €.
-- Place sur le marché : au-dessus des places de marché à petit prix, en dessous des maisons
-  d’édition haut de gamme. Promesse implicite : **« le charme d’une maison d’édition, au prix
-  juste »**. Ne jamais l’écrire en comparant nommément des concurrents.
+- Prix de vente : **39 € le m² TTC** (règle du 14 octobre 2026 : aligné sur le bas du marché des
+  panoramiques sur mesure, au moins 25 % de marge nette). Un mur de tête de lit (environ 9 m²)
+  revient à environ 350 €.
+- Place sur le marché : au niveau de Photowall premium (39 €), sous Muralconcept (à partir de
+  48 €), Rebel Walls (50 à 53 €) et Walldreamer (51 €), au-dessus des panoramiques génériques
+  (12 à 19 €). Promesse implicite : **« le charme d’une maison d’édition, au prix juste »**. Ne
+  jamais l’écrire en comparant nommément des concurrents.
+- Marge : 58 % avant publicité avec un coût CJ de 10 € le m², ce qui laisse de la place pour la
+  livraison offerte, une remise pour plusieurs pièces et la publicité.
 
 ---
 
@@ -110,7 +113,7 @@ répond en affirmant.
 
 ### Budget
 
-- 250 à 600 € pour un mur ; jusqu’à 1 200 € quand elle fait deux ou trois pièces.
+- 250 à 600 € pour un mur (environ 350 € à 39 € le m²) ; jusqu’à 1 200 € quand elle fait deux ou trois pièces.
 - Sensible au **prix total clair**, pas au « moins cher ». Le paiement en plusieurs fois
   l’aide au-delà d’environ 400 €.
 - Accepte **deux semaines de délai** pour du sur-mesure si la date est annoncée avant l’achat (un

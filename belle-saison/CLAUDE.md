@@ -45,3 +45,7 @@ Shopify (Liquid). Les consignes Next.js d'`AGENTS.md` ne s'y appliquent pas.
 - Chaque produit importé doit avoir son motif à plat (`papier_peint.visuel`, et
   `largeur_visuel` pour un motif qui se répète) : sans lui, le simulateur « Voir sur mon mur »
   ne s’affiche pas. Voir `README.md`, section « Voir sur mon mur ».
+- Prix : environ 39 € le m² TTC, aligné sur le bas du marché (fourchette 35 à 42 €), avec au moins
+  25 % de marge nette. Grille des concurrents et calcul : compétence `veille-sourcing-belle-saison`,
+  `references/sourcing.md` (« Règle de prix »).
+

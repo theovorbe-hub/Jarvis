@@ -67,7 +67,9 @@ Suivre `references/sourcing.md` : plateformes (AliExpress, CJ Dropshipping, impr
 européens à la demande), mots-clés, critères de sélection et grille de notation sur 20.
 Livrer une présélection courte (5 à 10 produits au plus) sous forme de tableau : produit,
 lien, collection Belle Saison visée, coût, délai vers la France, origine, note sur 20,
-risques. Calculer le prix de vente conseillé avec `scripts/prix.py` (marge, TVA, frais).
+risques. Prix de vente : règle Belle Saison, autour de 39 € le m² (aligné sur le bas du marché,
+fourchette 35 à 42 €) avec au moins 25 % de marge nette ; vérifier avec
+`scripts/prix.py --prix-vente 39 --marge 0.25 --provision 0.05` (détail dans `references/sourcing.md`).
 
 ## 3. Import dans Shopify
 

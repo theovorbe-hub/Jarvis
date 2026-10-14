@@ -12,6 +12,13 @@ mobile le soir, budget de 250 à 600 € par mur), personas secondaires (Léa, c
 Hélène, plusieurs pièces de maison de campagne ; professionnelles), anti-persona, et la liste
 des adaptations du site classées « fait », « thème » ou « décision ».
 
+## Prix et marge
+
+Prix de vente : 39 € le m² TTC (aligné sur le bas du marché, au moins 25 % de marge nette). Avec un
+coût CJ de 10 € le m², la marge nette est d’environ 58 % avant publicité : toute offre (livraison
+offerte, remise au m², kit) se chiffre avec `scripts/paliers.py` et ne doit jamais faire passer
+une commande sous 25 % de marge nette.
+
 ## Ton des offres
 
 - Vouvoiement, phrases courtes et calmes, pas de point d’exclamation, pas d’emoji, pas de

@@ -125,6 +125,34 @@ paramètres changent).
 Éliminatoire, quelle que soit la note : copie d’un motif d’éditeur connu, photos avec filigrane
 ou texte d’une autre marque, avis signalant des couleurs très différentes des photos.
 
+## Règle de prix Belle Saison (décision du 14 octobre 2026)
+
+**Vendre autour de 39 € le m² TTC**, aligné sur le bas du marché des panoramiques sur mesure de
+marques comparables, avec **au moins 25 % de marge nette**. Fourchette acceptée : 35 à 42 € le
+m² (le script `fiche_produit.py` signale tout prix hors fourchette et refuse une marge sous 25 %).
+
+Prix relevés en octobre 2026 (TTC, au m², à revérifier régulièrement) :
+
+| Concurrent | Prix au m² | Source |
+|---|---|---|
+| Photowall (Suède) | 35 € standard, 39 € premium, colle comprise | https://www.photowall.fr/curve-2-papiers-peint |
+| Muralconcept (France) | à partir de 48 € | https://muralconcept.us/ |
+| Rebel Walls (Suède, chez revendeurs) | 50 à 53 € | https://www.meinewand.com/en/rebel-walls-mural-provence |
+| Walldreamer (chez La Maison Bineau) | 51 € | https://www.lamaisonbineau.fr/papier-peint-panoramique-sur-mesure-en-intisse.html |
+| Isidore Leroy (haut de gamme) | 67,68 € | https://isidoreleroy.com/en/collections/papier-peint-panoramique |
+| Panoramiques génériques | 12 à 19 € | https://www.prix.net/prix/papier-peint-panoramique-sur-mesure-5322054160294366319.html et https://www.papierspeintsdirect.com/papier-peint/papier-peint-panoramique-14 |
+
+Contrôle d’une marge à prix imposé (coût CJ de 10 € le m², 12 € de port par commande de
+10 m², provision de 5 % pour échantillons et réimpressions) :
+
+```bash
+python3 scripts/prix.py --cout-m2 10 --port-commande 12 --prix-vente 39 --marge 0.25 --provision 0.05
+```
+
+Résultat : 58 % de marge nette avant publicité ; coût d’achat maximal 20,74 € le m² ; jusqu’à
+107 € de publicité par commande de 10 m² en gardant 25 %. Prix plancher à 25 % sans publicité :
+20 € le m².
+
 ## Prix de vente conseillé
 
 ```bash
