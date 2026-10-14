@@ -39,3 +39,7 @@ Shopify (Liquid). Les consignes Next.js d'`AGENTS.md` ne s'y appliquent pas.
 - Ordinateur et mobile doivent montrer le même site : mêmes contenus, mêmes vidéos (version
   verticale du même film), rien de masqué sur mobile ; seule la mise en page s’adapte. Toute
   nouvelle vidéo d’ouverture se fait en deux versions (`montage` et `montage-mobile`).
+- Clientèle visée : lire `docs/persona.md` (Claire, 41 ans, maison ancienne rénovée pièce par
+  pièce ; Léa et la chambre d’enfant ; Hélène et la maison de campagne). Toute adaptation du
+  site, fiche produit ou offre se décide à partir de ce persona.
+

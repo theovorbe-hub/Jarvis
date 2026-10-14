@@ -12,6 +12,13 @@ Boutique Shopify `v6shfu-w1` de papiers peints d’exception. Typologie : **luxe
   séparer les éléments d’une ligne par « · » ou par des virgules.
 - Parler de la pièce et de l’ambiance avant de parler du papier.
 
+## Pour qui (bloc 04)
+
+Écrire pour l’un des personas de `belle-saison/docs/persona.md` : Claire (maison ancienne
+rénovée pièce par pièce, chambre parentale ou salon, style campagne chic), Léa (chambre
+d’enfant, panoramique doux) ou Hélène (maison de campagne, plusieurs pièces, goûts classiques).
+Nommer la pièce et l’ambiance, jamais l’âge ni le revenu.
+
 ## Désirs et problèmes du client (pour l’accroche)
 
 - Un mur blanc sans caractère, une pièce qui manque de chaleur ou de personnalité.

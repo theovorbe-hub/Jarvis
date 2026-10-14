@@ -4,6 +4,14 @@ Boutique Shopify `v6shfu-w1` de papiers peints d’exception, thème « Belle Sa
 dans `belle-saison/theme/`). Typologie : **luxe, décoration**. On pousse à l’achat par le
 service, la projection et des offres élégantes, jamais par la pression.
 
+## Clientèle
+
+Lire `belle-saison/docs/persona.md` avant tout audit ou toute offre : persona principal (Claire,
+41 ans, propriétaire d’une maison ancienne, style campagne chic, décide à deux, découvre sur
+mobile le soir, budget de 250 à 600 € par mur), personas secondaires (Léa, chambre d’enfant ;
+Hélène, plusieurs pièces de maison de campagne ; professionnelles), anti-persona, et la liste
+des adaptations du site classées « fait », « thème » ou « décision ».
+
 ## Ton des offres
 
 - Vouvoiement, phrases courtes et calmes, pas de point d’exclamation, pas d’emoji, pas de
