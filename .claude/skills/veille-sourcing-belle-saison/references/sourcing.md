@@ -92,6 +92,7 @@ Les catalogues sont surtout en anglais :
 - `botanical leaves wallpaper sage green`, `trailing vine wallpaper` (motifs)
 - `landscape mural wallpaper countryside`, `misty hills mural` (paysages)
 - `toile de jouy wallpaper`, `pastoral toile mural` (toiles)
+- liste complète et priorités : « Sélection CJ par collection » ci-dessous
 - `kids room wallpaper watercolor animals`, `soft nursery mural` (enfant)
 
 Recherche : `WebSearch` avec `allowed_domains` (`["aliexpress.com"]`,
@@ -193,20 +194,49 @@ ni gris froid ni bleu vif ; pas de 3D, marbre ou doré clinquant ; peu de fleurs
 préférence au PVC adhésif ; sur mesure au m² ; coût ≤ 10 € le m² ; commandes et avis visibles ;
 aucune copie d’éditeur connu. Viser 3 produits par collection (15 au total).
 
-| Collection | Mots-clés CJ (anglais) |
+Motifs à sourcer, par ordre de priorité (étude du 14 octobre 2026). La preuve combine :
+
+- les recherches Google en France : volume par mois, évolution sur un an et sur trois ans ;
+- les best-sellers et les mises en avant des concurrents.
+
+Reprendre le thème, jamais le dessin d’un concurrent.
+
+| Priorité | Collection | Motif | Preuve | Mots-clés CJ (anglais) |
+|---|---|---|---|---|
+| 1 | essentiels | Rayure fine grège sur crème, puis la même en vert sauge (2 fiches) | « rayures » 6 600 (+22 %, +156 %) ; rayé beige +378 % et rayures vertes +359 % sur 3 ans ; nouveauté Leroy Merlin 2026 ; rayures parmi les tendances Pinterest 2026 | `pinstripe wallpaper beige`, `thin stripe wallpaper cream`, `sage green stripe wallpaper`, `ticking stripe wallpaper` |
+| 2 | toiles | Toile de Jouy écru ou beige | « toile de jouy » 2 900, au plus haut depuis 8 ans ; version beige +142 % sur 3 ans | `toile de jouy wallpaper beige`, `pastoral toile wallpaper cream` |
+| 3 | essentiels | Effet lin naturel | « effet lin » +426 % sur 3 ans ; texture +27 % ; raphia +176 % | `linen texture wallpaper beige`, `grasscloth wallpaper`, `raffia texture wallpaper` |
+| 4 | paysages | Campagne vallonnée peinte, façon tableau ancien, tons miel | panoramiques peints en tête des tendances 2026, la photo réaliste recule ; Rebel Walls (Hilltop Vista) et Photowall (Tuscany Eden) en avant ; « provence » +59 % sur 3 ans | `oil painting landscape mural`, `tuscany landscape mural`, `vintage countryside mural` |
+| 5 | essentiels | Grand vichy crème et miel | « vichy » 1 300 (+22 %, +210 %) ; Photowall (Tranquil Gingham), Isidore Leroy (Grand Vichy) | `gingham wallpaper beige`, `check wallpaper cream` |
+| 6 | paysages | Montagne et lac dans la brume, tons chauds | « papier peint montagne » 1 900 et « panoramique montagne » 880, stables ou en hausse ; Muralconcept et Photowall (Alpes) | `misty mountain mural warm`, `alpine lake painting mural` |
+| 7 | toiles | Chinoiserie douce, branches et oiseaux sur fond crème | chinoiserie stable ; « oiseaux » 1 600 ; « Chinoiserie Chic » parmi les plus populaires de Rebel Walls | `chinoiserie mural beige`, `chinoiserie birds wallpaper cream` |
+| 8 | toiles | Toile de Jouy terracotta ou bordeaux sur lin | toile de Jouy en couleur citée en tendance 2026 ; « bordeaux » +72 % sur un an | `toile de jouy wallpaper terracotta`, `red toile wallpaper` |
+| 9 | paysages | Forêt peinte au matin, tons chauds | « forêt » 2 900 et « panoramique forêt » 880 (en recul, mais gros volume) ; best-sellers Isidore Leroy (Forêt de Bretagne, Cyprès) et Rebel Walls (forêts) | `vintage forest mural painting`, `misty forest mural warm` |
+| 10 | motifs | Fleuri vintage discret (petites fleurs, esprit Arts & Crafts), tons ocre et sauge | « vintage fleuri » 1 900 (+11 % sur 3 ans) ; « william morris » +30 % ; petites fleurs +11 % | `vintage small floral wallpaper`, `arts and crafts wallpaper` |
+| 11 | motifs | Petit motif bordeaux ou chocolat sur fond lin | bordeaux +72 %, marron +29 %, chocolat +39 % sur un an : les couleurs qui montent le plus | `burgundy pattern wallpaper`, `brown botanical wallpaper vintage` |
+| 12 | motifs | Branches d’olivier ou feuillage fin peint, sauge | « vert sauge » +86 % sur 3 ans ; « vert olive » +22 % ; à garder fin et discret (le grand feuillage chute) | `olive branch wallpaper`, `sage botanical wallpaper` |
+| 13 | enfant | Montgolfières, tons doux | montgolfière 480, le thème enfant le plus stable | `hot air balloon mural` |
+| 14 | enfant | Animaux de la forêt, aquarelle | « animaux » 1 000 ; Rebel Walls (forêt de conte) | `woodland animals nursery mural` |
+| 15 | enfant | Ciel et nuages doux | « nuage » 1 300 | `soft clouds nursery mural beige` |
+
+Enfant : Google ne donne aucun volume pour les recherches liées aux enfants (« chambre
+d’enfant », « bébé »…). Les thèmes mesurables (animaux, arc-en-ciel, savane) reculent : 3
+produits suffisent.
+
+À ne pas sélectionner (recherches en chute sur 3 ans) :
+
+| Motif | Évolution sur 3 ans |
 |---|---|
-| Les essentiels | `linen texture wallpaper`, `grasscloth wallpaper`, `beige stripe wallpaper`, `ticking stripe wallpaper`, `plain textured wallpaper cream` |
-| Les motifs | `vintage botanical wallpaper`, `leaf wallpaper beige`, `trailing vine wallpaper`, `retro leaves mural warm` |
-| Les paysages | `oil painting landscape mural`, `vintage countryside mural`, `misty mountain mural warm`, `retro landscape wallpaper` |
-| Les toiles | `toile de jouy wallpaper`, `pastoral toile mural`, `chinoiserie mural beige` |
-| La collection enfant | `hot air balloon mural`, `watercolor animals nursery mural`, `beige kids room mural`, `boho rainbow nursery mural` |
-
-Demande en France (recherches Google par mois, étude du 14 octobre 2026,
-`belle-saison/docs/etude-marche.md`) :
-
-- panoramique 49 500 ;
-- fleuri 5 400, stable ;
-- vintage 3 600 ;
-- toile de Jouy 2 900, au plus haut depuis huit ans ;
-- jungle 3 600 et tropical 1 600, en chute de 32 et 38 % sur un an : ne pas en sélectionner.
+| grand feuillage | −69 % |
+| jungle, tropical, palmier, bananier, savane | −30 à −60 % |
+| brique | −61 % |
+| bois | −53 % |
+| marbre | −50 % |
+| géométrique | −51 % |
+| trompe-l’œil | −63 % |
+| carreaux de ciment | −70 % |
+| cannage | −47 % |
+| scandinave | −63 % |
+| aquarelle abstraite | −48 % |
+| gris, noir | −53 %, −48 % |
 
