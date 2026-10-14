@@ -201,3 +201,12 @@ aucune copie d’éditeur connu. Viser 3 produits par collection (15 au total).
 | Les toiles | `toile de jouy wallpaper`, `pastoral toile mural`, `chinoiserie mural beige` |
 | La collection enfant | `hot air balloon mural`, `watercolor animals nursery mural`, `beige kids room mural`, `boho rainbow nursery mural` |
 
+Demande en France (recherches Google par mois, étude du 14 octobre 2026,
+`belle-saison/docs/etude-marche.md`) :
+
+- panoramique 49 500 ;
+- fleuri 5 400, stable ;
+- vintage 3 600 ;
+- toile de Jouy 2 900, au plus haut depuis huit ans ;
+- jungle 3 600 et tropical 1 600, en chute de 32 et 38 % sur un an : ne pas en sélectionner.
+

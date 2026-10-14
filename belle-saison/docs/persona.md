@@ -307,8 +307,11 @@ décoration), au-delà avec les avis ; mobile autour de 1,5 % et ordinateur auto
 - Conversion maison et décoration : 1,5 à 2,5 % ; mobile environ 1,5 % contre 3 % sur
   ordinateur ; environ 70 % de paniers abandonnés. [lafabriquedunet.fr](https://www.lafabriquedunet.fr/logiciels/tendances/taux-de-conversion-ecommerce-statistiques-et-benchmarks),
   [gradiweb.com](https://gradiweb.com/taux-de-conversion-ecommerce/), [medecom.ca](https://medecom.ca/blog/taux-d-abandon-panier-par-categorie-de-produit-e-commerce-benchmarks-e)
-- Saisonnalité (source à confirmer) : pics de février et mars, reprise fin août et à l’automne,
-  creux l’été. [accio.com](https://fr.accio.com/business/tendance-papier-peint-sejour)
+- Saisonnalité (volumes Google France, confirmée le 14 octobre 2026) : janvier est le meilleur
+  mois (indice 1,26), puis février, mars et l’automne (septembre à novembre) ; creux en juin et
+  juillet. Demande, tendances et choix du marché : `docs/etude-marche.md`.
+- Ventes dans l’ancien : 949 000 sur les 12 mois à fin mai 2026 (+5,7 % sur un an).
+  [notaires.fr](https://www.notaires.fr/fr/article/nombre-de-transactions-de-logements-anciens-en-cumul-sur-12-mois)
 
 ## 7. Ce qui reste une hypothèse
 
