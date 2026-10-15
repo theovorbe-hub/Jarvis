@@ -314,3 +314,43 @@ En réserve :
 | aquarelle abstraite | −48 % |
 | gris, noir | −53 %, −48 % |
 
+
+#### Sélection CJ des 3 premiers thèmes (relevé API du 15 octobre 2026)
+
+Méthode : tout le rayon papier peint de CJ parcouru par l’API (`product/listV2`, mots-clés du
+brief puis « wallpaper » et « mural » page par page, soit environ 950 articles), fiches lues avec
+`product/query`, avis avec `product/productComments`, port avec `logistic/freightCalculate`
+(Chine vers France, commande de 10 m²). Tous les stocks sont en Chine (aucun entrepôt européen).
+Conversion prudente : 1 $ = 0,95 €. Marge : `scripts/prix.py --prix-vente 39 --marge 0.25
+--provision 0.05`. Page visuelle (photos, descriptions) : https://claude.ai/artifact/2QEmkFvFLzRvH8ZHyUL7d6
+
+| Thème | Produit CJ (réf., variante) | Coût au m² | Port 10 m² (le moins cher) | Marge nette | Avis | Note /20 | Verdict |
+|---|---|---|---|---|---|---|---|
+| Forêt peinte au matin | Forêt dans la brume, CJJT1687214, pid 1626875958449942528, modèle No3 intissé microperforé | 2,71 € | 41,93 €, 8 à 18 j | 71 % | aucun | 9 | à écarter (photo verte, pas peinte) |
+| Montagne et lac dans la brume | Montagnes et sapins à l’aquarelle, CJJJJTJT35622, pid 7749EB1B-D116-443A-81C8-689AD6440B11, tissu velours | 3,62 € | 22,42 €, 7 à 10 j | 74 % | aucun | 8 | à écarter (château, décor d’enfant, pas d’intissé) |
+| Campagne vallonnée peinte | aucun produit convenable | | | | | | sourcing à demander |
+| Rayures | Rayure fine et arabesques, CJJT1007032, pid 1357571256966320128, rouleau beige | 0,61 € | 21,16 € (2 rouleaux), 7 à 10 j | 85 % | 4, 3,5/5 | 7 | à écarter (avis : motif différent de la photo) |
+| Texturé effet lin | Lin naturel, CJJT1257915, pid 1428606467036024832, teinte 6024 | 1,48 € | 31,79 €, 8 à 18 j | 78 % | aucun | 11 | possible (unité de vente à confirmer) |
+| Vichy crème et miel | aucun produit | | | | | | sourcing à demander |
+| Fleuri vintage | Guirlande de roses, CJJT1693668, pid 1630035193392279552, modèle 03 intissé microperforé | 2,71 € | 35,16 €, 8 à 18 j | 73 % | aucun | 10 | possible (grandes fleurs) |
+| Feuillage fin vert sauge | Feuillage de bambou, CJJT1684207, pid 1625655388735549440, papier intissé | 3,43 € | 114,71 €, 7 à 15 j | 47 % | aucun | 10 | possible (port très élevé à faire confirmer) |
+| Oiseaux et branches, fond crème | Oiseaux du verger, CJJT1009915, pid 1358749064434421760, rouleau 0,53 x 10 m fond beige | 1,24 € | 18,28 € (2 rouleaux), 7 à 10 j | 83 % | 67, 4,6/5 | 13 | retenu sous réserve (ressemble à « Hummingbirds » de Cole & Son : comparer avant vente) |
+| Toile de Jouy beige | aucun produit | | | | | | sourcing à demander |
+| Estampe japonaise douce | aucun papier peint (affiches seulement) | | | | | | sourcing à demander |
+| Cottage anglais Arts & Crafts | aucun produit propre au thème | | | | | | sourcing à demander |
+| Ciel, nuages et étoiles | Ciel de lait, CJJT1687630, pid 1627125848073580544, modèle No5 intissé microperforé | 2,71 € | 41,93 €, 8 à 18 j | 71 % | aucun | 11 | possible (sans étoiles) |
+| Animaux de la forêt | Faons de la forêt, CJJJJTJT35620, pid 8A791930-6486-4F6F-8899-979D1E6728CE, 1 m² intissé | 7,83 € | 60,13 €, 7 à 15 j | 50 % | 6, 5/5 (dont 2 en France) | 12 | retenu |
+| Savane douce | aucun produit adapté (photos de lions et d’éléphants) | | | | | | sourcing à demander |
+
+Constats :
+
+- CJ couvre bien 6 thèmes sur 15 ; 6 thèmes n’ont aucun produit. Piste : demande de sourcing
+  CJ (`product/sourcing/create`, gratuite) avec photos de référence, après accord de la cliente.
+- Le port CJ est calculé unité par unité (il double quand la quantité double) : sur les
+  panoramiques au m², il coûte 2 à 4 € le m², et jusqu’à 11 € le m² pour le bambou (colis long).
+- Écart avec le site : origine Chine, 7 à 18 jours (4 à 7 jours en express, environ 25 % plus
+  cher), pas d’échantillon A4. Corriger « Impression européenne », « 5 à 7 jours » et
+  « Échantillon offert » avant toute mise en vente.
+- Descriptions rédigées (compétence `description-de-produit`, contrôlées) pour les 6 produits
+  retenus ou possibles, avec le vrai délai ; aucune pour les produits à écarter. HTML prêt pour `descriptionHtml` dans `belle-saison/docs/fiches-cj/`.
+- Aucun produit créé dans Shopify : en attente du choix de la cliente.
