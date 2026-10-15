@@ -19,6 +19,7 @@
   assign verified_count = 0
   assign sample_count = 0
   assign sample_total = 0
+  assign sample_verified = 0
   for block in section.blocks
     if block.type == '@app'
       assign app_count = app_count | plus: 1
@@ -40,6 +41,9 @@
       endunless
       assign sample_count = sample_count | plus: 1
       assign sample_total = sample_total | plus: block.settings.rating
+      if block.settings.verified
+        assign sample_verified = sample_verified | plus: 1
+      endif
     else
       assign count = count | plus: 1
       assign total = total | plus: block.settings.rating
@@ -164,7 +168,11 @@
 
       {%- if section.settings.show_summary and count == 0 and sample_count > 0 -%}
         <p class="testimonials__summary">
-          {{- 'sections.testimonials.summary_sample_html' | t: rating: average_label, number: sample_count -}}
+          {%- if sample_verified == sample_count -%}
+            {{- 'sections.testimonials.summary_sample_verified_html' | t: rating: average_label, number: sample_count -}}
+          {%- else -%}
+            {{- 'sections.testimonials.summary_sample_html' | t: rating: average_label, number: sample_count -}}
+          {%- endif -%}
         </p>
       {%- endif -%}
       {%- if section.settings.show_summary and count > 0 -%}

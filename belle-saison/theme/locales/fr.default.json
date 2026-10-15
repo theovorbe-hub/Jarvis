@@ -68,7 +68,8 @@
       "sample_author": "Prénom N.",
       "sample_tag": "Exemple",
       "sample_note": "Les avis marqués « Exemple » ne sont visibles que dans l’éditeur. Décochez « Exemple » dans un avis uniquement s’il s’agit de l’avis réel d’un client : il apparaîtra alors sur la boutique.",
-      "summary_sample_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis</strong> (exemple)."
+      "summary_sample_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis</strong> (exemple).",
+      "summary_sample_verified_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis vérifiés</strong> (exemple)."
     }
   },
   "products": {

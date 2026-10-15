@@ -140,6 +140,8 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   await empty.goto(`file://${path.join(outDir, 'index-modele-editeur.html')}`);
   const modele = await empty.$$eval('.testimonial', (els) => els.map((e) => e.classList.contains('testimonial--sample')));
   assert.ok(modele.length > 0 && modele.every(Boolean), 'tous les avis du modèle sont des exemples');
+  assert.equal(await empty.$$eval('.testimonial__verified', (els) => els.length), modele.length, 'badge « Vérifié » sur chaque exemple');
+  assert.match(await empty.$eval('.testimonials__summary', (el) => el.textContent.trim()), /^Noté [\d,]+\/5 sur la base de \d+ avis vérifiés \(exemple\)\.$/);
   await empty.goto(`file://${path.join(outDir, 'index-modele-visiteur.html')}`);
   assert.equal(await empty.$('.testimonials'), null, 'aucun avis d’exemple du modèle sur la boutique');
   await empty.close();
