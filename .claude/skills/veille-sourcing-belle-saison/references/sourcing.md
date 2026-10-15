@@ -354,3 +354,41 @@ Constats :
 - Descriptions rédigées (compétence `description-de-produit`, contrôlées) pour les 6 produits
   retenus ou possibles, avec le vrai délai ; aucune pour les produits à écarter. HTML prêt pour `descriptionHtml` dans `belle-saison/docs/fiches-cj/`.
 - Aucun produit créé dans Shopify : en attente du choix de la cliente.
+
+### Décision du 15 octobre 2026 : fournisseurs européens, promesses du site maintenues
+
+La cliente n’aime pas la sélection CJ et refuse de modifier les promesses du site (impression
+européenne, livraison en 5 à 7 jours). Exigences : beaucoup de qualité, livraison rapide,
+produits qui suivent la demande (thèmes ci-dessus), fournisseurs reliés à Shopify si possible.
+CJ est écarté. Page visuelle : https://claude.ai/artifact/SXbwvnazYfKALiQzMfKRAy
+
+État de la boutique au 15 octobre 2026 : 5 collections automatiques (étiquettes `essentiels`,
+`motifs`, `paysages`, `toiles`, `enfant`), 0 produit, aucune application fournisseur installée.
+
+| Fournisseur | Qualité | Délai annoncé | Coût | Shopify | Point bloquant |
+|---|---|---|---|---|---|
+| Rebel Walls, Sandberg, Hovia, Bien Fait (Suède, compte professionnel commun) | Trustpilot 4,5/5, environ 3 860 avis (https://www.trustpilot.com/review/rebelwalls.com) | fabrication 0 à 2 j, livraison UE 2 à 5 j (https://rebelwalls.com/delivery-info) | prix public 43 à 54 €/m² (panoramiques, etoffe.com), 21 à 28 €/m² (rouleaux Sandberg, selectedwallpapers.com) | aucune application ; espace revendeur (https://rebelwalls.com/terms-accepted-reseller-concept) | vendu sous leur marque ; 25 % de marge seulement avec une remise d’environ 44 % (20 % publiés chez Hovia) ; livraison directe au client à confirmer |
+| Fancy Walls (Europe, impression à la demande) | garantie qualité 100 %, sans PVC, encres GreenGuard | 3 à 5 j fabrication comprise | environ 19,90 $ le pied carré converti, soit 18,90 €/m² (intissé à encoller) ; 34 % de marge à 39 € | API Shopify après 10 commandes (https://fancywalls.eu/wallpaper/dropshipping/) | motifs à fournir ; pays d’usine à confirmer |
+| Print Wallpaper Pro (Caspar, Allemagne, depuis 1886) | fabricant historique, au centimètre | fabrication 5 à 7 j ouvrés plus transport | non publié | application gratuite, marque blanche (https://apps.shopify.com/print-wallpaper-pro) | délai total au-dessus de 7 jours ; motifs à fournir ; sans avis |
+
+Écartés : Vimando (1 avis à 1/5, support injoignable), Photowall et Komar (aucun programme
+revendeur trouvé), BigBuy (grand public, abonnement), CJ (Chine, 7 à 18 jours).
+
+Correspondance des 15 thèmes dans le catalogue suédois : forêt (Forest Glade), montagne et lac
+(Early Morning), campagne (Misty Mountain Beige, proche), rayures (Sandberg Ben, Magnus, Sam),
+lin (Sandberg Linne), vichy (Sandberg Ranold Beige, proche), fleuri vintage (Sandberg Botanical
+Legacy, modèle à choisir), feuillage sauge (Sandberg Vinnie Sage Green), oiseaux et branches
+(Rebel Walls Chinoiserie Blossom Natural Beige), toile de Jouy (Rebel Walls High Seas, proche),
+estampe japonaise (Hovia Cranes d’après Kamisaka Sekka), cottage Arts & Crafts (manque), nuages
+(Hovia Baby Clouds & Moon, Rebel Walls Sky of Clouds Beige), animaux de la forêt (Hovia
+Watercolor Woodland Animals), savane (Hovia Beige Little Watercolour Safari Animals).
+
+Décision attendue de la cliente : A (catalogue suédois, environ 50 €/m², remise revendeur à
+négocier), B (motifs exclusifs Belle Saison imprimés en Europe à 39 €/m² : domaine public pour
+toile de Jouy, William Morris, estampes japonaises, planches botaniques ; rayures et vichy
+dessinés ; enfant sous licence), ou les deux. Ensuite : ouverture du compte par la cliente
+(SIRET), puis import des 15 produits en brouillon dans leurs collections.
+
+Réseau : les sites des fournisseurs (rebelwalls.com, sandbergwallpaper.com, hovia.com,
+fancywalls.eu, apps.shopify.com) sont refusés par la politique réseau de l’environnement ;
+seule la recherche web fonctionne. Les autoriser pour lire les fiches et les photos.
