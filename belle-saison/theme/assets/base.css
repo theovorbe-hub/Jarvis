@@ -3357,7 +3357,13 @@ figure {
 }
 
 .testimonials__apps {
+  display: grid;
+  gap: 1.5rem;
   margin-top: clamp(1.75rem, 3vw, 2.5rem);
+}
+
+.testimonials__head + .testimonials__apps {
+  margin-top: 0;
 }
 
 @media (max-width: 989px) {

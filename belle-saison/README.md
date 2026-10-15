@@ -43,7 +43,7 @@ Dans `theme/` :
 
 La section « Avis clients » de l’accueil, placée juste après les produits mis en avant, n’affiche
 que des avis ajoutés à la main dans l’éditeur (un bloc par avis : note, titre, texte, prénom,
-ville, produit, date) ou le bloc d’une application d’avis (Trustpilot, Judge.me). Les notes
+ville, produit, date) ou le bloc d’une application d’avis (Trustpilot, Judge.me), ou encore le code de son widget collé dans un bloc « Code personnalisé ». Les notes
 s’affichent en étoiles dans des carrés, avec la note moyenne en dessous ; l’option « Montrer
 seulement les avis 5 étoiles » garde la moyenne calculée sur tous les avis et l’indique. Elle
 reste invisible sur la boutique tant qu’elle est vide ; dans l’éditeur, une section vide montre

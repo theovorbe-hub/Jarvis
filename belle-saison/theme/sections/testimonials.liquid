@@ -1,6 +1,7 @@
 {%- comment -%}
   Avis clients : uniquement des avis réels. La section n'apparaît pas sur la boutique tant
-  qu'elle ne contient ni avis ni bloc d'application (Trustpilot, Judge.me...). Dans l'éditeur,
+  qu'elle ne contient ni avis, ni bloc d'application, ni bloc « Code personnalisé » rempli
+  (widget Trustpilot ou Judge.me collé tel quel). Dans l'éditeur,
   une section vide montre des cartes d'exemple, signalées comme telles, pour voir la mise en
   page ; elles ne sont jamais affichées aux visiteurs. Le badge « Vérifié » ne s'affiche que
   pour les avis cochés comme liés à un achat confirmé, et la ligne de synthèse ne parle
@@ -16,6 +17,12 @@
   for block in section.blocks
     if block.type == '@app'
       assign app_count = app_count | plus: 1
+      continue
+    endif
+    if block.type == 'custom_liquid'
+      if block.settings.custom_liquid != blank
+        assign app_count = app_count | plus: 1
+      endif
       continue
     endif
     assign count = count | plus: 1
@@ -92,7 +99,7 @@
             {%- endfor -%}
           {%- else -%}
             {%- for block in section.blocks -%}
-              {%- if block.type == '@app' -%}{%- continue -%}{%- endif -%}
+              {%- if block.type != 'review' -%}{%- continue -%}{%- endif -%}
               {%- if section.settings.only_five_stars and block.settings.rating != 5 -%}{%- continue -%}{%- endif -%}
               <li class="testimonial" {{ block.shopify_attributes }}>
                 <div class="testimonial__rating">
@@ -146,6 +153,8 @@
           {%- for block in section.blocks -%}
             {%- if block.type == '@app' -%}
               {% render block %}
+            {%- elsif block.type == 'custom_liquid' and block.settings.custom_liquid != blank -%}
+              <div class="testimonials__widget" {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
             {%- endif -%}
           {%- endfor -%}
         </div>
@@ -162,7 +171,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "N’ajoutez que des avis réels de vos clients, jamais d’avis inventés ni copiés sur d’autres sites : c’est une pratique commerciale trompeuse. La section reste invisible sur la boutique tant qu’elle ne contient aucun avis. Dans l’éditeur, une section vide montre des cartes d’exemple que les visiteurs ne voient jamais. Vous pouvez aussi y ajouter le bloc d’une application d’avis (Trustpilot, Judge.me)."
+      "content": "N’ajoutez que des avis réels de vos clients, jamais d’avis inventés ni copiés sur d’autres sites : c’est une pratique commerciale trompeuse. La section reste invisible sur la boutique tant qu’elle ne contient aucun avis. Dans l’éditeur, une section vide montre des cartes d’exemple que les visiteurs ne voient jamais. Vous pouvez aussi y ajouter le bloc d’une application d’avis (Trustpilot, Judge.me) ou coller son code dans un bloc « Code personnalisé »."
     },
     {
       "type": "text",
@@ -194,6 +203,18 @@
   "blocks": [
     {
       "type": "@app"
+    },
+    {
+      "type": "custom_liquid",
+      "name": "Code personnalisé",
+      "settings": [
+        {
+          "type": "liquid",
+          "id": "custom_liquid",
+          "label": "Code du widget d’avis",
+          "info": "Collez ici le code fourni par votre service d’avis (TrustBox de Trustpilot, widget Judge.me). Il doit afficher vos vrais avis, jamais des avis écrits à la main dans le code."
+        }
+      ]
     },
     {
       "type": "review",

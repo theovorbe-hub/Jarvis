@@ -113,6 +113,12 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.equal(await empty.$$eval('.testimonial--sample', (els) => els.length), 3);
   assert.match(await empty.$eval('.testimonials__preview-note', (el) => el.textContent), /visible seulement dans l’éditeur/);
   assert.equal(await empty.$('.testimonials__summary'), null, 'pas de note moyenne inventée');
+  // Widget collé dans un bloc « Code personnalisé » : la section s'affiche avec lui seul.
+  await empty.goto(`file://${path.join(outDir, 'index-widget.html')}`);
+  assert.equal(await empty.$$eval('.testimonials__widget', (els) => els.length), 1, 'bloc de code vide ignoré');
+  assert.ok(await empty.$('.testimonials__widget .trustpilot-widget'), 'code du widget rendu tel quel');
+  assert.equal(await empty.$('.testimonial'), null);
+  assert.equal(await empty.$('.testimonials__preview-note'), null);
   await empty.close();
 
   const calmHero = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });

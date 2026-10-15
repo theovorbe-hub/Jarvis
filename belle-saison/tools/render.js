@@ -225,6 +225,8 @@ const pages = {
   // Avis : boutique sans avis (section invisible) et même accueil vu dans l'éditeur (cartes d'exemple).
   'index-sans-avis': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true },
   'index-editeur': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true, designMode: true },
+  // Widget d'un service d'avis collé dans un bloc « Code personnalisé », sans avis saisis à la main.
+  'index-widget': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true, widget: true },
   product: { template: 'product', page_type: 'product', title: products[0].title, product: products[0] },
   'product-rouleau': { template: 'product', page_type: 'product', title: products[3].title, product: products[3] },
   collection: { template: 'collection', page_type: 'collection', title: collection.title, collection },
@@ -281,6 +283,13 @@ const indexOverrides = (t) => {
     if (p.noReviews) {
       tpl.sections.testimonials.blocks = {};
       tpl.sections.testimonials.block_order = [];
+    }
+    if (p.widget) {
+      tpl.sections.testimonials.blocks = {
+        vide: { type: 'custom_liquid', settings: { custom_liquid: '' } },
+        tp: { type: 'custom_liquid', settings: { custom_liquid: '<div class="trustpilot-widget" data-locale="fr-FR">Trustpilot</div>' } },
+      };
+      tpl.sections.testimonials.block_order = ['vide', 'tp'];
     }
     if (p.directLinks) {
       // Vidéos par lien direct (réglages « lien direct ») au lieu du sélecteur de fichiers.
