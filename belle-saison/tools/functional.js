@@ -136,6 +136,12 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.equal(await empty.$eval('.testimonials__summary', (el) => el.textContent.trim()), 'Noté 4,8/5 sur la base de 4 avis (exemple).');
   await empty.goto(`file://${path.join(outDir, 'index-saisis-visiteur.html')}`);
   assert.equal(await empty.$('.testimonials'), null, 'avis d’exemple saisis jamais montrés aux visiteurs');
+  // Le modèle d'accueil de la boutique ne contient que des avis d'exemple : invisibles pour les visiteurs.
+  await empty.goto(`file://${path.join(outDir, 'index-modele-editeur.html')}`);
+  const modele = await empty.$$eval('.testimonial', (els) => els.map((e) => e.classList.contains('testimonial--sample')));
+  assert.ok(modele.length > 0 && modele.every(Boolean), 'tous les avis du modèle sont des exemples');
+  await empty.goto(`file://${path.join(outDir, 'index-modele-visiteur.html')}`);
+  assert.equal(await empty.$('.testimonials'), null, 'aucun avis d’exemple du modèle sur la boutique');
   await empty.close();
 
   const calmHero = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });

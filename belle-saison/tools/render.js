@@ -235,6 +235,9 @@ const pages = {
   // Avis écrits dans les champs avec la case « Exemple » cochée : éditeur seulement.
   'index-saisis-editeur': { template: 'index', page_type: 'index', title: 'Belle Saison', typedSamples: true, designMode: true },
   'index-saisis-visiteur': { template: 'index', page_type: 'index', title: 'Belle Saison', typedSamples: true },
+  // Avis réellement présents dans templates/index.json (exemples cochés « Exemple ») : éditeur et visiteurs.
+  'index-modele-editeur': { template: 'index', page_type: 'index', title: 'Belle Saison', templateReviews: true, designMode: true },
+  'index-modele-visiteur': { template: 'index', page_type: 'index', title: 'Belle Saison', templateReviews: true },
   product: { template: 'product', page_type: 'product', title: products[0].title, product: products[0] },
   'product-rouleau': { template: 'product', page_type: 'product', title: products[3].title, product: products[3] },
   collection: { template: 'collection', page_type: 'collection', title: collection.title, collection },
@@ -243,7 +246,7 @@ const pages = {
 };
 
 // Réglages de démonstration pour l'accueil (images issues de la maquette)
-const indexOverrides = (t) => {
+const indexOverrides = (t, p = {}) => {
   // Ouverture vidéo : vraie vidéo si elle a été produite (make-hero-video.py), sinon la démo.
   const real = fs.existsSync(path.join(outDir, 'img', 'ouverture.mp4'));
   t.sections.hero_video.settings.video = real ? 'ouverture' : 'demo';
@@ -264,12 +267,16 @@ const indexOverrides = (t) => {
     { rating: 5, title: '', text: 'Texte d’exemple sans titre, pour voir la carte la plus simple.', author: 'Exemple C.', location: '', product: 'Échantillon A4', date: '', verified: true },
     { rating: 5, title: 'Quatrième carte', text: 'Une carte de plus pour faire apparaître les flèches.', author: 'Exemple D.', location: 'Paris', product: '', date: '', verified: false },
   ];
+  if (p.templateReviews) return finishIndex(t);
   t.sections.testimonials.blocks = {};
   // « Exemple » est coché par défaut dans l'éditeur : ces avis d'aperçu le décochent pour s'afficher.
   t.sections.testimonials.block_order = avis.map((a, i) => { t.sections.testimonials.blocks[`r${i}`] = { type: 'review', settings: { ...a, sample: false } }; return `r${i}`; });
+  return finishIndex(t);
+};
+function finishIndex(t) {
   t.sections.inspiration.block_order.forEach((id, i) => { t.sections.inspiration.blocks[id].settings.image = `ins${i + 1}`; });
   return t;
-};
+}
 
 (async () => {
   fs.mkdirSync(path.join(outDir, 'assets'), { recursive: true });
@@ -288,7 +295,7 @@ const indexOverrides = (t) => {
     engine.options.globals = scope;
     const header = await renderGroup('header-group', scope);
     let tpl = JSON.parse(read(`templates/${p.template}.json`));
-    if (p.template === 'index') tpl = indexOverrides(tpl);
+    if (p.template === 'index') tpl = indexOverrides(tpl, p);
     if (p.noReviews) {
       tpl.sections.testimonials.blocks = {};
       tpl.sections.testimonials.block_order = [];

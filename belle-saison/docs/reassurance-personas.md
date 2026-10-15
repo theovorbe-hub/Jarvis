@@ -84,3 +84,17 @@ Ils sont fictifs : ne jamais les ajouter dans la section « Avis clients » de l
 | 8 | Hélène | 5 | Trois chambres, une seule teinte | Nous avons habillé trois chambres d’amis dans notre longère avec la même toile de Jouy. Tout a été imprimé ensemble : aucune différence de teinte d’une pièce à l’autre. | Hélène G., Dinan, maison de campagne |
 | 9 | Hélène | 5 | Une vraie personne au bout du fil | J’aime poser mes questions avant de commander. On m’a répondu le lendemain, avec des conseils précis sur la quantité pour une pièce mansardée. J’ai commandé en toute confiance. | Françoise P., Sarlat, chambre mansardée |
 | 10 | Hélène | 5 | Le prix total dès le départ | J’ai fait le calcul pour la salle à manger et le couloir avant de me décider : le prix de chaque mur s’affichait avec la livraison, sans surprise au moment de payer. | Bernard et Hélène V., Honfleur, salle à manger |
+
+### Exemples ajoutés dans la section « Avis clients » (15 octobre 2026)
+
+À la demande de la cliente, les 10 exemples ci-dessus (avec prénom et nom, ville et pièce, date)
+et 3 exemples sur le simulateur « Voir sur mon mur » sont enregistrés comme blocs « Avis » de la
+section, tous cochés « Exemple » : visibles seulement dans l’éditeur, jamais sur la boutique, et
+hors de la note moyenne des visiteurs (`theme/templates/index.json`, blocs `exemple_01` à
+`exemple_13`).
+
+| Persona | Note | Titre | Avis | Signature fictive |
+|---|---|---|---|---|
+| Claire | 5 | Vu sur mon mur avant de commander | J’ai pris notre mur en photo avec le simulateur « Voir sur mon mur » : en deux minutes, je voyais la toile de Jouy dans notre salle à manger. Nous avons choisi à deux, le soir même, sur le canapé. | Élodie Moreau, Poitiers, salle à manger, octobre 2026 |
+| Claire | 5 | Le bon motif du premier coup | Avec le simulateur, j’ai essayé trois motifs sur la photo de notre chambre avant de me décider. Une fois posé, le rendu est fidèle à ce que j’avais vu sur l’écran. | Nathalie Fournier, Annecy, chambre, septembre 2026 |
+| Léa | 5 | Toute la famille a validé | J’ai envoyé l’image du simulateur à mon mari et à ma mère : tout le monde a vu la chambre de bébé avant même la commande, et nous étions tous d’accord. | Pauline Girard, Strasbourg, chambre de bébé, août 2026 |
