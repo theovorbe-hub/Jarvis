@@ -222,6 +222,9 @@ const pages = {
   index: { template: 'index', page_type: 'index', title: 'Belle Saison' },
   'index-repli': { template: 'index', page_type: 'index', title: 'Belle Saison', forceMp4: true },
   'index-lien': { template: 'index', page_type: 'index', title: 'Belle Saison', directLinks: true },
+  // Avis : boutique sans avis (section invisible) et même accueil vu dans l'éditeur (cartes d'exemple).
+  'index-sans-avis': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true },
+  'index-editeur': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true, designMode: true },
   product: { template: 'product', page_type: 'product', title: products[0].title, product: products[0] },
   'product-rouleau': { template: 'product', page_type: 'product', title: products[3].title, product: products[3] },
   collection: { template: 'collection', page_type: 'collection', title: collection.title, collection },
@@ -266,7 +269,7 @@ const indexOverrides = (t) => {
     const scope = {
       settings, linklists, collections, shop: { name: 'BELLE SAISON', customer_accounts_enabled: true, policies: [{ title: 'Mentions légales', url: '#' }, { title: 'CGV', url: '#' }], enabled_payment_types: ['visa', 'master', 'apple_pay'] },
       routes: { root_url: '/', cart_url: '/cart', cart_add_url: '/cart/add', cart_change_url: '/cart/change', search_url: '/search', collections_url: '/collections', all_products_collection_url: '/collections/all', account_url: '/account', product_recommendations_url: '/recommendations/products' },
-      request: { locale: { iso_code: 'fr' }, page_type: p.page_type, origin: 'https://belle-saison.example', design_mode: false },
+      request: { locale: { iso_code: 'fr' }, page_type: p.page_type, origin: 'https://belle-saison.example', design_mode: Boolean(p.designMode) },
       cart: p.cart || { item_count: 2, currency: { iso_code: 'EUR' }, taxes_included: true },
       template: { name: p.template }, page_title: p.title, canonical_url: '#', content_for_header: '', current_page: 1,
       product: p.product, collection: p.collection, recommendations: { performed: true, products_count: 4, products },
@@ -275,6 +278,10 @@ const indexOverrides = (t) => {
     const header = await renderGroup('header-group', scope);
     let tpl = JSON.parse(read(`templates/${p.template}.json`));
     if (p.template === 'index') tpl = indexOverrides(tpl);
+    if (p.noReviews) {
+      tpl.sections.testimonials.blocks = {};
+      tpl.sections.testimonials.block_order = [];
+    }
     if (p.directLinks) {
       // Vidéos par lien direct (réglages « lien direct ») au lieu du sélecteur de fichiers.
       const hero = tpl.sections.hero_video.settings;
@@ -284,8 +291,10 @@ const indexOverrides = (t) => {
       hero.video_mobile = '';
       tpl.sections.story.settings.background_video_url = 'img/demo.webm';
       tpl.sections.story.settings.background_video = '';
-      // Variante utile aussi aux avis : tous cochés « vérifié », la synthèse dit « avis vérifiés ».
+      // Variante utile aussi aux avis : tous cochés « vérifié », la synthèse dit « avis vérifiés »,
+      // et seuls les avis 5 étoiles sont montrés (la moyenne reste calculée sur les quatre).
       Object.values(tpl.sections.testimonials.blocks).forEach((b) => { b.settings = { ...b.settings, verified: true }; });
+      tpl.sections.testimonials.settings.only_five_stars = true;
     }
     let body = '';
     for (const id of tpl.order) body += await renderSection(id, tpl.sections[id], scope);

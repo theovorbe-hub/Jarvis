@@ -1,26 +1,47 @@
 {%- comment -%}
   Avis clients : uniquement des avis réels. La section n'apparaît pas sur la boutique tant
-  qu'aucun avis n'est ajouté (un message l'indique seulement dans l'éditeur). Le badge
-  « Vérifié » ne s'affiche que pour les avis cochés comme liés à un achat confirmé, et la
-  ligne de synthèse ne parle d'« avis vérifiés » que si tous les avis le sont.
+  qu'elle ne contient ni avis ni bloc d'application (Trustpilot, Judge.me...). Dans l'éditeur,
+  une section vide montre des cartes d'exemple, signalées comme telles, pour voir la mise en
+  page ; elles ne sont jamais affichées aux visiteurs. Le badge « Vérifié » ne s'affiche que
+  pour les avis cochés comme liés à un achat confirmé, et la ligne de synthèse ne parle
+  d'« avis vérifiés » que si tous les avis le sont. Avec « avis 5 étoiles seulement », la note
+  moyenne reste calculée sur tous les avis de la section.
 {%- endcomment -%}
 {%- liquid
-  assign count = section.blocks.size
+  assign count = 0
+  assign app_count = 0
+  assign shown_count = 0
   assign total = 0
   assign verified_count = 0
   for block in section.blocks
+    if block.type == '@app'
+      assign app_count = app_count | plus: 1
+      continue
+    endif
+    assign count = count | plus: 1
     assign total = total | plus: block.settings.rating
     if block.settings.verified
       assign verified_count = verified_count | plus: 1
     endif
+    unless section.settings.only_five_stars and block.settings.rating != 5
+      assign shown_count = shown_count | plus: 1
+    endunless
   endfor
   if count > 0
     assign average = total | times: 1.0 | divided_by: count
     assign average_rounded = average | times: 10 | round | divided_by: 10.0
     assign average_label = average_rounded | append: '' | remove: '.0' | replace: '.', ','
   endif
+  assign preview = false
+  if count == 0 and app_count == 0 and request.design_mode
+    assign preview = true
+    assign shown_count = 3
+  endif
 -%}
-{%- if count > 0 -%}
+{%- capture star -%}
+  <svg viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z" fill="currentColor"/></svg>
+{%- endcapture -%}
+{%- if shown_count > 0 or app_count > 0 -%}
   <section class="section testimonials" data-carousel>
     <div class="page-width">
       <div class="testimonials__head" data-reveal>
@@ -32,7 +53,7 @@
             <h2 class="h-1">{{ section.settings.heading }}</h2>
           {%- endif -%}
         </div>
-        {%- if count > 1 -%}
+        {%- if shown_count > 1 -%}
           <div class="testimonials__nav">
             <button type="button" class="icon-button" data-carousel-prev aria-label="{{ 'sections.testimonials.previous' | t }}">
               {%- render 'icon', name: 'arrow-left' -%}
@@ -44,40 +65,70 @@
         {%- endif -%}
       </div>
 
-      <ul class="testimonials__track" role="list" tabindex="0" aria-label="{{ section.settings.heading | strip_html | escape }}" data-carousel-track>
-        {%- for block in section.blocks -%}
-          <li class="testimonial" {{ block.shopify_attributes }}>
-            <div class="testimonial__rating">
-              {%- assign fill = block.settings.rating | times: 20 -%}
-              <span class="stars" style="--fill: {{ fill }}%;" role="img" aria-label="{{ 'sections.testimonials.rating' | t: rating: block.settings.rating }}">
-                {%- render 'stars' -%}
-              </span>
-              {%- if block.settings.verified -%}
-                <span class="testimonial__verified">
-                  {%- render 'icon', name: 'seal-check' -%}
-                  {{ 'sections.testimonials.verified' | t }}
-                </span>
-              {%- endif -%}
-            </div>
-            {%- if block.settings.title != blank -%}
-              <h3 class="testimonial__title">{{ block.settings.title | escape }}</h3>
-            {%- endif -%}
-            <blockquote class="testimonial__text">{{ block.settings.text | escape | newline_to_br }}</blockquote>
-            <footer class="testimonial__footer">
-              <p class="testimonial__signature">
-                <span class="testimonial__author">{{ block.settings.author | escape }}</span>
-                {%- if block.settings.location != blank %}, {{ block.settings.location | escape }}{% endif -%}
-                {%- if block.settings.date != blank %}, {{ block.settings.date | escape }}{% endif -%}
-              </p>
-              {%- if block.settings.product != blank -%}
-                <p class="testimonial__product">{{ 'sections.testimonials.product' | t }} {{ block.settings.product | escape }}</p>
-              {%- endif -%}
-            </footer>
-          </li>
-        {%- endfor -%}
-      </ul>
+      {%- if preview -%}
+        <p class="testimonials__preview-note">{{ 'sections.testimonials.preview_note' | t }}</p>
+      {%- endif -%}
 
-      {%- if section.settings.show_summary -%}
+      {%- if shown_count > 0 -%}
+        <ul class="testimonials__track" role="list" tabindex="0" aria-label="{{ section.settings.heading | strip_html | escape }}" data-carousel-track>
+          {%- if preview -%}
+            {%- for i in (1..3) -%}
+              <li class="testimonial testimonial--sample">
+                <div class="testimonial__rating">
+                  <span class="rating-boxes" role="img" aria-label="{{ 'sections.testimonials.rating' | t: rating: 5 }}">
+                    {%- for n in (1..5) -%}<span class="rating-boxes__box is-on">{{ star }}</span>{%- endfor -%}
+                  </span>
+                  <span class="testimonial__verified">
+                    {%- render 'icon', name: 'seal-check' -%}
+                    {{ 'sections.testimonials.verified' | t }}
+                  </span>
+                </div>
+                <h3 class="testimonial__title">{{ 'sections.testimonials.sample_title' | t }}</h3>
+                <p class="testimonial__text">{{ 'sections.testimonials.sample_text' | t }}</p>
+                <footer class="testimonial__footer">
+                  <p class="testimonial__signature"><span class="testimonial__author">{{ 'sections.testimonials.sample_author' | t }}</span></p>
+                </footer>
+              </li>
+            {%- endfor -%}
+          {%- else -%}
+            {%- for block in section.blocks -%}
+              {%- if block.type == '@app' -%}{%- continue -%}{%- endif -%}
+              {%- if section.settings.only_five_stars and block.settings.rating != 5 -%}{%- continue -%}{%- endif -%}
+              <li class="testimonial" {{ block.shopify_attributes }}>
+                <div class="testimonial__rating">
+                  <span class="rating-boxes" role="img" aria-label="{{ 'sections.testimonials.rating' | t: rating: block.settings.rating }}">
+                    {%- for n in (1..5) -%}
+                      <span class="rating-boxes__box{% if n <= block.settings.rating %} is-on{% endif %}">{{ star }}</span>
+                    {%- endfor -%}
+                  </span>
+                  {%- if block.settings.verified -%}
+                    <span class="testimonial__verified">
+                      {%- render 'icon', name: 'seal-check' -%}
+                      {{ 'sections.testimonials.verified' | t }}
+                    </span>
+                  {%- endif -%}
+                </div>
+                {%- if block.settings.title != blank -%}
+                  <h3 class="testimonial__title">{{ block.settings.title | escape }}</h3>
+                {%- endif -%}
+                <blockquote class="testimonial__text">{{ block.settings.text | escape | newline_to_br }}</blockquote>
+                <footer class="testimonial__footer">
+                  <p class="testimonial__signature">
+                    <span class="testimonial__author">{{ block.settings.author | escape }}</span>
+                    {%- if block.settings.location != blank %}, {{ block.settings.location | escape }}{% endif -%}
+                    {%- if block.settings.date != blank %}, {{ block.settings.date | escape }}{% endif -%}
+                  </p>
+                  {%- if block.settings.product != blank -%}
+                    <p class="testimonial__product">{{ 'sections.testimonials.product' | t }} {{ block.settings.product | escape }}</p>
+                  {%- endif -%}
+                </footer>
+              </li>
+            {%- endfor -%}
+          {%- endif -%}
+        </ul>
+      {%- endif -%}
+
+      {%- if section.settings.show_summary and count > 0 -%}
         <p class="testimonials__summary">
           {%- if verified_count < count -%}
             {{ 'sections.testimonials.summary_html' | t: rating: average_label, number: count }}
@@ -86,14 +137,19 @@
           {%- else -%}
             {{ 'sections.testimonials.summary_verified_html' | t: rating: average_label, number: count }}
           {%- endif -%}
+          {%- if section.settings.only_five_stars %} {{ 'sections.testimonials.five_stars_only' | t }}{%- endif -%}
         </p>
       {%- endif -%}
-    </div>
-  </section>
-{%- elsif request.design_mode -%}
-  <section class="section">
-    <div class="page-width">
-      <p class="testimonials__empty">{{ 'sections.testimonials.empty' | t }}</p>
+
+      {%- if app_count > 0 -%}
+        <div class="testimonials__apps">
+          {%- for block in section.blocks -%}
+            {%- if block.type == '@app' -%}
+              {% render block %}
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+      {%- endif -%}
     </div>
   </section>
 {%- endif -%}
@@ -106,7 +162,7 @@
   "settings": [
     {
       "type": "paragraph",
-      "content": "N’ajoutez que des avis réels de vos clients, jamais d’avis inventés ni copiés sur d’autres sites : c’est une pratique commerciale trompeuse. La section reste invisible sur la boutique tant qu’elle ne contient aucun avis."
+      "content": "N’ajoutez que des avis réels de vos clients, jamais d’avis inventés ni copiés sur d’autres sites : c’est une pratique commerciale trompeuse. La section reste invisible sur la boutique tant qu’elle ne contient aucun avis. Dans l’éditeur, une section vide montre des cartes d’exemple que les visiteurs ne voient jamais. Vous pouvez aussi y ajouter le bloc d’une application d’avis (Trustpilot, Judge.me)."
     },
     {
       "type": "text",
@@ -126,9 +182,19 @@
       "label": "Afficher la note moyenne sous les avis",
       "info": "Calculée à partir des avis de la section. Le mot « vérifiés » n’apparaît que si tous les avis sont cochés « Avis vérifié ».",
       "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "only_five_stars",
+      "label": "Montrer seulement les avis 5 étoiles",
+      "info": "La note moyenne reste calculée sur tous les avis de la section, et la ligne de synthèse le précise.",
+      "default": false
     }
   ],
   "blocks": [
+    {
+      "type": "@app"
+    },
     {
       "type": "review",
       "name": "Avis",

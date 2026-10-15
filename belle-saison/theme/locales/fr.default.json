@@ -61,7 +61,11 @@
       "product": "Acheté :",
       "previous": "Avis précédents",
       "next": "Avis suivants",
-      "empty": "Avis clients : ajoutez ici les avis réels de vos clients. La section reste invisible sur la boutique tant qu’elle est vide."
+      "five_stars_only": "Voici nos avis 5 étoiles.",
+      "preview_note": "Exemple de mise en page, visible seulement dans l’éditeur. Ajoutez vos avis réels (bloc « Avis ») ou le bloc de votre application d’avis : les visiteurs ne verront la section qu’à ce moment-là.",
+      "sample_title": "Titre de l’avis",
+      "sample_text": "Le texte exact de votre client apparaîtra ici, avec son prénom et la date.",
+      "sample_author": "Prénom N."
     }
   },
   "products": {

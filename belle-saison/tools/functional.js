@@ -80,6 +80,12 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.equal(await page.$eval('.testimonial__signature', (el) => el.textContent.trim()), 'Exemple A., Lyon, octobre 2026');
   // Moyenne de 5, 4, 5, 5 = 4,75 arrondie à 4,8 ; deux avis sur quatre seulement sont vérifiés.
   assert.equal(await page.$eval('.testimonials__summary', (el) => el.textContent.trim()), 'Noté 4,8/5 sur la base de 4 avis.');
+  // Étoiles en carrés, comme les widgets d'avis : autant de carrés pleins que la note.
+  assert.deepEqual(await page.$$eval('.testimonial', (els) => els.map((e) => [e.querySelectorAll('.rating-boxes__box').length, e.querySelectorAll('.rating-boxes__box.is-on').length])), [[5, 5], [5, 4], [5, 5], [5, 5]]);
+  assert.equal(await page.$eval('.testimonial .rating-boxes', (el) => el.getAttribute('aria-label')), 'Note : 5 sur 5');
+  assert.equal(await page.$('.testimonials__preview-note'), null, 'pas de message d’aperçu sur la boutique');
+  // Avis placés juste après les produits mis en avant.
+  assert.ok(await page.$eval('.section-testimonials', (t) => t.previousElementSibling.classList.contains('section-featured-collection')), 'avis juste après les produits');
   await page.locator('.testimonials').scrollIntoViewIfNeeded();
   const before = await page.$eval('[data-carousel-track]', (t) => t.scrollLeft);
   assert.equal(await page.$eval('[data-carousel-prev]', (b) => b.disabled), true);
@@ -95,8 +101,19 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   await direct.waitForTimeout(800);
   assert.equal(await direct.$eval('.story video', (v) => v.paused), false, 'la vidéo « Notre histoire » par lien direct doit jouer');
   assert.match(await direct.$eval('.story video', (v) => v.currentSrc), /demo\.webm$/);
-  assert.equal(await direct.$eval('.testimonials__summary', (el) => el.textContent.trim()), 'Noté 4,8/5 sur la base de 4 avis vérifiés.');
+  assert.equal(await direct.$eval('.testimonials__summary', (el) => el.textContent.trim()), 'Noté 4,8/5 sur la base de 4 avis vérifiés. Voici nos avis 5 étoiles.');
+  assert.equal(await direct.$$eval('.testimonial', (els) => els.length), 3, 'avis 5 étoiles seulement');
   await direct.close();
+
+  // Sans avis : rien sur la boutique ; dans l'éditeur, trois cartes d'exemple signalées comme telles.
+  const empty = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+  await empty.goto(`file://${path.join(outDir, 'index-sans-avis.html')}`);
+  assert.equal(await empty.$('.testimonials'), null, 'section invisible sans avis réels');
+  await empty.goto(`file://${path.join(outDir, 'index-editeur.html')}`);
+  assert.equal(await empty.$$eval('.testimonial--sample', (els) => els.length), 3);
+  assert.match(await empty.$eval('.testimonials__preview-note', (el) => el.textContent), /visible seulement dans l’éditeur/);
+  assert.equal(await empty.$('.testimonials__summary'), null, 'pas de note moyenne inventée');
+  await empty.close();
 
   const calmHero = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
   await calmHero.goto(`file://${path.join(outDir, 'index.html')}`);

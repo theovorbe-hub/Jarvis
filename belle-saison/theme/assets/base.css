@@ -3176,39 +3176,6 @@ figure {
 /* --------------------------------------------------------------------------
    Avis clients
    -------------------------------------------------------------------------- */
-.stars {
-  position: relative;
-  display: inline-block;
-  align-self: flex-start;
-  width: max-content;
-  line-height: 0;
-  vertical-align: middle;
-}
-
-.stars__row {
-  display: inline-flex;
-  gap: 0.15rem;
-  white-space: nowrap;
-}
-
-.stars__row--empty {
-  color: color-mix(in srgb, var(--color-accent) 22%, var(--color-bg));
-}
-
-.stars__row--full {
-  position: absolute;
-  inset: 0 auto 0 0;
-  width: var(--fill, 100%);
-  overflow: hidden;
-  color: var(--color-accent);
-}
-
-.stars svg {
-  flex: none;
-  width: 1rem;
-  height: 1rem;
-}
-
 .testimonials__head {
   display: flex;
   flex-wrap: wrap;
@@ -3252,8 +3219,29 @@ figure {
   gap: 0.375rem 0.75rem;
 }
 
-.testimonial__rating .stars {
-  align-self: center;
+.rating-boxes {
+  display: inline-flex;
+  gap: 0.1875rem;
+}
+
+.rating-boxes__box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 2px;
+  background: var(--color-border);
+  color: var(--color-bg);
+}
+
+.rating-boxes__box.is-on {
+  background: var(--color-accent);
+}
+
+.rating-boxes__box svg {
+  width: 0.9375rem;
+  height: 0.9375rem;
 }
 
 .testimonial__verified {
@@ -3356,11 +3344,20 @@ figure {
   height: 1.125rem;
 }
 
-.testimonials__empty {
-  padding: 2rem;
+.testimonials__preview-note {
+  margin-bottom: 1rem;
+  padding: 0.75rem 1rem;
   border: 1px dashed var(--color-border);
   color: var(--color-muted);
-  text-align: center;
+  font-size: 0.9375rem;
+}
+
+.testimonial--sample {
+  opacity: 0.75;
+}
+
+.testimonials__apps {
+  margin-top: clamp(1.75rem, 3vw, 2.5rem);
 }
 
 @media (max-width: 989px) {

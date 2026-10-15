@@ -41,9 +41,13 @@ Dans `theme/` :
 
 ## Avis clients
 
-La section « Avis clients » de l’accueil n’affiche que des avis ajoutés à la main dans
-l’éditeur (un bloc par avis : note, texte, prénom, ville, produit, date). Elle reste
-invisible tant qu’elle est vide. N’y mettre que des avis réels, avec l’accord du client, et ne
+La section « Avis clients » de l’accueil, placée juste après les produits mis en avant, n’affiche
+que des avis ajoutés à la main dans l’éditeur (un bloc par avis : note, titre, texte, prénom,
+ville, produit, date) ou le bloc d’une application d’avis (Trustpilot, Judge.me). Les notes
+s’affichent en étoiles dans des carrés, avec la note moyenne en dessous ; l’option « Montrer
+seulement les avis 5 étoiles » garde la moyenne calculée sur tous les avis et l’indique. Elle
+reste invisible sur la boutique tant qu’elle est vide ; dans l’éditeur, une section vide montre
+trois cartes d’exemple, signalées comme telles, que les visiteurs ne voient jamais. N’y mettre que des avis réels, avec l’accord du client, et ne
 cocher « Avis vérifié » que pour un achat confirmé : publier de faux avis est une pratique
 commerciale trompeuse. Une application d’avis (Judge.me, par exemple) peut ensuite collecter
 les avis automatiquement après chaque commande.
