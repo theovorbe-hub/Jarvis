@@ -127,6 +127,15 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.match(await empty.$eval('.testimonials__widget .testimonials__preview-note', (el) => el.textContent), /seulement dans l’éditeur/);
   await empty.goto(`file://${path.join(outDir, 'index-exemples-visiteur.html')}`);
   assert.equal(await empty.$('.testimonials'), null, 'exemples jamais montrés aux visiteurs');
+  // Avis écrits dans les champs, case « Exemple » cochée : visibles et marqués dans l'éditeur, absents pour les visiteurs.
+  await empty.goto(`file://${path.join(outDir, 'index-saisis-editeur.html')}`);
+  assert.equal(await empty.$$eval('.testimonial.testimonial--sample', (els) => els.length), 4);
+  assert.equal(await empty.$$eval('.testimonial__sample-tag', (els) => els.length), 4);
+  assert.equal(await empty.$eval('.testimonial__author', (el) => el.textContent.trim()), 'Exemple A.');
+  assert.match(await empty.$eval('.testimonials__preview-note', (el) => el.textContent), /marqués « Exemple »/);
+  assert.equal(await empty.$eval('.testimonials__summary', (el) => el.textContent.trim()), 'Noté 4,8/5 sur la base de 4 avis (exemple).');
+  await empty.goto(`file://${path.join(outDir, 'index-saisis-visiteur.html')}`);
+  assert.equal(await empty.$('.testimonials'), null, 'avis d’exemple saisis jamais montrés aux visiteurs');
   await empty.close();
 
   const calmHero = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
@@ -142,7 +151,8 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.equal(await page.$eval('.story video', (v) => v.paused), false, 'la vidéo devrait jouer');
   await page.click('.story [data-video-toggle]');
   assert.equal(await page.$eval('.story video', (v) => v.paused), true, 'le bouton devrait mettre en pause');
-  assert.equal(await page.$eval('.story [data-bg-video]', (el) => el.classList.contains('is-paused')), true);
+  // La classe suit l'événement « pause », qui arrive juste après le clic : on l'attend.
+  await page.waitForFunction(() => document.querySelector('.story [data-bg-video]').classList.contains('is-paused'), null, { timeout: 2000 });
 
   const calm = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });
   await calm.goto(`file://${path.join(outDir, 'index.html')}`);

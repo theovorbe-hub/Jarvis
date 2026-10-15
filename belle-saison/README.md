@@ -47,7 +47,7 @@ ville, produit, date) ou le bloc d’une application d’avis (Trustpilot, Judge
 s’affichent en étoiles dans des carrés, avec la note moyenne en dessous ; l’option « Montrer
 seulement les avis 5 étoiles » garde la moyenne calculée sur tous les avis et l’indique. Elle
 reste invisible sur la boutique tant qu’elle est vide ; dans l’éditeur, une section vide montre
-trois cartes d’exemple, signalées comme telles, que les visiteurs ne voient jamais. N’y mettre que des avis réels, avec l’accord du client, et ne
+trois cartes d’exemple, signalées comme telles, que les visiteurs ne voient jamais. Chaque bloc « Avis » a une case « Exemple » (cochée par défaut) : la marchande écrit ses avis d’exemple dans les champs pour voir la forme, ils restent visibles seulement dans l’éditeur et hors de la note moyenne ; on ne la décoche que pour l’avis réel d’un client. N’y mettre que des avis réels, avec l’accord du client, et ne
 cocher « Avis vérifié » que pour un achat confirmé : publier de faux avis est une pratique
 commerciale trompeuse. Une application d’avis (Judge.me, par exemple) peut ensuite collecter
 les avis automatiquement après chaque commande.

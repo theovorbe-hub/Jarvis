@@ -7,7 +7,9 @@
   page ; elles ne sont jamais affichées aux visiteurs. Le badge « Vérifié » ne s'affiche que
   pour les avis cochés comme liés à un achat confirmé, et la ligne de synthèse ne parle
   d'« avis vérifiés » que si tous les avis le sont. Avec « avis 5 étoiles seulement », la note
-  moyenne reste calculée sur tous les avis de la section.
+  moyenne reste calculée sur tous les avis de la section. Un avis coché « Exemple » (case cochée
+  par défaut) ne s'affiche que dans l'éditeur, marqué comme tel, et n'entre jamais dans la note
+  moyenne des visiteurs : la marchande peut écrire ses exemples dans les champs pour voir la forme.
 {%- endcomment -%}
 {%- liquid
   assign count = 0
@@ -15,6 +17,8 @@
   assign shown_count = 0
   assign total = 0
   assign verified_count = 0
+  assign sample_count = 0
+  assign sample_total = 0
   for block in section.blocks
     if block.type == '@app'
       assign app_count = app_count | plus: 1
@@ -30,10 +34,18 @@
       endif
       continue
     endif
-    assign count = count | plus: 1
-    assign total = total | plus: block.settings.rating
-    if block.settings.verified
-      assign verified_count = verified_count | plus: 1
+    if block.settings.sample
+      unless request.design_mode
+        continue
+      endunless
+      assign sample_count = sample_count | plus: 1
+      assign sample_total = sample_total | plus: block.settings.rating
+    else
+      assign count = count | plus: 1
+      assign total = total | plus: block.settings.rating
+      if block.settings.verified
+        assign verified_count = verified_count | plus: 1
+      endif
     endif
     unless section.settings.only_five_stars and block.settings.rating != 5
       assign shown_count = shown_count | plus: 1
@@ -41,11 +53,15 @@
   endfor
   if count > 0
     assign average = total | times: 1.0 | divided_by: count
+  elsif sample_count > 0
+    assign average = sample_total | times: 1.0 | divided_by: sample_count
+  endif
+  if count > 0 or sample_count > 0
     assign average_rounded = average | times: 10 | round | divided_by: 10.0
     assign average_label = average_rounded | append: '' | remove: '.0' | replace: '.', ','
   endif
   assign preview = false
-  if count == 0 and app_count == 0 and request.design_mode
+  if count == 0 and sample_count == 0 and app_count == 0 and request.design_mode
     assign preview = true
     assign shown_count = 3
   endif
@@ -79,6 +95,8 @@
 
       {%- if preview -%}
         <p class="testimonials__preview-note">{{ 'sections.testimonials.preview_note' | t }}</p>
+      {%- elsif sample_count > 0 -%}
+        <p class="testimonials__preview-note">{{ 'sections.testimonials.sample_note' | t }}</p>
       {%- endif -%}
 
       {%- if shown_count > 0 -%}
@@ -105,8 +123,9 @@
           {%- else -%}
             {%- for block in section.blocks -%}
               {%- if block.type != 'review' -%}{%- continue -%}{%- endif -%}
+              {%- if block.settings.sample -%}{%- unless request.design_mode -%}{%- continue -%}{%- endunless -%}{%- endif -%}
               {%- if section.settings.only_five_stars and block.settings.rating != 5 -%}{%- continue -%}{%- endif -%}
-              <li class="testimonial" {{ block.shopify_attributes }}>
+              <li class="testimonial{% if block.settings.sample %} testimonial--sample{% endif %}" {{ block.shopify_attributes }}>
                 <div class="testimonial__rating">
                   <span class="rating-boxes" role="img" aria-label="{{ 'sections.testimonials.rating' | t: rating: block.settings.rating }}">
                     {%- for n in (1..5) -%}
@@ -118,6 +137,9 @@
                       {%- render 'icon', name: 'seal-check' -%}
                       {{ 'sections.testimonials.verified' | t }}
                     </span>
+                  {%- endif -%}
+                  {%- if block.settings.sample -%}
+                    <span class="testimonial__sample-tag">{{ 'sections.testimonials.sample_tag' | t }}</span>
                   {%- endif -%}
                 </div>
                 {%- if block.settings.title != blank -%}
@@ -140,6 +162,11 @@
         </ul>
       {%- endif -%}
 
+      {%- if section.settings.show_summary and count == 0 and sample_count > 0 -%}
+        <p class="testimonials__summary">
+          {{- 'sections.testimonials.summary_sample_html' | t: rating: average_label, number: sample_count -}}
+        </p>
+      {%- endif -%}
       {%- if section.settings.show_summary and count > 0 -%}
         <p class="testimonials__summary">
           {%- if verified_count < count -%}
@@ -229,6 +256,13 @@
       "type": "review",
       "name": "Avis",
       "settings": [
+        {
+          "type": "checkbox",
+          "id": "sample",
+          "label": "Exemple, visible seulement dans l’éditeur",
+          "info": "Cochée, l’avis sert à voir la forme : les visiteurs ne le voient jamais. Décochez uniquement pour l’avis réel d’un client, avec son accord.",
+          "default": true
+        },
         {
           "type": "range",
           "id": "rating",

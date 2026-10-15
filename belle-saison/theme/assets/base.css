@@ -3356,6 +3356,15 @@ figure {
   opacity: 0.75;
 }
 
+.testimonial__sample-tag {
+  padding: 0.125rem 0.5rem;
+  border: 1px dashed var(--color-border);
+  color: var(--color-muted);
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  line-height: 1.4;
+}
+
 .testimonials__apps {
   display: grid;
   gap: 1.5rem;

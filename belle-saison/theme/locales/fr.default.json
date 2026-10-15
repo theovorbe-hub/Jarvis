@@ -65,7 +65,10 @@
       "preview_note": "Exemple de mise en page, visible seulement dans l’éditeur. Ajoutez vos avis réels (bloc « Avis ») ou le bloc de votre application d’avis : les visiteurs ne verront la section qu’à ce moment-là.",
       "sample_title": "Titre de l’avis",
       "sample_text": "Le texte exact de votre client apparaîtra ici, avec son prénom et la date.",
-      "sample_author": "Prénom N."
+      "sample_author": "Prénom N.",
+      "sample_tag": "Exemple",
+      "sample_note": "Les avis marqués « Exemple » ne sont visibles que dans l’éditeur. Décochez « Exemple » dans un avis uniquement s’il s’agit de l’avis réel d’un client : il apparaîtra alors sur la boutique.",
+      "summary_sample_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis</strong> (exemple)."
     }
   },
   "products": {

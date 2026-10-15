@@ -208,18 +208,20 @@
       "type": "testimonials",
       "settings": {
         "eyebrow": "Avis clients",
-        "heading": "Ils ont habillé leurs murs."
+        "heading": "Ils ont habillé leurs murs.",
+        "show_summary": true,
+        "only_five_stars": false
       }
     }
   },
   "order": [
     "hero_video",
-    "engagements",
-    "collections",
-    "story",
     "featured",
     "testimonials",
+    "collections",
+    "story",
     "video",
+    "engagements",
     "inspiration",
     "newsletter"
   ]

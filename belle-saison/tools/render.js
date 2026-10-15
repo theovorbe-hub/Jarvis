@@ -232,6 +232,9 @@ const pages = {
   // Code d'exemples réservé à l'éditeur (docs/avis-exemples-editeur.liquid) : visible dans l'éditeur, jamais aux visiteurs.
   'index-exemples-editeur': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true, examples: true, designMode: true },
   'index-exemples-visiteur': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true, examples: true },
+  // Avis écrits dans les champs avec la case « Exemple » cochée : éditeur seulement.
+  'index-saisis-editeur': { template: 'index', page_type: 'index', title: 'Belle Saison', typedSamples: true, designMode: true },
+  'index-saisis-visiteur': { template: 'index', page_type: 'index', title: 'Belle Saison', typedSamples: true },
   product: { template: 'product', page_type: 'product', title: products[0].title, product: products[0] },
   'product-rouleau': { template: 'product', page_type: 'product', title: products[3].title, product: products[3] },
   collection: { template: 'collection', page_type: 'collection', title: collection.title, collection },
@@ -262,7 +265,8 @@ const indexOverrides = (t) => {
     { rating: 5, title: 'Quatrième carte', text: 'Une carte de plus pour faire apparaître les flèches.', author: 'Exemple D.', location: 'Paris', product: '', date: '', verified: false },
   ];
   t.sections.testimonials.blocks = {};
-  t.sections.testimonials.block_order = avis.map((a, i) => { t.sections.testimonials.blocks[`r${i}`] = { type: 'review', settings: a }; return `r${i}`; });
+  // « Exemple » est coché par défaut dans l'éditeur : ces avis d'aperçu le décochent pour s'afficher.
+  t.sections.testimonials.block_order = avis.map((a, i) => { t.sections.testimonials.blocks[`r${i}`] = { type: 'review', settings: { ...a, sample: false } }; return `r${i}`; });
   t.sections.inspiration.block_order.forEach((id, i) => { t.sections.inspiration.blocks[id].settings.image = `ins${i + 1}`; });
   return t;
 };
@@ -288,6 +292,9 @@ const indexOverrides = (t) => {
     if (p.noReviews) {
       tpl.sections.testimonials.blocks = {};
       tpl.sections.testimonials.block_order = [];
+    }
+    if (p.typedSamples) {
+      Object.values(tpl.sections.testimonials.blocks).forEach((b) => { b.settings = { ...b.settings, sample: true }; });
     }
     if (p.examples) {
       tpl.sections.testimonials.blocks = { ex: { type: 'custom_liquid', settings: { custom_liquid: fs.readFileSync(path.join(__dirname, '..', 'docs', 'avis-exemples-editeur.liquid'), 'utf8') } } };
