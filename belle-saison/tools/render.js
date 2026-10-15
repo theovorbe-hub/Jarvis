@@ -195,13 +195,15 @@ const renderSection = async (id, data, scope) => {
   const schema = schemaOf(src);
   const s = {};
   for (const d of schema.settings || []) if (d.id) s[d.id] = resolveSetting(d, data.settings?.[d.id]);
-  const blocks = (data.block_order || Object.keys(data.blocks || {})).map((bid) => {
+  const blocks = await Promise.all((data.block_order || Object.keys(data.blocks || {})).map(async (bid) => {
     const b = data.blocks[bid];
     const bs = (schema.blocks || []).find((x) => x.type === b.type) || {};
     const settings = {};
     for (const d of bs.settings || []) if (d.id) settings[d.id] = resolveSetting(d, b.settings?.[d.id]);
+    // Comme Shopify, un réglage de type « liquid » est rendu avant d'être affiché.
+    for (const d of bs.settings || []) if (d.type === 'liquid' && settings[d.id]) settings[d.id] = await engine.parseAndRender(settings[d.id], scope);
     return { id: bid, type: b.type, settings, shopify_attributes: '' };
-  });
+  }));
   sectionIndex += 1;
   const section = { id, settings: s, blocks, index: sectionIndex };
   const html = await engine.parseAndRender(src, { ...scope, section });
@@ -227,6 +229,9 @@ const pages = {
   'index-editeur': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true, designMode: true },
   // Widget d'un service d'avis collé dans un bloc « Code personnalisé », sans avis saisis à la main.
   'index-widget': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true, widget: true },
+  // Code d'exemples réservé à l'éditeur (docs/avis-exemples-editeur.liquid) : visible dans l'éditeur, jamais aux visiteurs.
+  'index-exemples-editeur': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true, examples: true, designMode: true },
+  'index-exemples-visiteur': { template: 'index', page_type: 'index', title: 'Belle Saison', noReviews: true, examples: true },
   product: { template: 'product', page_type: 'product', title: products[0].title, product: products[0] },
   'product-rouleau': { template: 'product', page_type: 'product', title: products[3].title, product: products[3] },
   collection: { template: 'collection', page_type: 'collection', title: collection.title, collection },
@@ -283,6 +288,10 @@ const indexOverrides = (t) => {
     if (p.noReviews) {
       tpl.sections.testimonials.blocks = {};
       tpl.sections.testimonials.block_order = [];
+    }
+    if (p.examples) {
+      tpl.sections.testimonials.blocks = { ex: { type: 'custom_liquid', settings: { custom_liquid: fs.readFileSync(path.join(__dirname, '..', 'docs', 'avis-exemples-editeur.liquid'), 'utf8') } } };
+      tpl.sections.testimonials.block_order = ['ex'];
     }
     if (p.widget) {
       tpl.sections.testimonials.blocks = {

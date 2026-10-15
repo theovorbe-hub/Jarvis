@@ -1,0 +1,44 @@
+{%- comment -%}
+  Belle Saison : 10 exemples d'avis pour voir la forme de la section « Avis clients ».
+  À coller dans Shopify : Personnaliser > section « Avis clients » > Ajouter un bloc >
+  « Code personnalisé ». Ces avis sont fictifs : ils ne s'affichent que dans l'éditeur
+  Shopify (request.design_mode) et jamais aux visiteurs. Ne pas retirer cette condition.
+{%- endcomment -%}
+{%- if request.design_mode -%}
+  {%- capture etoile -%}<svg viewBox="0 0 256 256" aria-hidden="true" focusable="false"><path d="M234.29,114.85l-45,38.83L203,211.75a16.4,16.4,0,0,1-24.5,17.82L128,198.49,77.47,229.57A16.4,16.4,0,0,1,53,211.75l13.76-58.07-45-38.83A16.46,16.46,0,0,1,31.08,86l59-4.76,22.76-55.08a16.36,16.36,0,0,1,30.27,0l22.75,55.08,59,4.76a16.46,16.46,0,0,1,9.37,28.86Z" fill="currentColor"/></svg>{%- endcapture -%}
+  {%- capture verifie -%}<svg class="icon" aria-hidden="true" focusable="false" viewBox="0 0 256 256" fill="currentColor"><path d="M225.86,102.82c-3.77-3.94-7.67-8-9.14-11.57-1.36-3.27-1.44-8.69-1.52-13.94-.15-9.76-.31-20.82-8-28.51s-18.75-7.85-28.51-8c-5.25-.08-10.67-.16-13.94-1.52-3.56-1.47-7.63-5.37-11.57-9.14C146.28,23.51,138.44,16,128,16s-18.27,7.51-25.18,14.14c-3.94,3.77-8,7.67-11.57,9.14C88,40.64,82.56,40.72,77.31,40.8c-9.76.15-20.82.31-28.51,8S41,67.55,40.8,77.31c-.08,5.25-.16,10.67-1.52,13.94-1.47,3.56-5.37,7.63-9.14,11.57C23.51,109.72,16,117.56,16,128s7.51,18.27,14.14,25.18c3.77,3.94,7.67,8,9.14,11.57,1.36,3.27,1.44,8.69,1.52,13.94.15,9.76.31,20.82,8,28.51s18.75,7.85,28.51,8c5.25.08,10.67.16,13.94,1.52,3.56,1.47,7.63,5.37,11.57,9.14C109.72,232.49,117.56,240,128,240s18.27-7.51,25.18-14.14c3.94-3.77,8-7.67,11.57-9.14,3.27-1.36,8.69-1.44,13.94-1.52,9.76-.15,20.82-.31,28.51-8s7.85-18.75,8-28.51c.08-5.25.16-10.67,1.52-13.94,1.47-3.56,5.37-7.63,9.14-11.57C232.49,146.28,240,138.44,240,128S232.49,109.73,225.86,102.82Zm-52.2,6.84-56,56a8,8,0,0,1-11.32,0l-24-24a8,8,0,0,1,11.32-11.32L112,148.69l50.34-50.35a8,8,0,0,1,11.32,11.32Z"/></svg>{%- endcapture -%}
+  {%- capture liste -%}
+5§La couleur exacte, enfin§Je voulais être sûre du vert sauge avant de me lancer. J’ai commandé l’échantillon, je l’ai scotché trois jours près de la fenêtre : c’est exactement la teinte posée aujourd’hui dans notre chambre.§Claire M., Tours, chambre parentale¤
+5§Aucun calcul à faire§Notre mur fait 3,42 m de large avec une poutre : j’ai simplement entré les dimensions et le visuel est arrivé à la bonne taille. Pas une chute, pas un raccord raté.§Sophie L., Angers, salon¤
+4§Posé en un après-midi§Première pose de papier peint pour nous deux. Avec le guide, une brosse et de la patience, c’était fait en un après-midi. Je retire une étoile car j’aurais aimé une vidéo en plus du guide.§Julie et Marc, Nantes, tête de lit¤
+5§Une vraie matière§Je découvrais la marque avec ce premier achat. Le papier est épais, mat, très agréable au toucher, et le colis était soigné. Ce que j’ai reçu ressemble aux gros plans de la fiche.§Anne-Sophie R., Bordeaux, entrée¤
+5§Prête avant la naissance§Je voulais que la chambre soit finie avant mon terme. La date de livraison était affichée avant de payer et elle a été tenue. Les animaux à l’aquarelle sont encore plus doux en vrai.§Léa B., Lille, chambre de bébé¤
+5§Aucune odeur§C’était mon premier critère pour la chambre de notre fils. Aucune odeur le lendemain de la pose, nous avons pu l’installer dans sa chambre tout de suite.§Camille D., Rennes, chambre d’enfant¤
+4§Pensé pour durer, ou pour changer§Le panoramique savane plaît énormément à notre fille. J’ai choisi ce papier aussi parce qu’il se retire à sec : le jour où elle voudra autre chose, nous pourrons changer sans travaux.§Marine T., Lyon, chambre d’enfant¤
+5§Trois chambres, une seule teinte§Nous avons habillé trois chambres d’amis dans notre longère avec la même toile de Jouy. Tout a été imprimé ensemble : aucune différence de teinte d’une pièce à l’autre.§Hélène G., Dinan, maison de campagne¤
+5§Une vraie personne au bout du fil§J’aime poser mes questions avant de commander. On m’a répondu le lendemain, avec des conseils précis sur la quantité pour une pièce mansardée. J’ai commandé en toute confiance.§Françoise P., Sarlat, chambre mansardée¤
+5§Le prix total dès le départ§J’ai fait le calcul pour la salle à manger et le couloir avant de me décider : le prix de chaque mur s’affichait avec la livraison, sans surprise au moment de payer.§Bernard et Hélène V., Honfleur, salle à manger
+  {%- endcapture -%}
+  {%- assign avis = liste | split: '¤' -%}
+  <p class="testimonials__preview-note">Exemples fictifs pour voir la forme, visibles seulement dans l’éditeur Shopify. Les visiteurs ne les voient pas.</p>
+  <ul class="testimonials__track" role="list" tabindex="0" aria-label="Exemples d’avis">
+    {%- for a in avis -%}
+      {%- assign f = a | strip | split: '§' -%}
+      {%- assign note = f[0] | plus: 0 -%}
+      <li class="testimonial testimonial--sample">
+        <div class="testimonial__rating">
+          <span class="rating-boxes" role="img" aria-label="Note : {{ note }} sur 5">
+            {%- for n in (1..5) -%}<span class="rating-boxes__box{% if n <= note %} is-on{% endif %}">{{ etoile }}</span>{%- endfor -%}
+          </span>
+          <span class="testimonial__verified">{{ verifie }}Vérifié</span>
+        </div>
+        <h3 class="testimonial__title">{{ f[1] }}</h3>
+        <p class="testimonial__text">{{ f[2] }}</p>
+        <footer class="testimonial__footer">
+          <p class="testimonial__signature"><span class="testimonial__author">{{ f[3] }}</span></p>
+        </footer>
+      </li>
+    {%- endfor -%}
+  </ul>
+  <p class="testimonials__summary">Noté <strong>4,8/5</strong> sur la base de <strong>10 avis</strong> (exemple).</p>
+{%- endif -%}

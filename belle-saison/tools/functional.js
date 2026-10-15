@@ -119,6 +119,14 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.ok(await empty.$('.testimonials__widget .trustpilot-widget'), 'code du widget rendu tel quel');
   assert.equal(await empty.$('.testimonial'), null);
   assert.equal(await empty.$('.testimonials__preview-note'), null);
+  // Code d'exemples réservé à l'éditeur : dix avis dans l'éditeur, rien du tout pour les visiteurs.
+  await empty.goto(`file://${path.join(outDir, 'index-exemples-editeur.html')}`);
+  assert.equal(await empty.$$eval('.testimonials__widget .testimonial--sample', (els) => els.length), 10);
+  assert.deepEqual(await empty.$$eval('.testimonials__widget .testimonial', (els) => els.slice(2, 4).map((e) => e.querySelectorAll('.rating-boxes__box.is-on').length)), [4, 5]);
+  assert.equal(await empty.$eval('.testimonials__widget .testimonial__author', (el) => el.textContent.trim()), 'Claire M., Tours, chambre parentale');
+  assert.match(await empty.$eval('.testimonials__widget .testimonials__preview-note', (el) => el.textContent), /seulement dans l’éditeur/);
+  await empty.goto(`file://${path.join(outDir, 'index-exemples-visiteur.html')}`);
+  assert.equal(await empty.$('.testimonials'), null, 'exemples jamais montrés aux visiteurs');
   await empty.close();
 
   const calmHero = await browser.newPage({ viewport: { width: 1280, height: 900 }, reducedMotion: 'reduce' });

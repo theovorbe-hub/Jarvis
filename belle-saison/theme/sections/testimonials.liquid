@@ -1,7 +1,8 @@
 {%- comment -%}
   Avis clients : uniquement des avis réels. La section n'apparaît pas sur la boutique tant
-  qu'elle ne contient ni avis, ni bloc d'application, ni bloc « Code personnalisé » rempli
-  (widget Trustpilot ou Judge.me collé tel quel). Dans l'éditeur,
+  qu'elle ne contient ni avis, ni bloc d'application, ni bloc « Code personnalisé » qui affiche
+  quelque chose (widget Trustpilot ou Judge.me collé tel quel ; un code réservé à l'éditeur,
+  entouré de request.design_mode, ne rend pas la section visible aux visiteurs). Dans l'éditeur,
   une section vide montre des cartes d'exemple, signalées comme telles, pour voir la mise en
   page ; elles ne sont jamais affichées aux visiteurs. Le badge « Vérifié » ne s'affiche que
   pour les avis cochés comme liés à un achat confirmé, et la ligne de synthèse ne parle
@@ -20,7 +21,11 @@
       continue
     endif
     if block.type == 'custom_liquid'
-      if block.settings.custom_liquid != blank
+      capture widget_output
+        echo block.settings.custom_liquid
+      endcapture
+      assign widget_output = widget_output | strip
+      if widget_output != ''
         assign app_count = app_count | plus: 1
       endif
       continue
@@ -153,8 +158,12 @@
           {%- for block in section.blocks -%}
             {%- if block.type == '@app' -%}
               {% render block %}
-            {%- elsif block.type == 'custom_liquid' and block.settings.custom_liquid != blank -%}
-              <div class="testimonials__widget" {{ block.shopify_attributes }}>{{ block.settings.custom_liquid }}</div>
+            {%- elsif block.type == 'custom_liquid' -%}
+              {%- capture widget_output -%}{{ block.settings.custom_liquid }}{%- endcapture -%}
+              {%- assign widget_output = widget_output | strip -%}
+              {%- if widget_output != '' -%}
+                <div class="testimonials__widget" {{ block.shopify_attributes }}>{{ widget_output }}</div>
+              {%- endif -%}
             {%- endif -%}
           {%- endfor -%}
         </div>

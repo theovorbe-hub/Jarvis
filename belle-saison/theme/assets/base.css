@@ -3366,6 +3366,10 @@ figure {
   margin-top: 0;
 }
 
+.testimonials__apps > * {
+  min-width: 0;
+}
+
 @media (max-width: 989px) {
   .testimonials__track {
     grid-auto-columns: calc((100% - 1.5rem) / 2);
