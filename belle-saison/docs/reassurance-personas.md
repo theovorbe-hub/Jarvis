@@ -65,3 +65,22 @@ réponse.
 Publication : tous les avis, y compris les moins bons (répondre poliment à chacun) ; « Avis
 vérifié » coché seulement pour un achat confirmé ; indiquer sous la section comment les avis
 sont collectés (obligation d’information, article L111-7-2).
+
+## Exemples d’avis (modèles, à ne jamais publier comme de vrais avis)
+
+Demandés par la cliente le 15 octobre 2026 comme exemples. Usages possibles : montrer aux
+personnes testeuses le genre de retour utile, servir de modèle de ton, illustrer une maquette.
+Ils sont fictifs : ne jamais les ajouter dans la section « Avis clients » de la boutique.
+
+| # | Persona | Note | Titre | Avis | Signature fictive |
+|---|---|---|---|---|---|
+| 1 | Claire | 5 | La couleur exacte, enfin | Je voulais être sûre du vert sauge avant de me lancer. J’ai commandé l’échantillon, je l’ai scotché trois jours près de la fenêtre : c’est exactement la teinte posée aujourd’hui dans notre chambre. | Claire M., Tours, chambre parentale |
+| 2 | Claire | 5 | Aucun calcul à faire | Notre mur fait 3,42 m de large avec une poutre : j’ai simplement entré les dimensions et le visuel est arrivé à la bonne taille. Pas une chute, pas un raccord raté. | Sophie L., Angers, salon |
+| 3 | Claire | 4 | Posé en un après-midi | Première pose de papier peint pour nous deux. Avec le guide, une brosse et de la patience, c’était fait en un après-midi. Je retire une étoile car j’aurais aimé une vidéo en plus du guide. | Julie et Marc, Nantes, tête de lit |
+| 4 | Claire | 5 | Une vraie matière | Je découvrais la marque avec ce premier achat. Le papier est épais, mat, très agréable au toucher, et le colis était soigné. Ce que j’ai reçu ressemble aux gros plans de la fiche. | Anne-Sophie R., Bordeaux, entrée |
+| 5 | Léa | 5 | Prête avant la naissance | Je voulais que la chambre soit finie avant mon terme. La date de livraison était affichée avant de payer et elle a été tenue. Les animaux à l’aquarelle sont encore plus doux en vrai. | Léa B., Lille, chambre de bébé |
+| 6 | Léa | 5 | Aucune odeur | C’était mon premier critère pour la chambre de notre fils. Aucune odeur le lendemain de la pose, nous avons pu l’installer dans sa chambre tout de suite. | Camille D., Rennes, chambre d’enfant |
+| 7 | Léa | 4 | Pensé pour durer, ou pour changer | Le panoramique savane plaît énormément à notre fille. J’ai choisi ce papier aussi parce qu’il se retire à sec : le jour où elle voudra autre chose, nous pourrons changer sans travaux. | Marine T., Lyon, chambre d’enfant |
+| 8 | Hélène | 5 | Trois chambres, une seule teinte | Nous avons habillé trois chambres d’amis dans notre longère avec la même toile de Jouy. Tout a été imprimé ensemble : aucune différence de teinte d’une pièce à l’autre. | Hélène G., Dinan, maison de campagne |
+| 9 | Hélène | 5 | Une vraie personne au bout du fil | J’aime poser mes questions avant de commander. On m’a répondu le lendemain, avec des conseils précis sur la quantité pour une pièce mansardée. J’ai commandé en toute confiance. | Françoise P., Sarlat, chambre mansardée |
+| 10 | Hélène | 5 | Le prix total dès le départ | J’ai fait le calcul pour la salle à manger et le couloir avant de me décider : le prix de chaque mur s’affichait avec la livraison, sans surprise au moment de payer. | Bernard et Hélène V., Honfleur, salle à manger |
