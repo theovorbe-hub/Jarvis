@@ -1,0 +1,75 @@
+{% doc %}
+  Raccord Belle Saison dans Horizon, rendu dans le <head> de layout/theme.liquid.
+
+  Expose aux sections Belle Saison (enveloppe de classe « bs ») les jetons de design qu'elles
+  attendent, calculés depuis les réglages d'Horizon : polices (Typographie) et palette de
+  couleurs (fond, texte, couleur 1 = accent vert forêt, couleur 2 = surface, couleur 3 =
+  bordure, couleur 4 = texte discret). Charge ensuite bs-base.css et bs-theme.js, et la
+  configuration lue par bs-theme.js (window.bsTheme).
+{% enddoc %}
+{%- liquid
+  assign heading_font = settings.type_heading_font
+  assign body_font = settings.type_body_font
+  assign accent_font = settings.type_accent_font
+  assign body_font_bold = body_font | font_modify: 'weight', 'bolder'
+  assign palette = settings.color_palette
+  assign color_muted = palette.color4 | default: '#6B655C'
+  assign color_surface = palette.color2 | default: '#F2ECE3'
+  assign color_border = palette.color3 | default: '#E2DBD1'
+  assign color_accent = palette.color1 | default: '#2D3829'
+-%}
+<style>
+  {{ accent_font | font_face: font_display: 'swap' }}
+  {{ body_font_bold | font_face: font_display: 'swap' }}
+
+  .bs {
+    --font-heading-family: {{ heading_font.family }}, {{ heading_font.fallback_families }};
+    --font-heading-style: {{ heading_font.style }};
+    --font-heading-weight: {{ heading_font.weight }};
+    --font-body-family: {{ body_font.family }}, {{ body_font.fallback_families }};
+    --font-body-style: {{ body_font.style }};
+    --font-body-weight: {{ body_font.weight }};
+    --font-body-weight-bold: {{ body_font_bold.weight | default: 700 }};
+    --font-accent-family: {{ accent_font.family }}, {{ accent_font.fallback_families }};
+    --font-accent-weight: {{ accent_font.weight }};
+    --heading-scale: 1;
+    --color-bg: {{ palette.background }};
+    --color-surface: {{ color_surface }};
+    --color-text: {{ palette.foreground }};
+    --color-muted: {{ color_muted }};
+    --color-border: {{ color_border }};
+    --color-accent: {{ color_accent }};
+    --color-on-accent: {{ palette.background }};
+    --logo-width: 172px;
+    color-scheme: light;
+  }
+</style>
+{{ 'bs-base.css' | asset_url | stylesheet_tag }}
+<script src="{{ 'bs-theme.js' | asset_url }}" defer></script>
+<script>
+  window.bsTheme = {
+    routes: {
+      cartUrl: {{ routes.cart_url | json }},
+      cartAddUrl: {{ routes.cart_add_url | json }},
+      cartChangeUrl: {{ routes.cart_change_url | json }}
+    },
+    currency: {{ cart.currency.iso_code | json }},
+    locale: {{ request.locale.iso_code | json }},
+    strings: {
+      addedToCart: {{ 'bs.products.product.added_to_cart' | t | json }},
+      addError: {{ 'bs.products.product.add_error' | t | json }},
+      soldOut: {{ 'bs.products.product.sold_out' | t | json }},
+      unavailable: {{ 'bs.products.product.unavailable' | t | json }},
+      addToCart: {{ 'bs.products.product.add_to_cart' | t | json }},
+      rollsOne: {{ 'bs.products.calculator.rolls_one' | t | json }},
+      rollsOther: {{ 'bs.products.calculator.rolls_other' | t | json }},
+      calcDetail: {{ 'bs.products.calculator.detail' | t | json }},
+      calcAdd: {{ 'bs.products.calculator.add' | t | json }},
+      calcTooHigh: {{ 'bs.products.calculator.too_high' | t | json }},
+      calcInvalid: {{ 'bs.products.calculator.invalid' | t | json }},
+      perSquareMeter: {{ 'bs.products.product.price_per_m2' | t | json }},
+      dimensionsRequired: {{ 'bs.products.configurator.required' | t | json }},
+      dimensionsRange: {{ 'bs.products.configurator.range' | t | json }}
+    }
+  };
+</script>

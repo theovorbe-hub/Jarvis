@@ -345,6 +345,13 @@
                   {% assign can_update_quantity = item.instructions.can_update_quantity
                     | default: true, allow_false: true
                   %}
+                  {%- liquid
+                    # Belle Saison : ligne au m² (surface calculée depuis les dimensions du mur), quantité non modifiable
+                    assign bs_area_key = 'bs.products.configurator.property_area' | t
+                    if item.properties[bs_area_key] != blank
+                      assign can_update_quantity = false
+                    endif
+                  -%}
                   <div class="cart-items__quantity-controls">
                     {% render 'volume-pricing-info',
                       variant: item.variant,

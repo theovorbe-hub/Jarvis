@@ -1,0 +1,45 @@
+<section class="favorites bs-page-width" data-favorites>
+  <header class="collection__header">
+    <h1 class="h-display">{{ page.title | default: section.settings.heading | escape }}</h1>
+    {%- if page.content != blank -%}
+      <div class="bs-rte collection__description">{{ page.content }}</div>
+    {%- endif -%}
+  </header>
+  <ul class="bs-product-grid product-grid--4" role="list" data-favorites-grid></ul>
+  <div class="empty-state" data-favorites-empty hidden>
+    <p class="h-3">{{ 'bs.favorites.empty' | t }}</p>
+    <a class="bs-button" href="{{ routes.collections_url }}">{{ 'bs.collections.general.see_all' | t }}</a>
+  </div>
+  <template data-favorites-template>
+    <li>
+      <article class="bs-product-card">
+        <a class="bs-product-card__link" data-fav-link>
+          <div class="product-card__media"><img class="product-card__image" data-fav-image alt="" loading="lazy" width="700" height="875"></div>
+          <div class="product-card__body">
+            <h3 class="product-card__title" data-fav-title></h3>
+          </div>
+        </a>
+        <button type="button" class="wishlist-button is-active" data-wishlist-toggle aria-pressed="true">
+          <span class="wishlist-button__off">{% render 'bs-icon', name: 'heart' %}</span>
+          <span class="wishlist-button__on">{% render 'bs-icon', name: 'heart-fill' %}</span>
+          <span class="bs-visually-hidden">{{ 'bs.favorites.remove' | t }}</span>
+        </button>
+      </article>
+    </li>
+  </template>
+</section>
+
+{% schema %}
+{
+  "name": "BS · Favoris",
+  "class": "bs section-main-favorites",
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Mes favoris"
+    }
+  ]
+}
+{% endschema %}

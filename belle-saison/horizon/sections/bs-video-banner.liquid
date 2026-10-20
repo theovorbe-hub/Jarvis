@@ -1,0 +1,88 @@
+{%- if section.settings.video != blank or request.design_mode -%}
+  <section class="video-banner video-banner--{{ section.settings.height }}">
+    <div class="video-banner__media">
+      {%- if section.settings.video != blank -%}
+        {%- render 'bs-background-video', video: section.settings.video -%}
+      {%- else -%}
+        {{ 'lifestyle-2' | placeholder_svg_tag: 'video-banner__placeholder bs-placeholder-svg' }}
+      {%- endif -%}
+      <div class="video-banner__scrim"></div>
+    </div>
+    {%- if section.settings.heading != blank or section.settings.link_label != blank -%}
+      <div class="video-banner__content bs-page-width">
+        <div class="video-banner__text" data-reveal>
+          {%- if section.settings.heading != blank -%}
+            <h2 class="h-display">{{ section.settings.heading }}</h2>
+          {%- endif -%}
+          {%- if section.settings.link_label != blank -%}
+            <a class="link-arrow" href="{{ section.settings.link_url | default: routes.collections_url }}">
+              {{- section.settings.link_label | escape -}}
+              {% render 'bs-icon', name: 'arrow-right' %}
+            </a>
+          {%- endif -%}
+        </div>
+      </div>
+    {%- endif -%}
+  </section>
+{%- endif -%}
+
+{% schema %}
+{
+  "name": "BS · Vidéo plein écran",
+  "class": "bs section-video-banner",
+  "settings": [
+    {
+      "type": "paragraph",
+      "content": "La section reste masquée sur la boutique tant qu’aucune vidéo n’est choisie."
+    },
+    {
+      "type": "video",
+      "id": "video",
+      "label": "Vidéo",
+      "info": "Vidéo hébergée sur Shopify (Contenu > Fichiers), sans son, en boucle, format paysage."
+    },
+    {
+      "type": "select",
+      "id": "height",
+      "label": "Hauteur",
+      "options": [
+        {
+          "value": "medium",
+          "label": "Moyenne"
+        },
+        {
+          "value": "large",
+          "label": "Grande"
+        },
+        {
+          "value": "full",
+          "label": "Plein écran"
+        }
+      ],
+      "default": "large"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Des murs qui racontent une histoire."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Texte du lien",
+      "default": "Voir les paysages"
+    },
+    {
+      "type": "url",
+      "id": "link_url",
+      "label": "Lien"
+    }
+  ],
+  "presets": [
+    {
+      "name": "BS · Vidéo plein écran"
+    }
+  ]
+}
+{% endschema %}

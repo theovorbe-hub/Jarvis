@@ -1,9 +1,9 @@
 // Valide le thème avec Shopify Theme Check (mêmes règles que la CLI Shopify).
-// Usage : npm run check
+// Usage : npm run check (thème Belle Saison) ou npm run check:horizon (copie Horizon)
 const path = require('path');
 const { themeCheckRun } = require('@shopify/theme-check-node');
 
-const root = path.resolve(__dirname, '../theme');
+const root = path.resolve(__dirname, '..', process.argv[2] || 'theme');
 const SEVERITY = ['erreur', 'avertissement', 'info'];
 
 (async () => {

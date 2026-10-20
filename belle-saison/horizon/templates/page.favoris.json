@@ -1,0 +1,11 @@
+{
+  "sections": {
+    "main": {
+      "type": "bs-main-favorites",
+      "settings": {}
+    }
+  },
+  "order": [
+    "main"
+  ]
+}

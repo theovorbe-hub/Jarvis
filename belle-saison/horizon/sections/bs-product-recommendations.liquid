@@ -1,0 +1,40 @@
+<section
+  class="bs-section bs-product-recommendations"
+  data-recommendations
+  data-url="{{ routes.product_recommendations_url }}?section_id={{ section.id }}&product_id={{ product.id }}&limit={{ section.settings.products_to_show }}&intent=related"
+>
+  {%- if recommendations.performed and recommendations.products_count > 0 -%}
+    <div class="bs-page-width">
+      {%- render 'bs-section-head', heading: section.settings.heading -%}
+      <ul class="bs-product-grid product-grid--4" role="list">
+        {%- for rec in recommendations.products -%}
+          <li>{%- render 'bs-product-card', product: rec -%}</li>
+        {%- endfor -%}
+      </ul>
+    </div>
+  {%- endif -%}
+</section>
+
+{% schema %}
+{
+  "name": "BS · Recommandations",
+  "class": "bs section-product-recommendations",
+  "settings": [
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Vous aimerez aussi"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Nombre de produits",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4
+    }
+  ]
+}
+{% endschema %}

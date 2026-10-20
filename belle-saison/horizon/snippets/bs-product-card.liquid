@@ -1,0 +1,71 @@
+{%- comment -%}
+  Carte produit. Paramètres : product, placeholder_index (si product est vide)
+{%- endcomment -%}
+{%- if product != blank -%}
+  {%- liquid
+    capture pricing
+      render 'bs-product-pricing', product: product
+    endcapture
+    assign pricing_parts = pricing | strip | split: '|'
+    assign mode = pricing_parts[0]
+    assign base_price = pricing_parts[1] | plus: 0
+    assign second_image = product.media[1].preview_image
+    assign compare = product.compare_at_price_min
+    assign base_price_money = base_price | money
+    assign image_alt = product.featured_media.alt | default: product.title
+  -%}
+  <article class="bs-product-card">
+    <a class="bs-product-card__link" href="{{ product.url }}">
+      <div class="product-card__media{% if second_image %} product-card__media--swap{% endif %}">
+        {%- if product.featured_media -%}
+          {{
+            product.featured_media.preview_image
+            | image_url: width: 900
+            | image_tag: widths: '300, 450, 600, 750, 900', sizes: '(min-width: 990px) 25vw, 50vw', loading: 'lazy', class: 'product-card__image', alt: image_alt
+          }}
+          {%- if second_image -%}
+            {{
+              second_image
+              | image_url: width: 900
+              | image_tag: widths: '300, 450, 600, 750, 900', sizes: '(min-width: 990px) 25vw, 50vw', loading: 'lazy', class: 'product-card__image product-card__image--second', alt: ''
+            }}
+          {%- endif -%}
+        {%- else -%}
+          {{ 'product-1' | placeholder_svg_tag: 'product-card__image bs-placeholder-svg' }}
+        {%- endif -%}
+        {%- unless product.available -%}
+          <span class="product-card__badge">{{ 'bs.products.product.sold_out' | t }}</span>
+        {%- endunless -%}
+      </div>
+      <div class="product-card__body">
+        <h3 class="product-card__title">{{ product.title | escape }}</h3>
+        <p class="product-card__price">
+          {%- if mode == 'm2' -%}
+            {{ 'bs.products.product.from_per_m2_html' | t: price: base_price_money }}
+          {%- elsif product.price_varies -%}
+            {{ 'bs.products.product.from_per_roll_html' | t: price: base_price_money }}
+          {%- else -%}
+            {{ 'bs.products.product.per_roll_html' | t: price: base_price_money }}
+          {%- endif -%}
+          {%- if compare > base_price -%}
+            <s class="product-card__compare">{{ compare | money }}</s>
+          {%- endif -%}
+        </p>
+      </div>
+    </a>
+    {%- if settings.wishlist_enabled -%}
+      {%- render 'bs-wishlist-button', product: product -%}
+    {%- endif -%}
+  </article>
+{%- else -%}
+  {%- capture placeholder_name -%}product-{{ placeholder_index | default: 1 | modulo: 6 | plus: 1 }}{%- endcapture -%}
+  <article class="bs-product-card product-card--placeholder">
+    <div class="product-card__media">
+      {{ placeholder_name | placeholder_svg_tag: 'product-card__image bs-placeholder-svg' }}
+    </div>
+    <div class="product-card__body">
+      <h3 class="product-card__title">{{ 'bs.products.product.placeholder_title' | t }}</h3>
+      <p class="product-card__price">{{ 'bs.products.product.placeholder_price' | t }}</p>
+    </div>
+  </article>
+{%- endif -%}

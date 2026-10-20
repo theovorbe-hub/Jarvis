@@ -1,0 +1,99 @@
+/* Règles générales d'Horizon (balises h1 à h6, p, a, picture, dialog et le corps de page) que
+   la feuille de Belle Saison ne redéfinit pas : on revient au comportement du thème Belle Saison.
+   Spécificité (0,1,0) : plus forte que les balises d'Horizon, plus faible que toutes les règles
+   de Belle Saison qui suivent. Liste établie par tools/horizon/compat.js. */
+.bs {
+  text-transform: none;
+  font-variation-settings: normal;
+}
+
+.bs :where(h1, h2, h3, h4, h5, h6) {
+  color: inherit;
+  font-style: inherit;
+  letter-spacing: inherit;
+  line-height: inherit;
+  text-transform: inherit;
+}
+
+.bs :where(h1, h2, h3, h4, h5, h6, p) {
+  overflow-wrap: inherit;
+}
+
+.bs :where(a) {
+  transition: none;
+}
+
+.bs :where(picture) {
+  max-width: none;
+}
+
+.bs :where(dialog) {
+  color: CanvasText;
+}
+
+.bs :where(canvas) {
+  display: inline;
+  max-width: none;
+}
+
+.bs :where(summary):hover {
+  color: inherit;
+}
+
+/* Champs de formulaire : arrondis, fond, bordure, cases et boutons radio dessinés par Horizon. */
+.bs input {
+  border-radius: revert;
+  background-color: revert;
+  border-color: revert;
+}
+
+.bs :where(input, textarea)::placeholder {
+  color: revert;
+}
+
+.bs input[type='radio'],
+.bs input[type='checkbox'] {
+  width: revert;
+  height: revert;
+  aspect-ratio: revert;
+  margin: revert;
+  padding: revert;
+  border: revert;
+  border-radius: revert;
+  background: revert;
+  appearance: revert;
+  position: revert;
+  display: revert;
+  vertical-align: revert;
+  cursor: revert;
+  transition: revert;
+}
+
+.bs input[type='radio']:checked,
+.bs input[type='radio']:disabled,
+.bs input[type='checkbox']:checked,
+.bs input[type='checkbox']:disabled {
+  border-color: revert;
+  background-color: revert;
+  cursor: revert;
+}
+
+.bs input[type='radio']:checked:hover,
+.bs input[type='checkbox']:checked:hover,
+.bs input[type='radio']:not(:disabled):hover,
+.bs input[type='checkbox']:not(:disabled):hover {
+  border-color: revert;
+  background-color: revert;
+}
+
+.bs input[type='radio']::after,
+.bs input[type='radio']:checked::after,
+.bs input[type='checkbox']::after,
+.bs input[type='checkbox']:checked::after {
+  content: none;
+}
+
+.bs input[type='radio']:checked:hover::after,
+.bs input[type='checkbox']:checked:hover::after {
+  background: revert;
+}

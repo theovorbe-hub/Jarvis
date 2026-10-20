@@ -343,5 +343,242 @@
       "success_moderated": "Kommentti on julkaistu; odotetaan moderointia",
       "success": "Kommentti on julkaistu"
     }
+  },
+  "bs": {
+    "general": {
+      "close": "Fermer",
+      "meta": {
+        "tags": "Mots-clés « {{ tags }} »",
+        "page": "Page {{ page }}"
+      },
+      "pagination": {
+        "label": "Pagination",
+        "previous": "Page précédente",
+        "next": "Page suivante"
+      },
+      "404": {
+        "title": "Cette page n’existe pas.",
+        "text": "Le lien est peut-être ancien ou mal saisi. Nos collections, elles, sont toujours là."
+      },
+      "password": {
+        "access": "Accès réservé",
+        "label": "Mot de passe",
+        "enter": "Entrer",
+        "error": "Mot de passe incorrect.",
+        "admin_link_html": "Vous êtes le propriétaire ? <a href=\"/admin\" class=\"link\">Connectez-vous ici</a>."
+      }
+    },
+    "accessibility": {
+      "skip_to_content": "Aller au contenu"
+    },
+    "sections": {
+      "header": {
+        "menu": "Menu",
+        "menu_secondary": "Menu secondaire",
+        "search": "Rechercher",
+        "search_placeholder": "Un motif, une couleur, une collection",
+        "search_submit": "Lancer la recherche",
+        "account": "Mon compte",
+        "wishlist": "Mes favoris",
+        "cart": "Panier",
+        "view_all": "Tout voir : {{ title }}"
+      },
+      "hero": {
+        "label": "Présentation",
+        "carousel": "Diaporama",
+        "slide": "Image",
+        "previous": "Image précédente",
+        "next": "Image suivante",
+        "go_to": "Afficher l’image"
+      },
+      "collection_list": {
+        "placeholder_title": "Nom de la collection"
+      },
+      "video": {
+        "pause": "Mettre la vidéo en pause",
+        "play": "Lire la vidéo"
+      },
+      "testimonials": {
+        "rating": "Note : {{ rating }} sur 5",
+        "summary_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis</strong>.",
+        "summary_verified_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis vérifiés</strong>.",
+        "summary_verified_single_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis vérifié</strong>.",
+        "verified": "Vérifié",
+        "product": "Acheté :",
+        "previous": "Avis précédents",
+        "next": "Avis suivants",
+        "five_stars_only": "Voici nos avis 5 étoiles.",
+        "preview_note": "Exemple de mise en page, visible seulement dans l’éditeur. Ajoutez vos avis réels (bloc « Avis ») ou le bloc de votre application d’avis : les visiteurs ne verront la section qu’à ce moment-là.",
+        "sample_title": "Titre de l’avis",
+        "sample_text": "Le texte exact de votre client apparaîtra ici, avec son prénom et la date.",
+        "sample_author": "Prénom N.",
+        "sample_tag": "Exemple",
+        "sample_note": "Les avis marqués « Exemple » ne sont visibles que dans l’éditeur. Décochez « Exemple » dans un avis uniquement s’il s’agit de l’avis réel d’un client : il apparaîtra alors sur la boutique.",
+        "summary_sample_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis</strong> (exemple).",
+        "summary_sample_verified_html": "Noté <strong>{{ rating }}/5</strong> sur la base de <strong>{{ number }} avis vérifiés</strong> (exemple)."
+      }
+    },
+    "products": {
+      "product": {
+        "add_to_cart": "Ajouter au panier",
+        "added_to_cart": "Ajouté au panier.",
+        "add_error": "Impossible d’ajouter ce produit. Réessayez dans un instant.",
+        "view_cart": "Voir le panier",
+        "sold_out": "Épuisé",
+        "unavailable": "Indisponible",
+        "quantity": "Quantité",
+        "quantity_decrease": "Diminuer la quantité",
+        "quantity_increase": "Augmenter la quantité",
+        "unit_m2": "/ m²",
+        "unit_roll": "le rouleau",
+        "from_per_m2_html": "À partir de {{ price }} <span class=\"unit\">/ m²</span>",
+        "from_per_roll_html": "À partir de {{ price }} <span class=\"unit\">le rouleau</span>",
+        "per_roll_html": "{{ price }} <span class=\"unit\">le rouleau</span>",
+        "price_per_m2": "soit [price] le m²",
+        "taxes_included": "TVA incluse.",
+        "sample_free": "Commander un échantillon offert",
+        "sample_paid": "Commander un échantillon ({{ price }})",
+        "wishlist_add": "Ajouter {{ title }} aux favoris",
+        "placeholder_title": "Nom du motif",
+        "placeholder_price": "Prix au m²"
+      },
+      "configurator": {
+        "width": "Largeur",
+        "height": "Hauteur",
+        "area": "Surface facturée",
+        "total": "Total",
+        "area_fallback": "Surface en m² (arrondie au m² supérieur)",
+        "property_width": "Largeur du mur",
+        "property_height": "Hauteur du mur",
+        "property_area": "Surface",
+        "required": "Indiquez la largeur et la hauteur de votre mur pour calculer le prix.",
+        "range": "Largeur entre [min_width] et [max_width] cm, hauteur entre [min_height] et [max_height] cm."
+      },
+      "calculator": {
+        "title": "Combien de rouleaux ?",
+        "width": "Largeur totale des murs",
+        "height": "Hauteur sous plafond",
+        "rolls_one": "[count] rouleau",
+        "rolls_other": "[count] rouleaux",
+        "detail": "[strips] lés de [length] m, soit [per_roll] lés par rouleau.",
+        "add": "Ajouter [count] au panier",
+        "too_high": "Ce rouleau est trop court pour cette hauteur. Contactez-nous pour une solution sur mesure.",
+        "invalid": "Indiquez une largeur et une hauteur en mètres."
+      },
+      "specs": {
+        "title": "Caractéristiques",
+        "material": "Support",
+        "strip_width": "Largeur du lé",
+        "roll_length": "Longueur du rouleau",
+        "repeat": "Raccord",
+        "installation": "Pose",
+        "care": "Entretien"
+      },
+      "simulator": {
+        "title": "Voir sur mon mur",
+        "close": "Fermer le simulateur",
+        "intro": "Visualisez ce papier peint chez vous, dans votre lumière, avant de commander.",
+        "ar": "Voir sur mon mur en réalité augmentée",
+        "ar_loading": "Préparation de la réalité augmentée…",
+        "ar_help": "Visez votre mur avec votre téléphone : le papier peint s’y pose, à taille réelle. Vous pouvez vous déplacer devant.",
+        "camera": "Utiliser la caméra",
+        "camera_help": "Visez votre mur, placez les quatre coins, puis prenez la photo.",
+        "photo": "Choisir une photo de mon mur",
+        "photo_help": "Une photo prise de face, en lumière naturelle, donne le plus beau rendu.",
+        "privacy": "Votre image reste sur votre appareil : rien n’est envoyé.",
+        "place": "Faites glisser les quatre points sur les angles de votre mur.",
+        "live": "Visez votre mur, ajustez les quatre points, puis prenez la photo.",
+        "camera_unavailable": "Pour continuer, choisissez une photo de votre mur.",
+        "photo_unreadable": "Choisissez une photo au format JPEG, PNG ou HEIC.",
+        "wall_width": "Largeur du mur",
+        "wall_height": "Hauteur du mur",
+        "freeze": "Prendre la photo",
+        "restart": "Changer d’image",
+        "save": "Enregistrer l’image",
+        "saved": "Image enregistrée.",
+        "share": "Partager",
+        "share_text": "Le papier peint {{ title }} sur notre mur.",
+        "corner_top_left": "Coin supérieur gauche du mur",
+        "corner_top_right": "Coin supérieur droit du mur",
+        "corner_bottom_right": "Coin inférieur droit du mur",
+        "corner_bottom_left": "Coin inférieur gauche du mur",
+        "missing_visual": "Voir sur mon mur : ajoutez le « Visuel à plat » du produit (métachamp papier_peint.visuel) pour afficher le simulateur."
+      }
+    },
+    "collections": {
+      "general": {
+        "products_count": {
+          "one": "{{ count }} motif",
+          "other": "{{ count }} motifs"
+        },
+        "empty": "Cette collection arrive bientôt.",
+        "see_all": "Voir toutes les collections",
+        "no_collections": "Aucune collection pour le moment."
+      },
+      "filters": {
+        "title": "Filtrer",
+        "from": "De (€)",
+        "to": "À (€)",
+        "apply": "Appliquer",
+        "clear": "Tout effacer",
+        "remove": "Retirer ce filtre"
+      },
+      "sorting": {
+        "title": "Trier par"
+      }
+    },
+    "cart": {
+      "title": "Votre panier",
+      "remove": "Retirer",
+      "subtotal": "Sous-total",
+      "taxes_included_shipping_at_checkout": "TVA incluse. Frais de livraison calculés à l’étape suivante.",
+      "taxes_and_shipping_at_checkout": "Taxes et frais de livraison calculés à l’étape suivante.",
+      "note": "Une précision sur votre commande ?",
+      "checkout": "Passer commande",
+      "update": "Mettre à jour",
+      "empty": "Votre panier est vide.",
+      "continue": "Découvrir nos collections",
+      "billed_area": "{{ area }} m²",
+      "free": "Offert"
+    },
+    "search": {
+      "title": "Recherche",
+      "label": "Que cherchez-vous ?",
+      "submit": "Rechercher",
+      "no_results": "Aucun résultat pour « {{ terms }} »."
+    },
+    "contact": {
+      "name": "Nom",
+      "email": "E-mail",
+      "phone": "Téléphone",
+      "message": "Message",
+      "help": "Pour un projet sur mesure, indiquez les dimensions de vos murs.",
+      "send": "Envoyer",
+      "success": "Merci, votre message a bien été envoyé. Nous vous répondons rapidement.",
+      "error": "Le message n’a pas pu être envoyé. Vérifiez les champs ci-dessous."
+    },
+    "newsletter": {
+      "label": "Votre e-mail",
+      "button": "S’inscrire",
+      "success": "Merci, votre inscription est enregistrée."
+    },
+    "favorites": {
+      "empty": "Vous n’avez pas encore de favoris. Touchez le cœur d’un motif pour le retrouver ici.",
+      "remove": "Retirer des favoris"
+    },
+    "blogs": {
+      "empty": "Les premiers articles arrivent bientôt.",
+      "back": "Retour à {{ title }}"
+    },
+    "gift_cards": {
+      "title": "Votre carte cadeau",
+      "heading": "Votre carte cadeau de {{ value }}",
+      "balance": "Solde : {{ value }}",
+      "expires": "Valable jusqu’au {{ date }}",
+      "unavailable": "Cette carte cadeau n’est plus valable.",
+      "shop": "Aller sur la boutique",
+      "print": "Imprimer",
+      "wallet": "Ajouter à Apple Wallet"
+    }
   }
 }

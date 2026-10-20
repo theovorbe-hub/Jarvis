@@ -7,13 +7,19 @@
     "preview:images": "python3 make-preview-images.py",
     "preview": "node render.js && node shoot.js",
     "test": "node render.js && node functional.js",
-    "zip": "cd ../theme && rm -f ../belle-saison-theme.zip && zip -qr -X ../belle-saison-theme.zip assets config layout locales sections snippets templates"
+    "zip": "cd ../theme && rm -f ../belle-saison-theme.zip && zip -qr -X ../belle-saison-theme.zip assets config layout locales sections snippets templates",
+    "check:horizon": "node check.js horizon",
+    "horizon:build": "python3 horizon/patch-horizon.py && node horizon/classes.js && node horizon/prefix-css.js ../theme/assets/base.css ../horizon/assets/bs-base.css && python3 horizon/port-sections.py && python3 horizon/locales.py && python3 horizon/templates.py && python3 horizon/groups.py && python3 horizon/settings.py",
+    "horizon:compat": "node render.js && node horizon/compat.js && node horizon/cart-test.js"
   },
   "devDependencies": {
+    "@bramus/specificity": "^2.4.1",
     "@fontsource/eb-garamond": "^5.2.5",
     "@fontsource/geist-sans": "^5.2.5",
     "@shopify/theme-check-node": "^3.30.1",
     "liquidjs": "^10.30.0",
-    "playwright-core": "^1.64.0"
+    "playwright-core": "^1.64.0",
+    "postcss": "^8.5.31",
+    "postcss-selector-parser": "^7.1.7"
   }
 }

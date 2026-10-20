@@ -74,8 +74,34 @@
   endif
 -%}
 
+{%- liquid
+  # Belle Saison : sur une carte produit, prix de base hors échantillon avec son unité (m² ou rouleau)
+  assign bs_price_html = blank
+  if is_product_card and product_resource != blank
+    capture bs_pricing
+      render 'bs-product-pricing', product: product_resource
+    endcapture
+    assign bs_parts = bs_pricing | strip | split: '|'
+    assign bs_price = bs_parts[1] | plus: 0
+    if use_currency
+      assign bs_money = bs_price | money_with_currency
+    else
+      assign bs_money = bs_price | money
+    endif
+    if bs_parts[0] == 'm2'
+      assign bs_price_html = 'bs.products.product.from_per_m2_html' | t: price: bs_money
+    elsif product_resource.price_varies
+      assign bs_price_html = 'bs.products.product.from_per_roll_html' | t: price: bs_money
+    else
+      assign bs_price_html = 'bs.products.product.per_roll_html' | t: price: bs_money
+    endif
+  endif
+-%}
+
 <div ref="priceContainer">
-  {% if has_volume_pricing %}
+  {% if bs_price_html != blank %}
+    <span class="price"><bdi>{{ bs_price_html }}</bdi></span>
+  {% elsif has_volume_pricing %}
     {% comment %} Volume pricing display {% endcomment %}
     {% if show_compare_price %}
       <span class="price-item__group compare-at-price">

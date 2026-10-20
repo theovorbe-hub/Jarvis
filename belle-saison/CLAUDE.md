@@ -16,6 +16,13 @@ Shopify (Liquid). Les consignes Next.js d'`AGENTS.md` ne s'y appliquent pas.
   et `npm run preview` pour vérifier le rendu en 1440 px et 390 px.
 - Boutique `v6shfu-w1`, thème « Belle Saison » ID `211492798855` (non publié).
   Ne jamais modifier ni publier le thème en ligne (Horizon) sans demande explicite.
+- Le site existe aussi dans Horizon : copie « Horizon · Belle Saison » ID `212088095111`
+  (non publiée), source `horizon/` (lire `README.md`, « Belle Saison dans Horizon »). Ne jamais
+  modifier `horizon/sections/bs-*`, `horizon/snippets/bs-*` (sauf `bs-head.liquid`, écrit à la
+  main), `horizon/assets/bs-*` ni la clé « bs » des langues : modifier `theme/` (ou les scripts de
+  `tools/horizon/`) puis `cd tools && npm run horizon:build`.
+  Contrôles : `npm run check:horizon` (6 avertissements d'Horizon d'origine) et
+  `npm run horizon:compat` (0 règle d'Horizon appliquée, 0 différence de rendu).
 - Avant d'envoyer `config/settings_data.json`, `templates/*.json` ou
   `sections/*-group.json` dans Shopify, récupérer d'abord la version de la boutique :
   le marchand les modifie depuis l'éditeur.

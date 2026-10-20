@@ -17,12 +17,16 @@ boutons et les surtitres.
 Le thème en ligne reste Horizon tant que « Belle Saison » n’est pas publié
 (Boutique en ligne > Thèmes > Publier).
 
+Depuis le 20 octobre 2026, le site existe aussi **dans Horizon** : copie « Horizon · Belle
+Saison », non publiée, ID `212088095111` (voir « Belle Saison dans Horizon » plus bas).
+
 ## Contenu du dossier
 
 ```
 belle-saison/
 ├── theme/        Le thème Shopify (dossiers standard d'un thème Online Store 2.0)
-├── tools/        Validation, aperçu local, tests et fabrication des vidéos
+├── horizon/      Horizon 4.3.0 avec les sections et fonctions Belle Saison (copie 212088095111)
+├── tools/        Validation, aperçu local, tests et fabrication des vidéos (horizon/ : portage)
 ├── media/        Photos des vidéos (dont histoire/ : les 9 plans) et leurs cartes de profondeur
 └── docs/         Maquette de référence
 ```
@@ -134,7 +138,9 @@ générateur vidéo, est dans [`docs/videos.md`](docs/videos.md).
   Les paysages, Les toiles, La collection enfant.
 - **Menus** : `menu-gauche` (Collections, Papiers peints, Inspiration) et
   `menu-droite` (Notre histoire, Nos engagements). Le menu `main-menu` d’Horizon
-  n’a pas été modifié.
+  n’a pas été modifié. Pour la copie Horizon : `menu-horizon` (les deux menus réunis,
+  avec les cinq collections sous « Collections ») et `menu-aide-horizon` (Contact,
+  Mes favoris, Rechercher).
 - **Pages** : « Mes favoris » (modèle `page.favoris`), « Notre histoire » et
   « Nos engagements » (non publiées, à rédiger).
 - **Journal** : « Inspiration ».
@@ -167,6 +173,55 @@ les réglages faits dans l’éditeur seront écrasés.
   puis `shopify theme push --theme 211492798855 --path belle-saison/theme`.
 - **Archive** : `npm run zip`, puis Boutique en ligne > Thèmes > Ajouter un thème >
   Importer un fichier zip (crée un nouveau thème).
+
+## Belle Saison dans Horizon
+
+| | |
+|---|---|
+| Thème | « Horizon · Belle Saison », non publié, ID `212088095111` |
+| Éditeur | https://admin.shopify.com/store/v6shfu-w1/themes/212088095111/editor |
+| Aperçu | https://v6shfu-w1.myshopify.com/?preview_theme_id=212088095111 |
+| Source | `horizon/` (Horizon 4.3.0 d’origine, puis raccords Belle Saison) |
+
+Horizon fournit l’en-tête, le pied de page, le panier (tiroir et page), la recherche, les
+collections et les comptes clients. Belle Saison y apporte :
+
+- **Réglages du thème** : Garamond et Geist, palette crème, texte, vert forêt (couleur 1),
+  lin (couleur 2), bordure (couleur 3), texte discret (couleur 4), coins presque droits,
+  boutons en petites capitales ; groupe de réglages « Belle Saison » (vente au m², échantillon,
+  limites des dimensions, rouleaux, favoris).
+- **Sections « BS · … »** (`sections/bs-*.liquid`) : toutes celles de l’accueil, la fiche
+  produit (configurateur au m², calculateur de rouleaux, échantillon, « Voir sur mon mur »,
+  réassurance, caractéristiques), les recommandations et la page Favoris. Modèles
+  `index.json`, `product.json` et `page.favoris.json`.
+- **Raccords dans Horizon** (`tools/horizon/patch-horizon.py`) : chargement de Belle Saison
+  dans `layout/theme.liquid` (`snippets/bs-head.liquid`) ; prix des cartes produit sans la
+  variante échantillon et avec leur unité (« À partir de 39,00 € / m² ») ; quantité non
+  modifiable dans le panier pour une ligne au m² (surface calculée depuis le mur).
+- **Panier** : l’ajout depuis la fiche Belle Saison met à jour l’icône et ouvre le tiroir du
+  panier d’Horizon (événement `CartLinesUpdateEvent`).
+- **En-tête et pied de page** (`tools/horizon/groups.py`) : logo centré, menu `menu-horizon`,
+  bandeau des quatre engagements (masqué, comme dans le thème Belle Saison), pied de page
+  Belle Saison avec les menus « Boutique » et « Aide ».
+
+Les sections Belle Saison gardent leur propre feuille de style (`assets/bs-base.css`, limitée
+à la classe `bs` de chaque section) ; les classes qui existent aussi dans Horizon y sont
+renommées `bs-…`. Les 13 avis d’exemple de l’accueil restent cochés « Exemple » : visibles
+dans l’éditeur seulement.
+
+Fabrication et contrôles (depuis `tools/`) :
+
+```bash
+npm run horizon:build    # régénère horizon/ depuis theme/ (sections, styles, textes, modèles)
+npm run check:horizon    # Theme Check : 6 avertissements, ceux d'Horizon d'origine
+npm run horizon:compat   # aucune règle d'Horizon ne modifie les sections Belle Saison,
+                         # rendu identique au thème Belle Saison (accueil, fiches produit),
+                         # ajout au panier relié au tiroir d'Horizon
+```
+
+Après une modification de `theme/`, relancer `npm run horizon:build` puis les contrôles, et
+envoyer les fichiers changés dans la copie (récupérer d’abord la version de la boutique des
+fichiers JSON, comme pour le thème Belle Saison).
 
 ## Avant d’ouvrir la boutique
 

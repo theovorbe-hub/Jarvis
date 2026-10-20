@@ -1,0 +1,46 @@
+{%- comment -%}
+  Vidéo d'ambiance hébergée par Shopify (Contenu > Fichiers) : muette, en boucle,
+  lancée par theme.js quand elle est visible, jamais si le visiteur a demandé à
+  réduire les animations. Le bouton permet de la mettre en pause (WCAG 2.2.2).
+  Paramètres : video (objet video) ou url (lien direct vers un fichier MP4),
+  poster (image d'aperçu pour le lien direct, facultatif), class
+{%- endcomment -%}
+<div class="bg-video is-paused{% if class %} {{ class }}{% endif %}" data-bg-video>
+  {%- if video != blank -%}
+    {{
+      video
+      | video_tag:
+        muted: true,
+        loop: true,
+        playsinline: true,
+        controls: false,
+        preload: 'metadata',
+        image_size: '2400x',
+        class: 'bg-video__media'
+    }}
+  {%- elsif url != blank -%}
+    <video
+      class="bg-video__media"
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      aria-hidden="true"
+      {% if poster != blank %}
+        poster="{{ poster | image_url: width: 1600 }}"
+      {% endif %}
+    >
+      <source src="{{ url | escape }}" type="video/mp4">
+    </video>
+  {%- endif -%}
+  <button type="button" class="media-toggle" data-video-toggle>
+    <span class="media-toggle__pause">
+      {%- render 'bs-icon', name: 'pause' -%}
+      <span class="bs-visually-hidden">{{ 'bs.sections.video.pause' | t }}</span>
+    </span>
+    <span class="media-toggle__play">
+      {%- render 'bs-icon', name: 'play' -%}
+      <span class="bs-visually-hidden">{{ 'bs.sections.video.play' | t }}</span>
+    </span>
+  </button>
+</div>

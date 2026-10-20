@@ -1,0 +1,151 @@
+<section class="story story--media-{{ section.settings.media_position }}">
+  <div class="story__media">
+    {%- if section.settings.background_video != blank or section.settings.background_video_url != blank -%}
+      {%- render 'bs-background-video',
+        video: section.settings.background_video,
+        url: section.settings.background_video_url,
+        poster: section.settings.image
+      -%}
+    {%- elsif section.settings.image != blank -%}
+      {{
+        section.settings.image
+        | image_url: width: 2000
+        | image_tag: widths: '600, 900, 1200, 1600, 2000', sizes: '(min-width: 990px) 55vw, 100vw', loading: 'lazy', class: 'story__image'
+      }}
+    {%- else -%}
+      {{ 'lifestyle-2' | placeholder_svg_tag: 'story__image bs-placeholder-svg' }}
+    {%- endif -%}
+    {%- if section.settings.video_url != blank and section.settings.video_label != blank -%}
+      <div class="story__video">
+        {%- render 'bs-video-trigger',
+          video_url: section.settings.video_url,
+          label: section.settings.video_label,
+          id: section.id,
+          variant: 'overlay'
+        -%}
+      </div>
+    {%- endif -%}
+  </div>
+
+  <div class="story__content">
+    <div class="story__text" data-reveal>
+      {%- if section.settings.eyebrow != blank -%}
+        <p class="eyebrow">{{ section.settings.eyebrow | escape }}</p>
+      {%- endif -%}
+      <h2 class="h-1">{{ section.settings.heading }}</h2>
+      {%- if section.settings.text != blank -%}
+        <div class="story__body bs-rte">{{ section.settings.text }}</div>
+      {%- endif -%}
+      {%- if section.settings.button_label != blank -%}
+        <a class="bs-button" href="{{ section.settings.button_link | default: routes.root_url }}">
+          {{- section.settings.button_label | escape -}}
+          {% render 'bs-icon', name: 'arrow-right' %}
+        </a>
+      {%- endif -%}
+    </div>
+    {%- if section.settings.ornament != blank -%}
+      {{
+        section.settings.ornament
+        | image_url: width: 600
+        | image_tag: class: 'story__ornament', loading: 'lazy', alt: ''
+      }}
+    {%- endif -%}
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "BS · Notre histoire",
+  "class": "bs section-story",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Image"
+    },
+    {
+      "type": "video",
+      "id": "background_video",
+      "label": "Vidéo d’ambiance",
+      "info": "Facultatif. Vidéo hébergée sur Shopify, sans son, en boucle. Elle remplace l’image."
+    },
+    {
+      "type": "url",
+      "id": "background_video_url",
+      "label": "Vidéo d’ambiance (lien direct)",
+      "info": "Facultatif. Lien vers un fichier MP4, utilisé si aucune vidéo n’est choisie ci-dessus. L’image sert alors d’aperçu."
+    },
+    {
+      "type": "select",
+      "id": "media_position",
+      "label": "Position de l'image",
+      "options": [
+        {
+          "value": "left",
+          "label": "À gauche"
+        },
+        {
+          "value": "right",
+          "label": "À droite"
+        }
+      ],
+      "default": "left"
+    },
+    {
+      "type": "video_url",
+      "id": "video_url",
+      "label": "Film complet (YouTube ou Vimeo)",
+      "accept": [
+        "youtube",
+        "vimeo"
+      ]
+    },
+    {
+      "type": "text",
+      "id": "video_label",
+      "label": "Texte du bouton vidéo",
+      "default": "Découvrir notre savoir-faire"
+    },
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Notre histoire"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Le charme des intérieurs intemporels."
+    },
+    {
+      "type": "richtext",
+      "id": "text",
+      "label": "Texte",
+      "default": "<p>Belle Saison puise son inspiration dans les maisons de caractère et les lieux de vie qui traversent le temps. Nos papiers peints sont imaginés pour créer des intérieurs élégants, chaleureux et authentiques, où chaque détail compte.</p>"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Bouton",
+      "default": "Découvrir notre histoire"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Lien du bouton"
+    },
+    {
+      "type": "image_picker",
+      "id": "ornament",
+      "label": "Ornement",
+      "info": "Facultatif. Illustration détourée (PNG transparent), affichée en bord de section."
+    }
+  ],
+  "presets": [
+    {
+      "name": "BS · Notre histoire"
+    }
+  ]
+}
+{% endschema %}

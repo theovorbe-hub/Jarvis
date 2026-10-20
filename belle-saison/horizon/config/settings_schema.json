@@ -2116,5 +2116,118 @@
         "default": "equal-width-buttons"
       }
     ]
+  },
+  {
+    "name": "Belle Saison",
+    "settings": [
+      {
+        "type": "header",
+        "content": "Papier peint"
+      },
+      {
+        "type": "paragraph",
+        "content": "Mode de vente des produits. Chaque produit peut le changer avec le métachamp « Mode de vente » (papier_peint.mode_vente : m2 ou rouleau)."
+      },
+      {
+        "type": "select",
+        "id": "default_sale_mode",
+        "label": "Mode de vente par défaut",
+        "options": [
+          {
+            "value": "m2",
+            "label": "Sur mesure, au m²"
+          },
+          {
+            "value": "rouleau",
+            "label": "Au rouleau"
+          }
+        ],
+        "default": "m2"
+      },
+      {
+        "type": "text",
+        "id": "sample_option_label",
+        "label": "Nom de la variante échantillon",
+        "info": "Une variante dont le nom contient ce mot est traitée comme un échantillon.",
+        "default": "Échantillon"
+      },
+      {
+        "type": "header",
+        "content": "Sur mesure"
+      },
+      {
+        "type": "number",
+        "id": "min_width_cm",
+        "label": "Largeur minimale (cm)",
+        "default": 50
+      },
+      {
+        "type": "number",
+        "id": "max_width_cm",
+        "label": "Largeur maximale (cm)",
+        "default": 1200
+      },
+      {
+        "type": "number",
+        "id": "min_height_cm",
+        "label": "Hauteur minimale (cm)",
+        "default": 50
+      },
+      {
+        "type": "number",
+        "id": "max_height_cm",
+        "label": "Hauteur maximale (cm)",
+        "default": 400
+      },
+      {
+        "type": "header",
+        "content": "Au rouleau"
+      },
+      {
+        "type": "number",
+        "id": "default_strip_width",
+        "label": "Largeur du lé par défaut (cm)",
+        "default": 53
+      },
+      {
+        "type": "text",
+        "id": "default_roll_length",
+        "label": "Longueur du rouleau par défaut (m)",
+        "default": "10.05"
+      },
+      {
+        "type": "range",
+        "id": "trim_margin",
+        "label": "Marge de coupe par lé",
+        "min": 0,
+        "max": 20,
+        "step": 1,
+        "unit": "cm",
+        "default": 10
+      },
+      {
+        "type": "checkbox",
+        "id": "show_price_per_m2",
+        "label": "Afficher le prix au m² des rouleaux",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "Favoris"
+      },
+      {
+        "type": "checkbox",
+        "id": "wishlist_enabled",
+        "label": "Activer les favoris",
+        "info": "Les favoris sont enregistrés dans le navigateur du client.",
+        "default": true
+      },
+      {
+        "type": "page",
+        "id": "wishlist_page",
+        "label": "Page des favoris",
+        "info": "Créez une page avec le modèle « page.favoris » puis choisissez-la ici."
+      }
+    ]
   }
 ]

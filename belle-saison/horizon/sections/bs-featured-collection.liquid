@@ -1,0 +1,88 @@
+{%- assign featured = section.settings.collection -%}
+<section class="bs-section featured-collection">
+  <div class="bs-page-width">
+    {%- render 'bs-section-head',
+      eyebrow: section.settings.eyebrow,
+      heading: section.settings.heading,
+      link_label: section.settings.link_label,
+      link_url: featured.url
+    -%}
+
+    <ul class="bs-product-grid product-grid--{{ section.settings.columns }}" role="list">
+      {%- if featured != blank and featured.products_count > 0 -%}
+        {%- for product in featured.products limit: section.settings.products_to_show -%}
+          <li data-reveal style="--delay: {{ forloop.index0 | modulo: 4 }};">
+            {%- render 'bs-product-card', product: product -%}
+          </li>
+        {%- endfor -%}
+      {%- else -%}
+        {%- for i in (1..section.settings.products_to_show) -%}
+          <li data-reveal style="--delay: {{ forloop.index0 | modulo: 4 }};">
+            {%- render 'bs-product-card', product: blank, placeholder_index: i -%}
+          </li>
+        {%- endfor -%}
+      {%- endif -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "BS · Produits phares",
+  "class": "bs section-featured-collection",
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Les motifs de la saison."
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "products_to_show",
+      "label": "Nombre de produits",
+      "min": 2,
+      "max": 12,
+      "step": 1,
+      "default": 4
+    },
+    {
+      "type": "select",
+      "id": "columns",
+      "label": "Colonnes sur ordinateur",
+      "options": [
+        {
+          "value": "3",
+          "label": "3"
+        },
+        {
+          "value": "4",
+          "label": "4"
+        }
+      ],
+      "default": "4"
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Texte du lien",
+      "default": "Voir tous les motifs"
+    }
+  ],
+  "presets": [
+    {
+      "name": "BS · Produits phares"
+    }
+  ]
+}
+{% endschema %}

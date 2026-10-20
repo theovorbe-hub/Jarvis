@@ -1,0 +1,22 @@
+{%- comment -%}
+  En-tête de section : surtitre facultatif, titre, lien facultatif aligné à droite.
+  Paramètres : eyebrow, heading, link_label, link_url
+{%- endcomment -%}
+{%- if heading != blank or link_label != blank -%}
+  <div class="section-head" data-reveal>
+    <div class="section-head__titles">
+      {%- if eyebrow != blank -%}
+        <p class="eyebrow">{{ eyebrow | escape }}</p>
+      {%- endif -%}
+      {%- if heading != blank -%}
+        <h2 class="h-1">{{ heading }}</h2>
+      {%- endif -%}
+    </div>
+    {%- if link_label != blank -%}
+      <a class="link-arrow" href="{{ link_url }}">
+        {{- link_label | escape -}}
+        {% render 'bs-icon', name: 'arrow-right' %}
+      </a>
+    {%- endif -%}
+  </div>
+{%- endif -%}

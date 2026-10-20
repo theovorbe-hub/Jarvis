@@ -1,0 +1,137 @@
+{%- comment -%}
+  Simulateur « Voir sur mon mur ».
+  - Téléphone compatible : réalité augmentée (model-viewer, chargé seulement à l'ouverture),
+    le papier peint posé contre le mur, à taille réelle.
+  - Tous les appareils : caméra en direct ou photo du mur ; le client place les quatre coins
+    de son mur et le papier peint s'applique en perspective, à l'échelle, ombres comprises.
+  L'image du client reste dans son navigateur : rien n'est envoyé.
+
+  Paramètres : product, section_id, visuel (image à plat), tile_cm (largeur réelle d'un motif,
+  0 = le visuel couvre tout le mur).
+{%- endcomment -%}
+<dialog
+  class="simulator"
+  id="Simulator-{{ section_id }}"
+  aria-labelledby="SimulatorTitle-{{ section_id }}"
+  data-simulator
+  data-visuel="{{ visuel | image_url: width: 2048 }}"
+  data-tile-cm="{{ tile_cm }}"
+  data-title="{{ product.title | escape }}"
+  data-handle="{{ product.handle | escape }}"
+  data-share-url="{{ request.origin }}{{ product.url }}"
+  data-model-viewer-src="{{ 'bs-model-viewer.min.js' | asset_url }}"
+  data-default-width="300"
+  data-default-height="250"
+>
+  <script type="application/json" data-sim-strings>
+    {
+      "corners": [
+        {{ 'bs.products.simulator.corner_top_left' | t | json }},
+        {{ 'bs.products.simulator.corner_top_right' | t | json }},
+        {{ 'bs.products.simulator.corner_bottom_right' | t | json }},
+        {{ 'bs.products.simulator.corner_bottom_left' | t | json }}
+      ],
+      "place": {{ 'bs.products.simulator.place' | t | json }},
+      "live": {{ 'bs.products.simulator.live' | t | json }},
+      "cameraUnavailable": {{ 'bs.products.simulator.camera_unavailable' | t | json }},
+      "photoUnreadable": {{ 'bs.products.simulator.photo_unreadable' | t | json }},
+      "arLoading": {{ 'bs.products.simulator.ar_loading' | t | json }},
+      "shareText": {{ 'bs.products.simulator.share_text' | t: title: product.title | json }},
+      "saved": {{ 'bs.products.simulator.saved' | t | json }}
+    }
+  </script>
+
+  <div class="simulator__inner">
+    <header class="simulator__header">
+      <div class="simulator__heading">
+        <h2 class="simulator__title" id="SimulatorTitle-{{ section_id }}">{{ 'bs.products.simulator.title' | t }}</h2>
+        <p class="simulator__product">{{ product.title | escape }}</p>
+      </div>
+      <button type="button" class="icon-button simulator__close" data-sim-close aria-label="{{ 'bs.products.simulator.close' | t }}">
+        {%- render 'bs-icon', name: 'close' -%}
+      </button>
+    </header>
+
+    <div class="simulator__start" data-sim-start>
+      <p class="simulator__intro">{{ 'bs.products.simulator.intro' | t }}</p>
+
+      <div class="simulator__ar" data-sim-ar hidden>
+        <div class="simulator__preview" data-sim-preview></div>
+        <button type="button" class="bs-button button--full" data-sim-ar-button disabled>
+          {%- render 'bs-icon', name: 'ar' -%}
+          <span data-sim-ar-label>{{ 'bs.products.simulator.ar' | t }}</span>
+        </button>
+        <p class="simulator__note">{{ 'bs.products.simulator.ar_help' | t }}</p>
+      </div>
+
+      <div class="simulator__choices">
+        <button type="button" class="simulator__choice" data-sim-camera>
+          {%- render 'bs-icon', name: 'camera' -%}
+          <span>
+            <strong>{{ 'bs.products.simulator.camera' | t }}</strong>
+            <small>{{ 'bs.products.simulator.camera_help' | t }}</small>
+          </span>
+        </button>
+        <label class="simulator__choice">
+          {%- render 'bs-icon', name: 'image' -%}
+          <span>
+            <strong>{{ 'bs.products.simulator.photo' | t }}</strong>
+            <small>{{ 'bs.products.simulator.photo_help' | t }}</small>
+          </span>
+          <input type="file" accept="image/*" class="bs-visually-hidden" data-sim-file>
+        </label>
+      </div>
+
+      <p class="simulator__message" data-sim-message role="status" hidden></p>
+      <p class="simulator__privacy">{{ 'bs.products.simulator.privacy' | t }}</p>
+    </div>
+
+    <div class="simulator__work" data-sim-work hidden>
+      <div class="simulator__stage" data-sim-stage>
+        <canvas class="simulator__canvas" data-sim-canvas></canvas>
+        <video class="simulator__video" data-sim-video muted playsinline aria-hidden="true"></video>
+        {%- for i in (0..3) -%}
+          <button type="button" class="simulator__handle" data-sim-handle="{{ i }}"></button>
+        {%- endfor -%}
+      </div>
+      <p class="simulator__hint" data-sim-hint role="status">{{ 'bs.products.simulator.place' | t }}</p>
+      <div class="simulator__controls">
+        <div class="simulator__dims">
+          <div class="bs-field">
+            <label class="bs-field__label" for="SimWidth-{{ section_id }}">{{ 'bs.products.simulator.wall_width' | t }}</label>
+            <div class="field__unit">
+              <input id="SimWidth-{{ section_id }}" class="bs-field__input" type="number" inputmode="decimal" min="50" max="2000" step="1" data-sim-width>
+              <span>cm</span>
+            </div>
+          </div>
+          <div class="bs-field">
+            <label class="bs-field__label" for="SimHeight-{{ section_id }}">{{ 'bs.products.simulator.wall_height' | t }}</label>
+            <div class="field__unit">
+              <input id="SimHeight-{{ section_id }}" class="bs-field__input" type="number" inputmode="decimal" min="50" max="800" step="1" data-sim-height>
+              <span>cm</span>
+            </div>
+          </div>
+        </div>
+        <div class="simulator__actions">
+          <button type="button" class="bs-button button--small" data-sim-freeze hidden>
+            {%- render 'bs-icon', name: 'camera' -%}
+            {{ 'bs.products.simulator.freeze' | t }}
+          </button>
+          <button type="button" class="bs-button button--small button--secondary" data-sim-restart>
+            {%- render 'bs-icon', name: 'refresh' -%}
+            {{ 'bs.products.simulator.restart' | t }}
+          </button>
+          <button type="button" class="bs-button button--small button--secondary" data-sim-save>
+            {%- render 'bs-icon', name: 'download' -%}
+            {{ 'bs.products.simulator.save' | t }}
+          </button>
+          <button type="button" class="bs-button button--small button--secondary" data-sim-share hidden>
+            {%- render 'bs-icon', name: 'share' -%}
+            {{ 'bs.products.simulator.share' | t }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</dialog>
+<script src="{{ 'bs-simulateur.js' | asset_url }}" defer></script>

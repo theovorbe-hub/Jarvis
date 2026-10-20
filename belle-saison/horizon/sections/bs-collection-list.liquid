@@ -1,0 +1,134 @@
+<section class="bs-section collection-list">
+  <div class="bs-page-width">
+    {%- render 'bs-section-head',
+      eyebrow: section.settings.eyebrow,
+      heading: section.settings.heading,
+      link_label: section.settings.link_label,
+      link_url: routes.collections_url
+    -%}
+  </div>
+
+  <div class="collection-list__scroller bs-page-width">
+    <ul class="collection-list__grid" role="list" style="--items: {{ section.blocks.size | at_most: 5 }};">
+      {%- for block in section.blocks -%}
+        {%- liquid
+          assign c = block.settings.collection
+          assign card_title = block.settings.title | default: c.title
+          if card_title == blank
+            assign card_title = 'bs.sections.collection_list.placeholder_title' | t
+          endif
+          assign card_text = block.settings.text
+          if card_text == blank and c.description != blank
+            assign card_text = c.description | strip_html | truncatewords: 10
+          endif
+          assign card_image = block.settings.image | default: c.featured_image
+          assign card_url = c.url | default: routes.collections_url
+          capture placeholder_name
+            echo 'collection-' | append: forloop.index
+          endcapture
+        -%}
+        <li class="bs-collection-card" {{ block.shopify_attributes }} data-reveal style="--delay: {{ forloop.index0 }};">
+          <a class="bs-collection-card__link" href="{{ card_url }}">
+            <div class="collection-card__media">
+              {%- if card_image != blank -%}
+                {{
+                  card_image
+                  | image_url: width: 900
+                  | image_tag: widths: '360, 540, 720, 900', sizes: '(min-width: 990px) 20vw, 72vw', loading: 'lazy', class: 'bs-collection-card__image'
+                }}
+              {%- else -%}
+                {{ placeholder_name | placeholder_svg_tag: 'bs-collection-card__image bs-placeholder-svg' }}
+              {%- endif -%}
+            </div>
+            <div class="collection-card__body">
+              <h3 class="collection-card__title">{{ card_title | escape }}</h3>
+              {%- if card_text != blank -%}
+                <p class="collection-card__text">{{ card_text | escape }}</p>
+              {%- endif -%}
+              <span class="collection-card__arrow">{% render 'bs-icon', name: 'arrow-right' %}</span>
+            </div>
+          </a>
+        </li>
+      {%- endfor -%}
+    </ul>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "BS · Collections",
+  "class": "bs section-collection-list",
+  "max_blocks": 8,
+  "settings": [
+    {
+      "type": "text",
+      "id": "eyebrow",
+      "label": "Surtitre",
+      "default": "Nos collections"
+    },
+    {
+      "type": "inline_richtext",
+      "id": "heading",
+      "label": "Titre",
+      "default": "Des univers pour tous les intérieurs."
+    },
+    {
+      "type": "text",
+      "id": "link_label",
+      "label": "Lien vers toutes les collections",
+      "default": "Voir toutes les collections"
+    }
+  ],
+  "blocks": [
+    {
+      "type": "collection",
+      "name": "Collection",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Collection"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Titre personnalisé"
+        },
+        {
+          "type": "text",
+          "id": "text",
+          "label": "Description courte",
+          "info": "Dix mots environ."
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Image personnalisée"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "BS · Collections",
+      "blocks": [
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        },
+        {
+          "type": "collection"
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}
