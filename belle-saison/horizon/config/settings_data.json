@@ -121,7 +121,12 @@
     "sample_option_label": "Échantillon",
     "show_price_per_m2": true,
     "wishlist_enabled": true,
-    "wishlist_page": "favoris"
+    "wishlist_page": "favoris",
+    "free_shipping_bar": true,
+    "free_shipping_threshold": 65,
+    "auto_open_cart_drawer": true,
+    "empty_cart_button_link": "shopify://collections/tous-nos-papiers-peints",
+    "quick_add": false
   },
   "presets": {
     "Horizon": {

@@ -29,6 +29,7 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
 
   await page.fill('[data-wall-width]', '5000');
   assert.match(await page.textContent('[data-configurator-error]'), /Largeur entre 50 et 1200 cm/);
+  assert.equal(await page.$('.product__payment'), null, 'pas de paiement express au m² (dimensions en propriétés de ligne)');
 
   await page.goto(`file://${path.join(outDir, 'product-rouleau.html')}`);
   assert.equal(clean(await page.textContent('[data-price-per-m2]')), 'soit 16,71 € le m²');
@@ -39,6 +40,36 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   await page.fill('[data-calc-width]', '4.2');
   await page.fill('[data-calc-height]', '2.5');
   assert.match(clean(await page.innerText('[data-calc-result]')), /^3 rouleaux 8 lés de 2,92 m, soit 3 lés par rouleau\.$/);
+  assert.equal(clean(await page.textContent('.product__payment')), 'Acheter maintenant', 'paiement express sous le bouton d’achat');
+
+  // Barre d'achat fixe (téléphone) : masquée près du bouton d'achat, visible une fois le bouton
+  // dépassé, avec le prix ; son bouton ajoute au panier la quantité choisie.
+  const buyer = await browser.newPage({ viewport: { width: 390, height: 844 } });
+  buyer.on('pageerror', (error) => errors.push(error.message));
+  await buyer.addInitScript(() => {
+    window.__added = [];
+    window.fetch = async (url, options = {}) => {
+      if (String(url).includes('/cart/add')) window.__added.push(Object.fromEntries(options.body.entries()));
+      return new Response(JSON.stringify({ items: [] }), { status: 200, headers: { 'Content-Type': 'application/json' } });
+    };
+  });
+  await buyer.goto(`file://${path.join(outDir, 'product-rouleau.html')}`);
+  const stickyVisible = () => buyer.$eval('[data-product-sticky]', (s) => s.classList.contains('is-visible'));
+  assert.equal(await stickyVisible(), false, 'barre fixe masquée avant le bouton d’achat');
+  await buyer.fill('[data-quantity-input]', '4');
+  await buyer.evaluate(() => {
+    const button = document.querySelector('[data-add-button]');
+    window.scrollTo(0, button.getBoundingClientRect().bottom + window.scrollY + 400);
+  });
+  await buyer.waitForFunction(() => document.querySelector('[data-product-sticky]').classList.contains('is-visible'));
+  assert.equal(await buyer.getAttribute('[data-product-sticky]', 'aria-hidden'), 'false');
+  assert.equal(clean(await buyer.textContent('.product-sticky__price')), '89,00 € le rouleau');
+  await buyer.click('[data-sticky-add]');
+  await buyer.waitForFunction(() => window.__added.length > 0);
+  assert.equal((await buyer.evaluate(() => window.__added[0])).quantity, '4', 'la barre ajoute la quantité choisie');
+  await buyer.evaluate(() => window.scrollTo(0, 0));
+  await buyer.waitForFunction(() => !document.querySelector('[data-product-sticky]').classList.contains('is-visible'));
+  await buyer.close();
 
   // Fiche d'un produit échantillon : prix sans unité, quantité simple, ni calculateur ni configurateur.
   await page.goto(`file://${path.join(outDir, 'product-echantillon.html')}`);
@@ -46,6 +77,7 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
   assert.ok(await page.$('[data-quantity-input]'), 'sélecteur de quantité présent');
   assert.equal(await page.$('[data-calculator]'), null, 'pas de calculateur de rouleaux');
   assert.equal(await page.$('[data-configurator]'), null, 'pas de configurateur au m²');
+  assert.ok(await page.$('.product__payment'), 'paiement express sur un échantillon');
 
   // Ouverture vidéo : image de couverture d'abord, vidéo chargée ensuite, en boucle et sans son.
   await page.goto(`file://${path.join(outDir, 'index.html')}`);

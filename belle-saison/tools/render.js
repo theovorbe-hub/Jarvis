@@ -126,6 +126,8 @@ engine.registerFilter('font_modify', (font, prop, val) => {
 });
 engine.registerFilter('payment_type_svg_tag', () => '<svg class="footer__payment-icon" viewBox="0 0 38 24"><rect width="38" height="24" rx="3" fill="#ffffff22"/></svg>');
 engine.registerFilter('payment_terms', () => '');
+// Bouton de paiement express : rendu par Shopify, ici sa forme sans moyen de paiement accéléré.
+engine.registerFilter('payment_button', () => '<div data-shopify="payment-button" class="shopify-payment-button"><button type="button" class="shopify-payment-button__button shopify-payment-button__button--unbranded">Acheter maintenant</button></div>');
 engine.registerFilter('time_tag', (d) => '11 octobre 2026');
 engine.registerFilter('format_code', (c) => c);
 engine.registerFilter('default_errors', () => '');

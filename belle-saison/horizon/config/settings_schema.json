@@ -2213,6 +2213,24 @@
       },
       {
         "type": "header",
+        "content": "Panier"
+      },
+      {
+        "type": "checkbox",
+        "id": "free_shipping_bar",
+        "label": "Afficher la progression vers la livraison offerte",
+        "info": "Dans le panier, pour les clients en France.",
+        "default": true
+      },
+      {
+        "type": "number",
+        "id": "free_shipping_threshold",
+        "label": "Livraison offerte dès (€)",
+        "info": "Même montant que le tarif d’expédition gratuit (Paramètres > Expédition et livraison).",
+        "default": 65
+      },
+      {
+        "type": "header",
         "content": "Favoris"
       },
       {

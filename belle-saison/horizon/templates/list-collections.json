@@ -10,7 +10,7 @@
 {
   "sections": {
     "collection_list_Wfgh3m": {
-      "type": "main-collection-list",
+      "type": "collection-list",
       "blocks": {
         "group_4FtiAg": {
           "type": "group",
@@ -33,15 +33,14 @@
             "background_media": "none",
             "video_position": "cover",
             "background_image_position": "cover",
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
             "border": "none",
             "border_width": 1,
             "border_opacity": 100,
             "border_radius": 0,
-            "link": "",
+            "toggle_overlay": false,
+            "overlay_color": "#00000026",
+            "overlay_style": "solid",
+            "gradient_direction": "to top",
             "open_in_new_tab": false,
             "padding-block-start": 0,
             "padding-block-end": 48,
@@ -53,13 +52,12 @@
               "type": "text",
               "name": "t:names.text",
               "settings": {
-                "text": "<h1>Shop by collection</h1>",
+                "text": "<h1>Nos collections</h1>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "left",
                 "type_preset": "h2",
                 "font": "var(--font-body--family)",
-                "font_size": "",
                 "line_height": "normal",
                 "letter_spacing": "normal",
                 "case": "none",
@@ -148,7 +146,7 @@
       "settings": {
         "layout_type": "grid",
         "carousel_on_mobile": false,
-        "columns": 3,
+        "columns": 4,
         "mobile_columns": "2",
         "columns_gap": 12,
         "bento_gap": 8,
@@ -158,8 +156,19 @@
         "icons_shape": "none",
         "section_width": "page-width",
         "gap": 12,
+        "background_color": "{{ settings.color_palette.background }}",
         "padding-block-start": 48,
-        "padding-block-end": 48
+        "padding-block-end": 48,
+        "collection_list": [
+          "tous-nos-papiers-peints",
+          "fleurs-et-feuillages",
+          "les-rayures",
+          "vichy-et-carreaux",
+          "la-collection-enfant",
+          "les-essentiels",
+          "les-motifs",
+          "les-echantillons"
+        ]
       }
     }
   },

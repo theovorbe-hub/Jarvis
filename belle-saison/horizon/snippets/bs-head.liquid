@@ -43,6 +43,33 @@
     --logo-width: 172px;
     color-scheme: light;
   }
+
+  /* Panier d'Horizon : progression vers la livraison offerte (raccord de snippets/cart-summary.liquid) */
+  .bs-free-shipping {
+    display: grid;
+    gap: 0.5rem;
+    padding-block-end: 1rem;
+  }
+
+  .bs-free-shipping__text {
+    margin: 0;
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  .bs-free-shipping__bar {
+    height: 4px;
+    overflow: hidden;
+    border-radius: 2px;
+    background: {{ color_border }};
+  }
+
+  .bs-free-shipping__bar span {
+    display: block;
+    height: 100%;
+    background: {{ color_accent }};
+    transition: width 0.4s ease;
+  }
 </style>
 {{ 'bs-base.css' | asset_url | stylesheet_tag }}
 <script src="{{ 'bs-theme.js' | asset_url }}" defer></script>

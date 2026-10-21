@@ -569,7 +569,9 @@
       "empty": "Votre panier est vide.",
       "continue": "Découvrir nos collections",
       "billed_area": "{{ area }} m²",
-      "free": "Offert"
+      "free": "Offert",
+      "free_shipping_remaining_html": "Plus que <strong>{{ amount }}</strong> pour la livraison offerte en France",
+      "free_shipping_reached": "Livraison offerte en France"
     },
     "search": {
       "title": "Recherche",

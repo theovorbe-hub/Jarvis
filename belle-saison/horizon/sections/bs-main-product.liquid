@@ -349,6 +349,9 @@
                 </button>
                 <p class="field__error" data-form-error hidden></p>
               </div>
+              {%- if block.settings.show_dynamic_checkout and sale_mode != 'm2' -%}
+                <div class="product__payment">{{ form | payment_button }}</div>
+              {%- endif -%}
               {{ form | payment_terms }}
 
             {%- when 'sample' -%}
@@ -453,6 +456,30 @@
       {%- endfor -%}
     </div>
   </div>
+
+  {%- if section.settings.sticky_buy -%}
+    <div class="product-sticky" data-product-sticky aria-hidden="true">
+      <div class="product-sticky__inner bs-page-width">
+        {%- if product.featured_media -%}
+          {{
+            product.featured_media.preview_image
+            | image_url: width: 120, height: 120, crop: 'center'
+            | image_tag: class: 'product-sticky__image', loading: 'lazy', alt: '', width: 48, height: 48
+          }}
+        {%- endif -%}
+        <div class="product-sticky__text">
+          <p class="product-sticky__title">{{ product.title | escape }}</p>
+          <p class="product-sticky__price">
+            <span data-sticky-price>{{ current_variant.price | money }}</span>
+            {%- if sale_mode == 'm2' %} {{ 'bs.products.product.unit_m2' | t }}{% elsif sale_mode == 'rouleau' %} {{ 'bs.products.product.unit_roll' | t }}{% endif -%}
+          </p>
+        </div>
+        <button type="button" class="bs-button product-sticky__button" data-sticky-add tabindex="-1">
+          {{- 'bs.products.product.add_to_cart' | t -}}
+        </button>
+      </div>
+    </div>
+  {%- endif -%}
 </section>
 
 {%- liquid
@@ -488,6 +515,15 @@
 {
   "name": "BS · Fiche produit",
   "class": "bs section-main-product",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "sticky_buy",
+      "label": "Barre d'achat fixe",
+      "info": "En bas de l'écran, avec le prix et le bouton d'achat, une fois le bouton principal dépassé.",
+      "default": true
+    }
+  ],
   "blocks": [
     {
       "type": "title",
@@ -577,7 +613,16 @@
     {
       "type": "buy_buttons",
       "name": "Bouton d'achat",
-      "limit": 1
+      "limit": 1,
+      "settings": [
+        {
+          "type": "checkbox",
+          "id": "show_dynamic_checkout",
+          "label": "Paiement express",
+          "info": "Apple Pay, Google Pay, Shop Pay ou « Acheter maintenant », selon les moyens de paiement activés. Rouleaux et échantillons uniquement (pas au m²).",
+          "default": true
+        }
+      ]
     },
     {
       "type": "sample",

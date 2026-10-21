@@ -61,14 +61,14 @@
           "type": "collapsible",
           "settings": {
             "heading": "Pose et entretien",
-            "content": "<p>Ajoutez ici vos conseils de pose : préparation du mur, encollage, raccord des lés.</p>"
+            "content": "<p>Préparez un mur propre, sec et lisse. Encollez en suivant la notice fournie avec le rouleau : un papier intissé s’encolle directement sur le mur. Posez les lés bord à bord en respectant le raccord du motif, puis lissez du centre vers les bords avec une brosse à tapisser.</p><p>Pour l’entretien, un chiffon doux et sec suffit.</p>"
           }
         },
         "livraison": {
           "type": "collapsible",
           "settings": {
             "heading": "Livraison et retours",
-            "content": "<p>Ajoutez ici vos délais et conditions de livraison et de retour.</p>"
+            "content": "<p>Livraison en France : 7,99 €, offerte dès 65 € d’achat. Livraison express : 10,99 €. Union européenne : 22 €.</p><p>Vous disposez de 14 jours après réception pour nous retourner un rouleau non posé.</p><p>Une question sur votre commande : écrivez-nous depuis la page Contact.</p>"
           }
         },
         "simulator": {

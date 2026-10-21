@@ -9,6 +9,9 @@
   (« À partir de 39,00 € / m² », « 89,00 € le rouleau »), comme sur les cartes Belle Saison ;
 - snippets/cart-products.liquid : quantité non modifiable pour une ligne au m², dont la surface
   est calculée depuis les dimensions du mur (panier et tiroir du panier).
+- snippets/cart-summary.liquid : progression vers la livraison offerte en France (« Plus que
+  12,30 € pour la livraison offerte en France »), au-dessus du total, dans le tiroir et la page
+  du panier (réglages « Belle Saison » > Panier).
 Usage (depuis tools/) : npm run horizon:build
 """
 import json, pathlib, subprocess
@@ -100,5 +103,42 @@ patch(
                     endif
                   -%}
 """,
+    MARK,
+)
+
+patch(
+    'snippets/cart-summary.liquid',
+    """{% render 'cart-typography-styles' %}
+
+<div class="cart-totals">""",
+    """{% render 'cart-typography-styles' %}
+
+{%- liquid
+  # Belle Saison : progression vers la livraison offerte (tarif d'expédition gratuit dès le seuil, en France)
+  assign bs_threshold = settings.free_shipping_threshold | times: 100 | round
+  assign bs_free_shipping = false
+  if settings.free_shipping_bar and bs_threshold > 0 and cart.item_count > 0 and localization.country.iso_code == 'FR'
+    assign bs_free_shipping = true
+    assign bs_remaining = bs_threshold | minus: cart.total_price
+    assign bs_remaining_money = bs_remaining | money
+    assign bs_progress = cart.total_price | times: 100 | divided_by: bs_threshold | at_most: 100
+  endif
+-%}
+{%- if bs_free_shipping -%}
+  <div class="bs-free-shipping">
+    <p class="bs-free-shipping__text">
+      {%- if bs_remaining > 0 -%}
+        {{ 'bs.cart.free_shipping_remaining_html' | t: amount: bs_remaining_money }}
+      {%- else -%}
+        {{ 'bs.cart.free_shipping_reached' | t }}
+      {%- endif -%}
+    </p>
+    <div class="bs-free-shipping__bar" aria-hidden="true">
+      <span style="width: {{ bs_progress }}%"></span>
+    </div>
+  </div>
+{%- endif -%}
+
+<div class="cart-totals">""",
     MARK,
 )

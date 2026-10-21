@@ -600,6 +600,27 @@
       }
     });
 
+    /* Barre d'achat fixe : visible quand le bouton principal est passé au-dessus de l'écran */
+    const sticky = root.querySelector('[data-product-sticky]');
+    if (sticky && addButton && 'IntersectionObserver' in window) {
+      const stickyButton = sticky.querySelector('[data-sticky-add]');
+      const stickyPrice = sticky.querySelector('[data-sticky-price]');
+      const show = (visible) => {
+        sticky.classList.toggle('is-visible', visible);
+        sticky.setAttribute('aria-hidden', String(!visible));
+        stickyButton.tabIndex = visible ? 0 : -1;
+        if (!visible) return;
+        stickyButton.disabled = addButton.disabled;
+        stickyButton.textContent = addButton.textContent;
+        if (stickyPrice && priceEl) stickyPrice.textContent = priceEl.textContent;
+      };
+      // L'écran est prolongé vers le bas : le bouton n'en sort que par le haut, même après un défilement rapide.
+      new IntersectionObserver(([entry]) => show(!entry.isIntersecting), { rootMargin: '0px 0px 100000px 0px' }).observe(addButton);
+      stickyButton.addEventListener('click', () => {
+        if (!addButton.disabled) form.requestSubmit(addButton);
+      });
+    }
+
     renderPerM2();
     updateConfigurator();
     setButtonState();

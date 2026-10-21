@@ -2455,6 +2455,126 @@
   height: 1.125rem;
 }
 
+/* Paiement express (bouton dynamique de Shopify) sous le bouton d'achat */
+.bs .product__payment {
+  margin-top: 0.75rem;
+}
+
+.bs .product__payment .shopify-payment-button__button {
+  display: flex;
+  align-content: normal;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  min-height: 52px;
+  margin: 0;
+  padding: 0 1.75rem;
+  border-radius: var(--radius);
+  box-shadow: none;
+  appearance: none;
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+  transition:
+    background-color 0.3s var(--ease-out),
+    color 0.3s var(--ease-out);
+}
+
+.bs .product__payment .shopify-payment-button__button--unbranded {
+  border: 1px solid var(--color-text);
+  background: transparent;
+  color: var(--color-text);
+  font-family: var(--font-accent-family);
+  font-weight: var(--font-accent-weight);
+  font-size: 0.71875rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.bs .product__payment .shopify-payment-button__button--unbranded:hover:not([disabled]) {
+  background: var(--color-text);
+  color: var(--color-bg);
+}
+
+.bs .product__payment .shopify-payment-button__more-options {
+  margin-top: 0.5rem;
+  color: var(--color-muted);
+  font-size: 0.875rem;
+  text-decoration: underline;
+}
+
+/* Barre d'achat fixe, une fois le bouton d'achat dépassé */
+.bs .product-sticky {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 25;
+  border-top: 1px solid var(--color-border);
+  background: var(--color-bg);
+  box-shadow: 0 -16px 32px -28px rgb(0 0 0 / 0.4);
+  transform: translateY(100%);
+  visibility: hidden;
+  transition:
+    transform 0.35s var(--ease-out),
+    visibility 0s linear 0.35s;
+}
+
+.bs .product-sticky.is-visible {
+  transform: none;
+  visibility: visible;
+  transition: transform 0.35s var(--ease-out);
+}
+
+.bs .product-sticky__inner {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding-top: 0.75rem;
+  padding-bottom: calc(0.75rem + env(safe-area-inset-bottom, 0px));
+}
+
+.bs .product-sticky__image {
+  flex: none;
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius);
+  object-fit: cover;
+}
+
+.bs .product-sticky__text {
+  min-width: 0;
+  margin-right: auto;
+}
+
+.bs .product-sticky__title {
+  overflow: hidden;
+  font-family: var(--font-heading-family);
+  font-size: 1.0625rem;
+  line-height: 1.25;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.bs .product-sticky__price {
+  color: var(--color-muted);
+  font-size: 0.9375rem;
+}
+
+.bs .product-sticky__button {
+  flex: none;
+}
+
+@media (max-width: 749px) {
+  .bs .product-sticky__image {
+    display: none;
+  }
+
+  .bs .product-sticky__button {
+    padding: 0 1.25rem;
+  }
+}
+
 .bs .quantity {
   display: inline-flex;
   align-items: center;

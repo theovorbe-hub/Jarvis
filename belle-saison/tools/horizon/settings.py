@@ -64,6 +64,14 @@ cur.update({
     'show_price_per_m2': True,
     'wishlist_enabled': True,
     'wishlist_page': 'favoris',
+    'free_shipping_bar': True,
+    'free_shipping_threshold': 65,
+    # Panier : le tiroir s'ouvre après l'ajout (total et bouton de paiement sous les yeux) ; panier
+    # vide vers tous les papiers peints ; pas d'ajout rapide sur les cartes produit : la fiche
+    # calcule le nombre de rouleaux et propose le simulateur et l'échantillon.
+    'auto_open_cart_drawer': True,
+    'empty_cart_button_link': 'shopify://collections/tous-nos-papiers-peints',
+    'quick_add': False,
 })
 P.write_text(header + json.dumps(data, ensure_ascii=False, indent=2) + '\n')
 print('settings_data.json : réglages Belle Saison appliqués')
