@@ -32,7 +32,8 @@ SECTIONS = {
     'main-favorites': 'BS · Favoris',
 }
 SNIPPETS = ['icon', 'background-video', 'section-head', 'video-trigger', 'product-card',
-            'product-pricing', 'wishlist-button', 'product-specs', 'wall-simulator']
+            'product-pricing', 'wishlist-button', 'product-specs', 'wall-simulator',
+            'simulator-swatch']
 ASSETS = ['theme.js', 'simulateur.js', 'model-viewer.min.js', 'base.css']
 
 RENAMED = json.loads((pathlib.Path(__file__).parent / 'classes.json').read_text())

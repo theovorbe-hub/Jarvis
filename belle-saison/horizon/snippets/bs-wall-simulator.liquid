@@ -4,11 +4,30 @@
     le papier peint posé contre le mur, à taille réelle.
   - Tous les appareils : caméra en direct ou photo du mur ; le client place les quatre coins
     de son mur et le papier peint s'applique en perspective, à l'échelle, ombres comprises.
+  - Le client peut essayer les autres papiers peints de la collection « patterns » (toute la
+    boutique si elle est vide) qui ont un visuel à plat, échantillons exclus.
   L'image du client reste dans son navigateur : rien n'est envoyé.
 
   Paramètres : product, section_id, visuel (image à plat), tile_cm (largeur réelle d'un motif,
-  0 = le visuel couvre tout le mur).
+  0 = le visuel couvre tout le mur), patterns (collection des papiers peints à essayer).
 {%- endcomment -%}
+{%- liquid
+  assign pattern_collection = patterns
+  if pattern_collection == blank
+    assign pattern_collection = collections.all
+  endif
+-%}
+{%- capture other_swatches -%}
+  {%- for pattern in pattern_collection.products limit: 50 -%}
+    {%- if pattern.id == product.id or pattern.available == false or pattern.metafields.papier_peint.visuel.value == blank -%}
+      {%- continue -%}
+    {%- endif -%}
+    {%- if pattern.type == 'Échantillon' or pattern.tags contains 'echantillon' -%}
+      {%- continue -%}
+    {%- endif -%}
+    {%- render 'bs-simulator-swatch', pattern: pattern, pressed: false -%}
+  {%- endfor -%}
+{%- endcapture -%}
 <dialog
   class="simulator"
   id="Simulator-{{ section_id }}"
@@ -36,7 +55,7 @@
       "cameraUnavailable": {{ 'bs.products.simulator.camera_unavailable' | t | json }},
       "photoUnreadable": {{ 'bs.products.simulator.photo_unreadable' | t | json }},
       "arLoading": {{ 'bs.products.simulator.ar_loading' | t | json }},
-      "shareText": {{ 'bs.products.simulator.share_text' | t: title: product.title | json }},
+      "shareText": {{ 'bs.products.simulator.share_text' | t: title: '{title}' | json }},
       "saved": {{ 'bs.products.simulator.saved' | t | json }}
     }
   </script>
@@ -45,12 +64,25 @@
     <header class="simulator__header">
       <div class="simulator__heading">
         <h2 class="simulator__title" id="SimulatorTitle-{{ section_id }}">{{ 'bs.products.simulator.title' | t }}</h2>
-        <p class="simulator__product">{{ product.title | escape }}</p>
+        <div class="simulator__product">
+          <span data-sim-product>{{ product.title | escape }}</span>
+          <a class="simulator__product-link" href="{{ product.url }}" data-sim-product-link hidden>{{ 'bs.products.simulator.view_product' | t }}</a>
+        </div>
       </div>
       <button type="button" class="icon-button simulator__close" data-sim-close aria-label="{{ 'bs.products.simulator.close' | t }}">
         {%- render 'bs-icon', name: 'close' -%}
       </button>
     </header>
+
+    {%- if other_swatches != blank -%}
+      <div class="simulator__patterns">
+        <p class="simulator__patterns-label" id="SimPatterns-{{ section_id }}">{{ 'bs.products.simulator.patterns' | t }}</p>
+        <div class="simulator__swatches" role="group" aria-labelledby="SimPatterns-{{ section_id }}">
+          {%- render 'bs-simulator-swatch', pattern: product, pressed: true, tile_cm: tile_cm -%}
+          {{- other_swatches -}}
+        </div>
+      </div>
+    {%- endif -%}
 
     <div class="simulator__start" data-sim-start>
       <p class="simulator__intro">{{ 'bs.products.simulator.intro' | t }}</p>

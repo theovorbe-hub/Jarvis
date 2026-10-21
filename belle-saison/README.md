@@ -264,8 +264,17 @@ ouvre un simulateur :
   motif rapportée à la largeur du mur, préremplie depuis le configurateur), en gardant les
   ombres de la pièce. Il peut enregistrer ou partager l’image. Rien n’est envoyé : tout se passe
   dans le navigateur.
+- **Essayer un autre papier peint** : sous le titre, une rangée de vignettes (le produit affiché
+  d’abord, puis les papiers peints de la collection choisie dans le bloc, réglage « Papiers peints
+  à essayer », `tous-nos-papiers-peints` dans `templates/product.json` ; toute la boutique si
+  vide). Seuls les produits disponibles qui ont un visuel à plat y figurent, échantillons exclus.
+  Un clic change le motif sur le mur (photo, caméra, réalité augmentée), le titre, l’image
+  enregistrée et le partage, et affiche le lien « Voir ce papier peint » vers sa fiche.
 
 Le bouton n’apparaît que si le produit a son métachamp `papier_peint.visuel` (le motif à plat,
-voir l’import de produits). Code : `snippets/wall-simulator.liquid` et `assets/simulateur.js`.
+voir l’import de produits). Dans la boutique, le visuel à plat d’un rouleau est la photo de son
+échantillon (motif photographié à plat, largeur 53 cm). Code : `snippets/wall-simulator.liquid`,
+`snippets/simulator-swatch.liquid` et `assets/simulateur.js`.
 Tests : `npm test` (perspective, coins à la souris et au clavier, image enregistrée, caméra
-simulée, modèle 3D). La réalité augmentée elle-même se vérifie sur un vrai téléphone.
+simulée, changement de papier peint, modèle 3D). La réalité augmentée elle-même se vérifie sur
+un vrai téléphone.

@@ -75,7 +75,8 @@
           "type": "simulator",
           "settings": {
             "label": "Voir sur mon mur",
-            "text": "Visualisez ce papier peint chez vous, avec l’appareil photo de votre téléphone ou de votre ordinateur."
+            "text": "Visualisez ce papier peint chez vous, avec l’appareil photo de votre téléphone ou de votre ordinateur.",
+            "collection": "tous-nos-papiers-peints"
           }
         }
       },

@@ -263,6 +263,29 @@ async function testSimulator() {
   assert.equal(download.suggestedFilename(), 'belle-saison-motif-1.jpg');
   assert.ok(fs.statSync(await download.path()).size > 20000, 'image enregistrée');
 
+  // Essayer un autre papier peint : le motif, le titre, le lien et l'image enregistrée changent.
+  const swatches = await page.$$eval('[data-sim-swatch]', (list) => list.map((s) => [s.dataset.handle, s.getAttribute('aria-pressed')]));
+  assert.deepEqual(swatches, [['motif-1', 'true'], ['motif-2', 'false'], ['motif-3', 'false'], ['motif-4', 'false']], 'produit affiché en premier, puis la collection');
+  assert.equal(await page.$eval('[data-sim-product-link]', (a) => a.hidden), true, 'pas de lien vers le produit déjà affiché');
+  const wall = () => page.evaluate(() => {
+    const canvas = document.querySelector('[data-sim-canvas]');
+    const data = canvas.getContext('2d').getImageData(Math.round(canvas.width * 0.35), Math.round(canvas.height * 0.3), Math.round(canvas.width * 0.3), Math.round(canvas.height * 0.4)).data;
+    let sum = 0;
+    for (let i = 0; i < data.length; i += 4) sum += data[i] * 3 + data[i + 1] * 5 + data[i + 2] * 7;
+    return sum;
+  });
+  const wallBefore = await wall();
+  await page.click('[data-sim-swatch][data-handle="motif-4"]');
+  await page.waitForFunction(() => document.querySelector('[data-sim-product]').textContent === 'Toile Châtelaine');
+  await page.waitForTimeout(600);
+  assert.notEqual(await wall(), wallBefore, 'le nouveau motif s’affiche sur le mur');
+  assert.equal(await page.$eval('[data-sim-swatch][data-handle="motif-4"]', (s) => s.getAttribute('aria-pressed')), 'true');
+  assert.equal(await page.$eval('[data-sim-product-link]', (a) => !a.hidden && a.getAttribute('href')), '/products/motif-4', 'lien vers la fiche du papier peint essayé');
+  const [download4] = await Promise.all([page.waitForEvent('download'), page.click('[data-sim-save]')]);
+  assert.equal(download4.suggestedFilename(), 'belle-saison-motif-4.jpg');
+  await page.click('[data-sim-swatch][data-handle="motif-1"]');
+  assert.equal(await page.$eval('[data-sim-product-link]', (a) => a.hidden), true, 'retour au produit affiché');
+
   // Caméra en direct, puis photo figée.
   await page.click('[data-sim-restart]');
   await page.click('[data-sim-camera]');

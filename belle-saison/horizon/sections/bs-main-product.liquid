@@ -448,7 +448,7 @@
       {%- comment -%} Fenêtre du simulateur, hors du formulaire d'ajout au panier. {%- endcomment -%}
       {%- for block in section.blocks -%}
         {%- if block.type == 'simulator' and sim_visuel != blank -%}
-          {%- render 'bs-wall-simulator', product: product, section_id: section.id, visuel: sim_visuel, tile_cm: sim_tile -%}
+          {%- render 'bs-wall-simulator', product: product, section_id: section.id, visuel: sim_visuel, tile_cm: sim_tile, patterns: block.settings.collection -%}
         {%- endif -%}
       {%- endfor -%}
     </div>
@@ -565,6 +565,12 @@
           "id": "text",
           "label": "Texte sous le bouton",
           "default": "Visualisez ce papier peint chez vous, avec l’appareil photo de votre téléphone ou de votre ordinateur."
+        },
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Papiers peints à essayer",
+          "info": "Dans le simulateur, le client peut essayer les autres papiers peints de cette collection qui ont un « Visuel à plat ». Vide : toute la boutique (échantillons exclus)."
         }
       ]
     },

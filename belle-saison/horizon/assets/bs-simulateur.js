@@ -9,6 +9,8 @@
  *    de son mur ; le papier peint s'applique en perspective (homographie), à l'échelle réelle
  *    (largeur du motif rapportée à la largeur du mur), en gardant les ombres de la pièce
  *    (mélange « produit »). L'image composée peut être enregistrée ou partagée.
+ * 3. Vignettes des autres papiers peints : un clic change le motif sur le mur (photo, caméra et
+ *    réalité augmentée), le titre, le lien vers la fiche, l'image enregistrée et le partage.
  *
  * Rien ne quitte l'appareil du client.
  */
@@ -280,6 +282,8 @@
       this.layer = document.createElement('canvas');
       this.video = this.el('video');
       this.handles = [...dialog.querySelectorAll('[data-sim-handle]')];
+      this.swatches = [...dialog.querySelectorAll('[data-sim-swatch]')];
+      this.images = new Map();
       this.widthInput = this.el('width');
       this.heightInput = this.el('height');
       // Coins du mur en coordonnées normalisées de l'image (0 à 1) : haut gauche, haut droit,
@@ -322,6 +326,7 @@
         if (event.key === 'Enter' && event.target.matches('input')) event.preventDefault();
       });
       this.handles.forEach((handle, i) => this.bindHandle(handle, i));
+      this.swatches.forEach((swatch) => swatch.addEventListener('click', () => this.choose(swatch)));
       new ResizeObserver(() => this.resize()).observe(this.stage);
     }
 
@@ -331,16 +336,37 @@
       this.heightInput.value = fromConfigurator('[data-wall-height]') || this.dialog.dataset.defaultHeight;
       this.showStart();
       this.dialog.showModal();
-      if (!this.visuelPromise) {
-        this.visuelPromise = loadImage(this.dialog.dataset.visuel);
-        this.visuelPromise
-          .then((image) => {
-            this.visuel = image;
-            this.render();
-          })
-          .catch(() => {});
-      }
+      if (!this.visuelPromise) this.useVisuel(this.dialog.dataset.visuel);
       this.prepareAR();
+    }
+
+    // Charge un visuel (une seule fois par image) ; le dernier demandé remplace le motif affiché.
+    useVisuel(src) {
+      if (!this.images.has(src)) this.images.set(src, loadImage(src));
+      const promise = this.images.get(src);
+      this.visuelPromise = promise;
+      promise
+        .then((image) => {
+          if (this.visuelPromise !== promise) return;
+          this.visuel = image;
+          this.render();
+          this.scheduleModelUpdate();
+        })
+        .catch(() => {});
+    }
+
+    // Essaie un autre papier peint : motif, échelle, titre, lien vers sa fiche et partage.
+    choose(swatch) {
+      const { visuel, tileCm, title, handle, url, shareUrl } = swatch.dataset;
+      this.swatches.forEach((button) => button.setAttribute('aria-pressed', String(button === swatch)));
+      Object.assign(this.dialog.dataset, { title, handle, shareUrl });
+      this.tileCm = parseFloat(tileCm) || 0;
+      this.el('product').textContent = title;
+      const link = this.el('product-link');
+      link.href = url;
+      link.hidden = swatch === this.swatches[0];
+      this.viewer?.setAttribute('alt', title);
+      this.useVisuel(visuel);
     }
 
     wallCm() {
@@ -487,7 +513,7 @@
     ensureTexture() {
       if (!this.visuel) return null;
       const wall = this.wallCm();
-      const key = `${wall.width}x${wall.height}`;
+      const key = `${this.visuel.src}|${this.tileCm}|${wall.width}x${wall.height}`;
       if (this.textureKey !== key) {
         this.texture = buildWallTexture(this.visuel, wall, this.tileCm);
         this.textureKey = key;
@@ -532,18 +558,6 @@
 
     render() {
       if (!this.media || this.el('work').hidden) return;
-      if (!this.visuel && this.visuelPromise && !this.waiting) {
-        this.waiting = true;
-        this.visuelPromise
-          .then((image) => {
-            this.visuel = image;
-            this.render();
-          })
-          .catch(() => {})
-          .finally(() => {
-            this.waiting = false;
-          });
-      }
       const live = this.media === this.video;
       const rect = this.compose(this.ctx, this.layer, this.canvas.width, this.canvas.height, live ? GRID_LIVE : GRID_STILL, true);
       if (!rect) return;
@@ -604,7 +618,8 @@
       const layer = document.createElement('canvas');
       layer.width = out.width;
       layer.height = out.height;
-      if (!this.visuel && this.visuelPromise) this.visuel = await this.visuelPromise.catch(() => null);
+      // Le motif choisi en dernier, même s'il finit à peine de se charger.
+      if (this.visuelPromise) this.visuel = (await this.visuelPromise.catch(() => null)) || this.visuel;
       this.compose(out.getContext('2d'), layer, out.width, out.height, GRID_STILL, false);
       return canvasToBlob(out, 'image/jpeg', 0.9);
     }
@@ -631,7 +646,8 @@
       const blob = await this.exportBlob();
       if (!blob) return;
       const file = new File([blob], this.fileName(), { type: 'image/jpeg' });
-      const data = { files: [file], title: this.dialog.dataset.title, text: `${this.strings.shareText} ${this.dialog.dataset.shareUrl}` };
+      const text = this.strings.shareText.replace('{title}', this.dialog.dataset.title);
+      const data = { files: [file], title: this.dialog.dataset.title, text: `${text} ${this.dialog.dataset.shareUrl}` };
       try {
         if (navigator.canShare?.(data)) await navigator.share(data);
         else await navigator.share({ title: data.title, text: data.text, url: this.dialog.dataset.shareUrl });
