@@ -73,7 +73,9 @@ plafond, de la largeur du lé, de la longueur du rouleau et du raccord.
 
 **Échantillon.** Toute variante dont le nom contient « Échantillon » est traitée
 comme un échantillon : elle disparaît du choix du papier et devient le bouton
-« Commander un échantillon offert » (ou payant si son prix n’est pas 0).
+« Commander un échantillon offert » (ou payant si son prix n’est pas 0). Un échantillon peut aussi
+être un produit à part (type « Échantillon ») : le désigner dans le métachamp
+`papier_peint.echantillon` du rouleau pour afficher le même bouton sur la fiche du rouleau.
 
 ### Créer un produit
 
@@ -143,7 +145,11 @@ générateur vidéo, est dans [`docs/videos.md`](docs/videos.md).
   Mes favoris, Rechercher).
 - **Pages** : « Mes favoris » (modèle `page.favoris`), « Notre histoire » et
   « Nos engagements » (non publiées, à rédiger).
-- **Journal** : « Inspiration ».
+- **Journal** : « Inspiration » (encore vide).
+- **Catalogue au rouleau** (21 octobre 2026) : collections Fleurs et feuillages, Les rayures,
+  Vichy et carreaux, Tous nos papiers peints et Les échantillons ; métachamp
+  `papier_peint.echantillon` qui relie un rouleau à son produit échantillon. État du lancement
+  et actions restantes : [`docs/lancement.md`](docs/lancement.md).
 - **Définitions de métachamps** `papier_peint.*` listées ci-dessus.
 
 ## Outils
@@ -224,6 +230,8 @@ envoyer les fichiers changés dans la copie (récupérer d’abord la version de
 fichiers JSON, comme pour le thème Belle Saison).
 
 ## Avant d’ouvrir la boutique
+
+Liste à jour : [`docs/lancement.md`](docs/lancement.md). Pour le thème Belle Saison d’origine :
 
 - Ajouter les photos (ouverture, histoire, inspiration, images des collections) et,
   si besoin, le logo dans l’éditeur.
