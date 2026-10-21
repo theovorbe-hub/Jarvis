@@ -22,6 +22,20 @@
 - **Thème « Horizon · Belle Saison »** (non publié) : engagements exacts partout (livraison
   offerte dès 65 €, échantillon grand format, éditeurs européens, paiement sécurisé), bandeau
   d’annonces affiché, vente au rouleau avec calculateur du nombre de rouleaux.
+- **« Voir sur mon mur »** : 23 papiers peints au rouleau (et leurs échantillons) ont leur motif
+  à plat (`papier_peint.visuel`, la photo de l’échantillon, largeur 53 cm) : le simulateur
+  s’affiche sur leur fiche. Dans le simulateur, une rangée de vignettes permet d’essayer les
+  autres papiers peints de « Tous nos papiers peints » sans quitter sa photo, avec un lien
+  « Voir ce papier peint » vers la fiche.
+  Pas encore de simulateur (aucune photo du motif à plat) : Étoiles Gris Doux, Fleurs des Prés,
+  Les Petits Trésors de l’Océan, Cadenza Petite, Héritage Fleuri, Étoiles Beige Grisé,
+  Étoiles Gris & Blanc, Vichy Grège, Bouquets de Charme, Brindilles Lin Bleu, Carreaux Rubis,
+  Sienne Textile, Tennis. Pour l’ajouter : demander au fournisseur l’image du motif à plat
+  (fichier d’impression ou scan d’un lé), l’envoyer dans Contenu > Fichiers et la choisir dans
+  le métachamp « Visuel à plat » du produit (largeur du motif : 53 cm).
+  Pour Lin Gris Patiné, Lin Doré et Les Petites Fleurettes, le simulateur montre le motif de
+  l’échantillon (Lin ivoire, Lin doré, Confettis) : c’est le papier livré, à comparer avec la
+  photo de la fiche (point 1 ci-dessous).
 
 ## À faire par la cliente avant d’ouvrir
 

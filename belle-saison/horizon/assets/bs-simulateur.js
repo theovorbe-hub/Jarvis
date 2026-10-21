@@ -646,7 +646,7 @@
       const blob = await this.exportBlob();
       if (!blob) return;
       const file = new File([blob], this.fileName(), { type: 'image/jpeg' });
-      const text = this.strings.shareText.replace('{title}', this.dialog.dataset.title);
+      const text = this.strings.shareText.replace('[title]', this.dialog.dataset.title);
       const data = { files: [file], title: this.dialog.dataset.title, text: `${text} ${this.dialog.dataset.shareUrl}` };
       try {
         if (navigator.canShare?.(data)) await navigator.share(data);
