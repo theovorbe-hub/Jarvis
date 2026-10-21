@@ -205,7 +205,19 @@ collections et les comptes clients. Belle Saison y apporte :
   variante échantillon et avec leur unité (« À partir de 39,00 € / m² ») ; quantité non
   modifiable dans le panier pour une ligne au m² (surface calculée depuis le mur).
 - **Panier** : l’ajout depuis la fiche Belle Saison met à jour l’icône et ouvre le tiroir du
-  panier d’Horizon (événement `CartLinesUpdateEvent`).
+  panier d’Horizon (événement `CartLinesUpdateEvent`, réglage `auto_open_cart_drawer`). Le
+  résumé du panier (tiroir et page) affiche la progression vers la livraison offerte en France
+  (raccord de `snippets/cart-summary.liquid`, réglages « Belle Saison » > Panier, seuil égal au
+  tarif gratuit des réglages d’expédition). Pas d’ajout rapide sur les cartes produit : la fiche
+  calcule le nombre de rouleaux.
+- **Fiche produit** : barre d’achat fixe en bas de l’écran une fois le bouton dépassé (réglage de
+  la section), paiement express (`{{ form | payment_button }}`) pour les rouleaux et les
+  échantillons, pas pour le m² tant qu’une commande test n’a pas confirmé l’arrivée des
+  dimensions dans la commande.
+- **Pages natives d’Horizon** (`tools/horizon/native.py`, sur les versions de la boutique
+  enregistrées dans `horizon/templates`) : panier, page introuvable et contact en français,
+  suggestions vers « Tous nos papiers peints », page Collections limitée aux collections
+  choisies.
 - **En-tête et pied de page** (`tools/horizon/groups.py`) : logo centré, menu `menu-horizon`,
   bandeau des quatre engagements (masqué, comme dans le thème Belle Saison), pied de page
   Belle Saison avec les menus « Boutique » et « Aide ».

@@ -16,9 +16,28 @@
   (`vichy`, `carreaux`). Aussi : Tous nos papiers peints (type « Papier peint ») et Les
   échantillons (type « Échantillon »). Les paysages, Les toiles et les collections de
   panoramiques restent non publiées tant qu’elles sont vides.
-- **Menus** : `menu-horizon` (Collections, Papiers peints, Échantillons, Nos engagements),
-  `menu-aide-horizon` (Contact, Mes favoris, Rechercher). Page « Nos engagements » rédigée et
-  publiée.
+- **Menus** : `menu-horizon` (Papiers peints, avec en sous-menu Tous nos papiers peints, Fleurs et
+  feuillages, Les rayures, Vichy et carreaux, La collection enfant, Les essentiels, Les motifs ;
+  Échantillons ; Nos engagements ; Contact), `menu-aide-horizon` (Contact, Mes favoris,
+  Rechercher). Page « Nos engagements » rédigée et publiée.
+- **Parcours d’achat** (21 octobre) :
+  - après « Ajouter au panier », le panier s’ouvre sur le côté avec le total et le bouton de
+    paiement ;
+  - dans le panier, pour la France : « Plus que 12,30 € pour la livraison offerte en France »,
+    avec une barre de progression (seuil réglable : Personnaliser > Réglages du thème > Belle
+    Saison > Panier ; il doit rester égal au tarif gratuit des réglages d’expédition) ;
+  - fiche produit : barre d’achat fixe en bas de l’écran une fois le bouton dépassé, paiement
+    express (Apple Pay, Google Pay, Shop Pay ou « Acheter maintenant ») pour les rouleaux et les
+    échantillons, volets « Pose et entretien » et « Livraison et retours » remplis avec les
+    tarifs réels ;
+  - les cartes produit mènent à la fiche (plus d’ajout rapide, qui sautait le calculateur de
+    rouleaux, le simulateur et l’échantillon) ;
+  - pages d’Horizon restées en anglais traduites : panier (« Votre panier », « Vous aimerez
+    aussi »), page introuvable, bouton « Envoyer » du contact ; suggestions et panier vide vers
+    « Tous nos papiers peints » ;
+  - page Collections : les 8 collections dans l’ordre du menu ;
+  - accueil : le bouton de « Notre histoire » menait à une page non publiée ; il mène à « Nos
+    engagements ».
 - **Thème « Horizon · Belle Saison »** (non publié) : engagements exacts partout (livraison
   offerte dès 65 €, échantillon grand format, éditeurs européens, paiement sécurisé), bandeau
   d’annonces affiché, vente au rouleau avec calculateur du nombre de rouleaux.
@@ -72,17 +91,29 @@
    - **Livraison** : France uniquement ; standard 7,99 €, offerte dès 65 € ; express 10,99 € ;
      **délai réel de préparation et de livraison des rouleaux à confirmer avec les fournisseurs**
      (obligatoire avant l’achat ; les échantillons indiquent 1 à 5 jours ouvrés de préparation).
-   - **Fiche produit** : les volets « Pose et entretien » et « Livraison et retours » affichent
-     encore le texte d’attente (« Ajoutez ici… »). Les remplir dans Personnaliser > Produits >
-     Fiche produit, une fois les délais et conditions confirmés.
+   - **Fiche produit** : ajouter le délai de livraison réel des rouleaux dans le volet
+     « Livraison et retours » (Personnaliser > Produits > Fiche produit) dès qu’il est confirmé.
 3. **Paiements** : vérifier que Shopify Payments (ou un autre moyen) est activé et testé
    (Paramètres > Paiements), puis passer une commande test.
 4. **Logo** : Personnaliser > Réglages du thème > Logo.
 5. **Publier le thème** « Horizon · Belle Saison » (Boutique en ligne > Thèmes > Publier).
 6. **Retirer le mot de passe** (Boutique en ligne > Préférences > Accès restreint).
 
+7. **Collection « Page d’accueil »** (vide) : la retirer de la boutique en ligne (Produits >
+   Collections > Page d’accueil > Canaux de vente). Elle n’apparaît plus dans la page
+   Collections du thème, mais reste accessible par son adresse.
+8. **Page « Notre histoire »** : elle ne contient que le texte d’attente et n’est pas publiée.
+   Envoyer quelques lignes sur l’origine de Belle Saison pour la rédiger ; le bouton de l’accueil
+   pourra alors y mener de nouveau.
+9. **Relance des paniers abandonnés** : Marketing > Automatisations > « Panier abandonné »,
+   activer le modèle Shopify Email (un seul rappel, sans fausse urgence).
+
 ## Recommandations pour vendre plus (à valider)
 
+- **Date de livraison sur la fiche** (« Livré entre le … et le … ») dès que le délai des
+  fournisseurs est confirmé : un des leviers les plus efficaces avant l’achat.
+- **Remise par quantité** sur les rouleaux (par exemple 5 % dès 6 rouleaux, appliquée
+  automatiquement), à chiffrer avec les coûts réels avant création.
 - **Échantillon déduit de la commande** : rembourser le prix de l’échantillon sous forme de code
   de réduction sur la commande de rouleaux. Levier fort pour cette catégorie, à valider avant
   création (remise).

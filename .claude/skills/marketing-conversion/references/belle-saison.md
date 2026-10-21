@@ -51,25 +51,25 @@ Pousser à commander plusieurs murs ou pièces : remise au m² ou au montant, co
 « chambre d’enfant » associée à la chambre des parents, kit de pose (colle, brosse, spatule)
 s’il est sourcé (compétence `veille-sourcing-belle-saison`).
 
-## Ce que le thème fait déjà (12 octobre 2026)
+## Ce que le thème fait (21 octobre 2026, copie « Horizon · Belle Saison »)
 
-- Fiche produit : configurateur largeur × hauteur, calculateur de rouleaux, bouton
-  d’échantillon, engagements sous le bouton d’achat (bloc « Réassurance » : échantillon offert,
-  adaptation sur mesure incluse, livraison sous 5 à 7 jours), tableau de caractéristiques,
-  favoris, recommandations de produits.
-- Simulateur « Voir sur mon mur » sur la fiche produit (réalité augmentée sur téléphone, caméra
-  ou photo du mur partout, image à enregistrer ou partager) : levier n° 1 de projection pour
-  Claire ; il exige le métachamp `papier_peint.visuel` sur chaque produit.
-- Ajout au panier : court message de confirmation, pas de panier latéral.
-- Paiement express : présent dans le panier (`content_for_additional_checkout_buttons`),
-  absent de la fiche produit. Avant de l’ajouter à la fiche d’un produit sur mesure, passer une
-  commande test et vérifier que « Largeur du mur », « Hauteur du mur » et « Surface » arrivent
-  dans la commande ; sinon le réserver aux produits au rouleau.
-- Pas de barre de livraison offerte, pas de produits complémentaires dans le panier, pas de
-  bouton d’achat fixe sur mobile.
-- Accueil : bandeau d’engagements, avis clients réels (section invisible tant qu’elle est vide).
-- La boutique n’a encore ni produit ni vente : pas de panier moyen mesuré. Fixer les seuils à
-  partir des prix (commande type d’environ 10 m²) puis les réajuster après les premières ventes.
+Catalogue actuel : papiers peints **au rouleau** (environ 50 à 110 € le rouleau) et échantillons
+vendus à part (4,90 €). Livraison France 7,99 €, offerte dès 65 € (tarif d’expédition gratuit),
+express 10,99 €, Union européenne 22 €. Ces faits remplacent les engagements du thème Belle
+Saison d’origine (échantillon offert, livraison sous 5 à 7 jours, sur-mesure) tant que la
+cliente ne les confirme pas.
+
+- Fiche produit : calculateur de rouleaux, bouton « Commander un échantillon (4,90 €) »,
+  simulateur « Voir sur mon mur » avec choix d’un autre papier peint, réassurance (livraison
+  offerte dès 65 €, échantillon grand format, paiement sécurisé), barre d’achat fixe une fois le
+  bouton dépassé, paiement express (rouleaux et échantillons), volets pose et livraison remplis.
+- Panier : tiroir d’Horizon ouvert après l’ajout, paiement express, progression « Plus que … pour
+  la livraison offerte en France » (réglages Belle Saison > Panier), suggestions « Vous aimerez
+  aussi » tirées de Tous nos papiers peints.
+- Navigation : menu Papiers peints déroulant (collections par envie), Échantillons, Nos
+  engagements, Contact ; cartes produit sans ajout rapide (la fiche calcule les rouleaux).
+- Manque : date de livraison (délai fournisseur à confirmer), avis réels, relance de panier
+  (Shopify Email à activer), remise par quantité, lot d’échantillons, kit de pose.
 
 ## Plan conseillé
 
