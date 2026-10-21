@@ -41,12 +41,12 @@
         "reassurance": {
           "type": "reassurance",
           "settings": {
-            "icon_1": "gift",
-            "text_1": "Échantillon offert",
-            "icon_2": "pencil",
-            "text_2": "Adaptation sur mesure incluse",
-            "icon_3": "truck",
-            "text_3": "Livraison sous 5 à 7 jours"
+            "icon_1": "truck",
+            "text_1": "Livraison offerte dès 65 €",
+            "icon_2": "gift",
+            "text_2": "Échantillon grand format",
+            "icon_3": "shield",
+            "text_3": "Paiement sécurisé"
           }
         },
         "description": {

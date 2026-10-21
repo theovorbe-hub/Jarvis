@@ -32,10 +32,20 @@ const clean = (text) => text.replace(/\s+/g, ' ').trim();
 
   await page.goto(`file://${path.join(outDir, 'product-rouleau.html')}`);
   assert.equal(clean(await page.textContent('[data-price-per-m2]')), 'soit 16,71 € le m²');
+  // Échantillon vendu à part (métachamp papier_peint.echantillon) : bouton d'ajout direct au panier.
+  assert.equal(clean(await page.textContent('.product__sample a')), 'Commander un échantillon (4,90 €)');
+  assert.equal(await page.getAttribute('.product__sample a', 'data-sample-add'), '991');
   await page.click('.calculator__summary');
   await page.fill('[data-calc-width]', '4.2');
   await page.fill('[data-calc-height]', '2.5');
   assert.match(clean(await page.innerText('[data-calc-result]')), /^3 rouleaux 8 lés de 2,92 m, soit 3 lés par rouleau\.$/);
+
+  // Fiche d'un produit échantillon : prix sans unité, quantité simple, ni calculateur ni configurateur.
+  await page.goto(`file://${path.join(outDir, 'product-echantillon.html')}`);
+  assert.equal(clean(await page.textContent('[data-price-unit]')), '');
+  assert.ok(await page.$('[data-quantity-input]'), 'sélecteur de quantité présent');
+  assert.equal(await page.$('[data-calculator]'), null, 'pas de calculateur de rouleaux');
+  assert.equal(await page.$('[data-configurator]'), null, 'pas de configurateur au m²');
 
   // Ouverture vidéo : image de couverture d'abord, vidéo chargée ensuite, en boucle et sans son.
   await page.goto(`file://${path.join(outDir, 'index.html')}`);

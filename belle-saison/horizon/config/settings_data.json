@@ -117,7 +117,7 @@
     "button_text_case_primary": "uppercase",
     "button_text_case_secondary": "uppercase",
     "pills_border_radius": 2,
-    "default_sale_mode": "m2",
+    "default_sale_mode": "rouleau",
     "sample_option_label": "Échantillon",
     "show_price_per_m2": true,
     "wishlist_enabled": true,

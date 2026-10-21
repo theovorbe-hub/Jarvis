@@ -40,7 +40,9 @@
       <div class="product-card__body">
         <h3 class="product-card__title">{{ product.title | escape }}</h3>
         <p class="product-card__price">
-          {%- if mode == 'm2' -%}
+          {%- if mode == 'echantillon' -%}
+            {{ base_price_money }}
+          {%- elsif mode == 'm2' -%}
             {{ 'bs.products.product.from_per_m2_html' | t: price: base_price_money }}
           {%- elsif product.price_varies -%}
             {{ 'bs.products.product.from_per_roll_html' | t: price: base_price_money }}

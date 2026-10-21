@@ -1,7 +1,8 @@
 """Raccords Belle Saison dans les fichiers d'Horizon (belle-saison/horizon).
 
-À relancer après une mise à jour d'Horizon. Chaque raccord est repéré par « Belle Saison » et
-n'est appliqué qu'une fois ; si le texte d'Horizon attendu a changé, le script s'arrête.
+À relancer après une mise à jour d'Horizon. Chaque fichier repart de sa version d'origine
+(commit HORIZON_BASE du dépôt) avant d'être raccordé : relancer le script applique les raccords
+à jour. Si le texte d'Horizon attendu a changé, le script s'arrête.
 - layout/theme.liquid : {% render 'bs-head' %} (polices, couleurs, bs-base.css, bs-theme.js) ;
 - config/settings_schema.json : groupe de réglages « Belle Saison » (settings-belle-saison.json) ;
 - snippets/price.liquid : sur les cartes produit, prix de base hors échantillon, avec son unité
@@ -10,20 +11,24 @@ n'est appliqué qu'une fois ; si le texte d'Horizon attendu a changé, le script
   est calculée depuis les dimensions du mur (panier et tiroir du panier).
 Usage (depuis tools/) : npm run horizon:build
 """
-import json, pathlib
+import json, pathlib, subprocess
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 HORIZON = ROOT / 'horizon'
 MARK = 'Belle Saison'
+# Commit du dépôt qui contient Horizon d'origine (« Horizon 4.3.0 d'origine »).
+HORIZON_BASE = 'f8d6a82'
+
+
+def original(name):
+    return subprocess.run(['git', 'show', f'{HORIZON_BASE}:belle-saison/horizon/{name}'], cwd=ROOT,
+                          check=True, capture_output=True, text=True).stdout
 
 
 def patch(name, anchor, replacement, marker):
-    path = HORIZON / name
-    text = path.read_text()
-    if marker in text:
-        return
+    text = original(name)
     assert text.count(anchor) == 1, f'{name} : texte d’Horizon introuvable ou en double :\n{anchor}'
-    path.write_text(text.replace(anchor, replacement))
+    (HORIZON / name).write_text(text.replace(anchor, replacement))
     print('raccord', name)
 
 
@@ -36,13 +41,11 @@ patch(
 
 group = (pathlib.Path(__file__).parent / 'settings-belle-saison.json').read_text().strip()
 schema = HORIZON / 'config' / 'settings_schema.json'
-text = schema.read_text()
-if f'"name": "{MARK}"' not in text:
-    body = text.rstrip()
-    assert body.endswith(']')
-    schema.write_text(body[:-1].rstrip() + ',\n  ' + group.replace('\n', '\n  ') + '\n]\n')
-    json.loads(schema.read_text())
-    print('raccord', 'config/settings_schema.json')
+body = original('config/settings_schema.json').rstrip()
+assert body.endswith(']') and f'"name": "{MARK}"' not in body
+schema.write_text(body[:-1].rstrip() + ',\n  ' + group.replace('\n', '\n  ') + '\n]\n')
+json.loads(schema.read_text())
+print('raccord', 'config/settings_schema.json')
 
 patch(
     'snippets/price.liquid',
@@ -61,7 +64,9 @@ patch(
     else
       assign bs_money = bs_price | money
     endif
-    if bs_parts[0] == 'm2'
+    if bs_parts[0] == 'echantillon'
+      assign bs_price_html = bs_money
+    elsif bs_parts[0] == 'm2'
       assign bs_price_html = 'bs.products.product.from_per_m2_html' | t: price: bs_money
     elsif product_resource.price_varies
       assign bs_price_html = 'bs.products.product.from_per_roll_html' | t: price: bs_money

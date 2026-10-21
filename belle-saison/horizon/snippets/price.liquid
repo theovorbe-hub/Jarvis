@@ -88,7 +88,9 @@
     else
       assign bs_money = bs_price | money
     endif
-    if bs_parts[0] == 'm2'
+    if bs_parts[0] == 'echantillon'
+      assign bs_price_html = bs_money
+    elsif bs_parts[0] == 'm2'
       assign bs_price_html = 'bs.products.product.from_per_m2_html' | t: price: bs_money
     elsif product_resource.price_varies
       assign bs_price_html = 'bs.products.product.from_per_roll_html' | t: price: bs_money

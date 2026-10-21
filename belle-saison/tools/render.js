@@ -53,6 +53,15 @@ const products = [
   mkProduct(3, 'Vallée de Provence', ['col3', 'ins1'], 'm2'),
   mkProduct(4, 'Toile Châtelaine', ['col4', 'ins5'], 'rouleau'),
 ];
+// Échantillon vendu comme un produit à part, relié au rouleau par le métachamp papier_peint.echantillon.
+const sampleVariant = variant(991, 'Default Title', 490);
+const sampleProduct = {
+  ...mkProduct(9, 'Échantillon - Toile Châtelaine', ['col4']), type: 'Échantillon', tags: ['echantillon'],
+  variants: [sampleVariant], selected_or_first_available_variant: sampleVariant, price: 490, price_min: 490, price_max: 490,
+  price_varies: false, has_only_default_variant: true, metafields: { papier_peint: {} },
+};
+products[3].metafields.papier_peint.echantillon = { value: sampleProduct };
+products[3].variants = products[3].variants.filter((v) => !v.title.startsWith('Échantillon'));
 const collection = {
   id: 1, handle: 'les-motifs', title: 'Les motifs', url: '/collections/les-motifs',
   description: '<p>Feuillages, fleurs et ornements dessinés pour les maisons de caractère.</p>',
@@ -240,6 +249,7 @@ const pages = {
   'index-modele-visiteur': { template: 'index', page_type: 'index', title: 'Belle Saison', templateReviews: true },
   product: { template: 'product', page_type: 'product', title: products[0].title, product: products[0] },
   'product-rouleau': { template: 'product', page_type: 'product', title: products[3].title, product: products[3] },
+  'product-echantillon': { template: 'product', page_type: 'product', title: sampleProduct.title, product: sampleProduct },
   collection: { template: 'collection', page_type: 'collection', title: collection.title, collection },
   cart: { template: 'cart', page_type: 'cart', title: 'Panier', cart: { item_count: 10, items: cartItems, total_price: 44100, taxes_included: true, cart_level_discount_applications: [], note: '', currency: { iso_code: 'EUR' } } },
   '404': { template: '404', page_type: '404', title: 'Page introuvable' },

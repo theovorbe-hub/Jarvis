@@ -31,33 +31,33 @@
         "e2": {
           "type": "item",
           "settings": {
-            "icon": "pencil",
-            "title": "Sur-mesure inclus",
-            "text": "Votre visuel adapté à votre mur, sans surcoût."
+            "icon": "paint",
+            "title": "Éditeurs européens",
+            "text": "Des papiers peints sélectionnés auprès de maisons d’édition européennes."
           }
         },
         "e3": {
           "type": "item",
           "settings": {
-            "icon": "leaf",
-            "title": "Écologie",
-            "text": "Des matériaux respectueux de votre intérieur et de la planète."
+            "icon": "shield",
+            "title": "Paiement sécurisé",
+            "text": "Réglez votre commande sur une page de paiement protégée."
           }
         },
         "e4": {
           "type": "item",
           "settings": {
             "icon": "frame",
-            "title": "Échantillon offert",
-            "text": "Pour une décision en toute sérénité."
+            "title": "Échantillon grand format",
+            "text": "Jusqu’à 53 × 53 cm, pour voir le motif chez vous avant de décider."
           }
         },
         "e5": {
           "type": "item",
           "settings": {
             "icon": "truck",
-            "title": "Livraison rapide",
-            "text": "Sous 5 à 7 jours en France et en Europe."
+            "title": "Livraison offerte dès 65 €",
+            "text": "En France, sinon 7,99 €."
           }
         }
       },
@@ -77,7 +77,7 @@
           "type": "collection",
           "settings": {
             "title": "Les essentiels",
-            "text": "Rayures, unis et textures intemporelles",
+            "text": "Unis effet lin et textures intemporelles",
             "collection": "les-essentiels",
             "image": "shopify://shop_images/IMG_0044.png"
           }
@@ -85,25 +85,25 @@
         "c2": {
           "type": "collection",
           "settings": {
-            "title": "Les motifs",
-            "text": "Textures, feuillages et détails raffinés",
-            "collection": "les-motifs"
+            "title": "Fleurs et feuillages",
+            "text": "Aquarelles, bouquets et brindilles tout en douceur",
+            "collection": "fleurs-et-feuillages"
           }
         },
         "c3": {
           "type": "collection",
           "settings": {
-            "title": "Les paysages",
-            "text": "Campagnes, vallées et horizons poétiques",
-            "collection": "les-paysages"
+            "title": "Les rayures",
+            "text": "Dessinées à la main, tissées ou fines, pour donner de la hauteur",
+            "collection": "les-rayures"
           }
         },
         "c4": {
           "type": "collection",
           "settings": {
-            "title": "Les toiles",
-            "text": "Inspirations classiques et esprit maison de famille",
-            "collection": "les-toiles"
+            "title": "Vichy et carreaux",
+            "text": "L’esprit maison de campagne, du vichy au carreau anglais",
+            "collection": "vichy-et-carreaux"
           }
         },
         "c5": {
@@ -138,7 +138,7 @@
         "video_label": "Découvrir notre savoir-faire",
         "eyebrow": "Notre histoire",
         "heading": "Le charme des intérieurs intemporels.",
-        "text": "<p>Belle Saison puise son inspiration dans les maisons de caractère et les lieux de vie qui traversent le temps. Nos papiers peints sont imaginés pour créer des intérieurs élégants, chaleureux et authentiques, où chaque détail compte.</p>",
+        "text": "<p>Belle Saison puise son inspiration dans les maisons de caractère et les lieux de vie qui traversent le temps. Nos papiers peints sont sélectionnés pour créer des intérieurs élégants, chaleureux et authentiques, où chaque détail compte.</p>",
         "button_label": "Découvrir notre histoire",
         "button_link": "shopify://pages/notre-histoire",
         "video_url": ""
@@ -203,8 +203,8 @@
       ],
       "settings": {
         "heading": "Des intérieurs qui inspirent.",
-        "link_label": "Voir toutes les inspirations",
-        "link_url": "shopify://blogs/inspiration",
+        "link_label": "Voir tous les papiers peints",
+        "link_url": "shopify://collections/tous-nos-papiers-peints",
         "eyebrow": ""
       }
     },
@@ -220,8 +220,8 @@
       "settings": {
         "height": "large",
         "heading": "Des murs qui racontent une histoire.",
-        "link_label": "Voir les paysages",
-        "link_url": "shopify://collections/les-paysages"
+        "link_label": "Voir tous les papiers peints",
+        "link_url": "shopify://collections/tous-nos-papiers-peints"
       }
     },
     "testimonials": {

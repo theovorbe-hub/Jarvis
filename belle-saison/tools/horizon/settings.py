@@ -58,7 +58,8 @@ cur.update({
     'variant_swatch_radius': 2,
     'pills_border_radius': 2,
     # Belle Saison : vente au m², favoris
-    'default_sale_mode': 'm2',
+    # Catalogue actuel vendu au rouleau (chaque produit a aussi son métachamp papier_peint.mode_vente)
+    'default_sale_mode': 'rouleau',
     'sample_option_label': 'Échantillon',
     'show_price_per_m2': True,
     'wishlist_enabled': True,

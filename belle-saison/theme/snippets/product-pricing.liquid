@@ -1,5 +1,7 @@
 {%- comment -%}
-  Calcule le mode de vente et le prix de base d'un produit (hors échantillon).
+  Calcule le mode de vente et le prix de base d'un produit (hors variante échantillon).
+  Modes : m2 (sur mesure), rouleau, echantillon (produit échantillon vendu à part : type
+  « Échantillon » ou étiquette « echantillon »).
   Sortie : capture une chaîne "mode|prix_centimes|variante_echantillon_id"
   Usage :
     {%- capture pricing -%}{% render 'product-pricing', product: product %}{%- endcapture -%}
@@ -7,7 +9,9 @@
 {%- liquid
   assign sample_label = settings.sample_option_label | downcase | strip
   assign mode_raw = product.metafields.papier_peint.mode_vente.value | default: settings.default_sale_mode | downcase
-  if mode_raw contains 'roul'
+  if product.type == 'Échantillon' or product.tags contains 'echantillon'
+    assign mode = 'echantillon'
+  elsif mode_raw contains 'roul'
     assign mode = 'rouleau'
   else
     assign mode = 'm2'

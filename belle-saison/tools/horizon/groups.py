@@ -2,10 +2,10 @@
 
 Part des fichiers tels qu'installés dans la boutique et y applique :
 - en-tête : logo centré, menu « menu-horizon » en texte (Garamond, 18 px), sans sélecteur de pays
-  ni de langue, filet sous l'en-tête ; bandeau d'annonces repris du thème Belle Saison (quatre
-  engagements), masqué comme la cliente l'a fait dans le thème Belle Saison le 19 octobre 2026 ;
+  ni de langue, filet sous l'en-tête ; bandeau d'annonces affiché avec quatre engagements vérifiés
+  (livraison offerte dès 65 €, échantillons, éditeurs européens, paiement sécurisé) ;
 - pied de page : présentation Belle Saison à la place de l'inscription à la lettre d'information
-  (déjà présente sur l'accueil), menus « Boutique » (menu-gauche) et « Aide » (menu-aide-horizon :
+  (déjà présente sur l'accueil), menus « Boutique » (menu-horizon) et « Aide » (menu-aide-horizon :
   Contact, Mes favoris, Rechercher ; l'en-tête d'Horizon n'a pas d'icône Favoris), liens vers les
   réseaux sociaux de démonstration retirés.
 Usage (depuis tools/) : npm run horizon:build
@@ -14,8 +14,8 @@ import json, pathlib
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SECTIONS = ROOT / 'horizon' / 'sections'
-ANNOUNCEMENTS = ['Échantillon offert', 'Adaptation sur mesure incluse', 'Impression européenne haut de gamme',
-                 'Livraison sous 5 à 7 jours']
+ANNOUNCEMENTS = ['Livraison offerte en France dès 65 €', 'Échantillons grand format', 'Papiers peints d’éditeurs européens',
+                 'Paiement sécurisé']
 MENU_BLOCK = {'menu_spacing': 12, 'show_as_accordion': False, 'accordion_icon': 'plus', 'accordion_dividers': False,
               'heading_preset': 'paragraph', 'link_preset': 'paragraph', 'padding-block-start': 0,
               'padding-block-end': 0, 'padding-inline-start': 0, 'padding-inline-end': 0}
@@ -46,7 +46,7 @@ bar['blocks'] = {
 }
 bar['block_order'] = list(bar['blocks'])
 bar['settings']['divider_color'] = '{{ settings.color_palette.color3 }}'
-bar['disabled'] = True
+bar.pop('disabled', None)
 head = group['sections'][of_type(group, 'header')]
 head['blocks']['header-menu']['settings'].update({
     'menu': 'menu-horizon', 'type_font_primary_size': '1.125rem', 'menu_font_style': 'regular',
@@ -71,7 +71,7 @@ texts[1]['settings']['text'] = '<p>Papiers peints d’exception, en rouleaux et 
 for key in [k for k, b in intro['blocks'].items() if b['type'] == 'email-signup']:
     del intro['blocks'][key]
     intro['block_order'].remove(key)
-for key, menu, heading in [('menu_main', 'menu-gauche', 'Boutique'), ('menu_footer', 'menu-aide-horizon', 'Aide')]:
+for key, menu, heading in [('menu_main', 'menu-horizon', 'Boutique'), ('menu_footer', 'menu-aide-horizon', 'Aide')]:
     blocks.setdefault(key, {'type': 'menu', 'settings': dict(MENU_BLOCK), 'blocks': {}})
     blocks[key]['settings'].update({'menu': menu, 'heading': heading})
 footer['block_order'] = [k for k in footer['block_order'] if k not in ('menu_main', 'menu_footer')] + ['menu_main', 'menu_footer']

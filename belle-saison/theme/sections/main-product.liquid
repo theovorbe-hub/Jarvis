@@ -134,7 +134,7 @@
                   <span class="price__unit" data-price-unit>
                     {%- if sale_mode == 'm2' -%}
                       {{ 'products.product.unit_m2' | t }}
-                    {%- else -%}
+                    {%- elsif sale_mode == 'rouleau' -%}
                       {{ 'products.product.unit_roll' | t }}
                     {%- endif -%}
                   </span>
@@ -313,7 +313,7 @@
 
             {%- when 'buy_buttons' -%}
               <div class="product__buy{% if sale_mode == 'm2' %} product__buy--single{% endif %}" {{ block.shopify_attributes }}>
-                {%- if sale_mode == 'rouleau' -%}
+                {%- if sale_mode != 'm2' -%}
                   <div class="quantity" data-quantity>
                     <label class="visually-hidden" for="Quantity-{{ section.id }}">{{ 'products.product.quantity' | t }}</label>
                     <button type="button" class="quantity__button" data-quantity-minus>
@@ -371,6 +371,36 @@
                     {%- endif -%}
                   </a>
                 </div>
+              {%- elsif pp.echantillon.value -%}
+                {%- comment -%}
+                  Échantillon vendu comme un produit à part (métachamp papier_peint.echantillon) : ajout
+                  direct au panier s'il n'a qu'une variante, sinon lien vers sa fiche pour choisir le support.
+                {%- endcomment -%}
+                {%- liquid
+                  assign sample_product = pp.echantillon.value
+                  assign sample_choice = sample_product.selected_or_first_available_variant
+                  assign sample_price = sample_product.price_min | money
+                -%}
+                {%- if sample_product.available -%}
+                  <div class="product__sample" {{ block.shopify_attributes }}>
+                    <a
+                      class="button button--secondary button--full"
+                      {% if sample_product.variants.size > 1 %}
+                        href="{{ sample_product.url }}"
+                      {% else %}
+                        href="{{ routes.cart_add_url }}?id={{ sample_choice.id }}&quantity=1"
+                        data-sample-add="{{ sample_choice.id }}"
+                      {% endif %}
+                    >
+                    {% render 'icon', name: 'gift' %}
+                    {%- if sample_product.price_max == 0 -%}
+                      {{ 'products.product.sample_free' | t }}
+                    {%- else -%}
+                      {{ 'products.product.sample_paid' | t: price: sample_price }}
+                    {%- endif -%}
+                    </a>
+                  </div>
+                {%- endif -%}
               {%- endif -%}
 
             {%- when 'reassurance' -%}
