@@ -72,6 +72,9 @@
    - **Livraison** : France uniquement ; standard 7,99 €, offerte dès 65 € ; express 10,99 € ;
      **délai réel de préparation et de livraison des rouleaux à confirmer avec les fournisseurs**
      (obligatoire avant l’achat ; les échantillons indiquent 1 à 5 jours ouvrés de préparation).
+   - **Fiche produit** : les volets « Pose et entretien » et « Livraison et retours » affichent
+     encore le texte d’attente (« Ajoutez ici… »). Les remplir dans Personnaliser > Produits >
+     Fiche produit, une fois les délais et conditions confirmés.
 3. **Paiements** : vérifier que Shopify Payments (ou un autre moyen) est activé et testé
    (Paramètres > Paiements), puis passer une commande test.
 4. **Logo** : Personnaliser > Réglages du thème > Logo.
